@@ -476,7 +476,7 @@ body.dark-mode .subunit-header.active {
 .sidebar a.active {
   background-color: var(--hover-bg);
   font-weight: bold;
-  border-left: 4px solid var(--link-color);
+  border-left: 4px solid var(--hover-bg);
 }
 /* === OVERLAY STYLES =========================== */
 #sidebar-overlay {
