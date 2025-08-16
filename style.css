@@ -91,6 +91,7 @@ body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f4f4f9;
   margin: 0;
+  padding-top: 65px;
   padding: 20px;
   color: #333;
 }
@@ -296,7 +297,7 @@ body {
   top: 0;
   left: 0; 
   width: 100vw; 
-  height: 80px;
+  height: 60px;
   background-color: var(--bar-bg);
   color: var(--bar-text);
   display: flex;
