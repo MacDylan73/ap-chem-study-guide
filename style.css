@@ -11,6 +11,10 @@
   --bar-text: #0055aa;
   --sidebar-bg: #f0f0f0;
   --sidebar-text: #333333;
+
+  --hover-light: rgba(0, 123, 255, 0.12);
+  --hover-dark: rgba(255, 255, 255, 0.06);
+
 }
 
 .dark-mode {
@@ -95,6 +99,7 @@ body {
   color: var(--text-color);
   transition: background-color 0.3s ease, color 0.3s ease;
   font-size: 16px;
+  --hover-bg: var(--hover-light);
 }
 @media (max-width: 600px) {
   body {
@@ -454,9 +459,14 @@ body.dark-mode .subunit-header.active {
   background-color: rgba(0, 123, 255, 0.1); /* Light blue tint */
 }
 
-body.dark-mode .subunit-header:hover {
-  background-color: rgba(255, 255, 255, 0.03); /* Soft white tint */
+body.dark-mode {
+  --hover-bg: var(--hover-dark);
 }
+
+.subunit-header:hover {
+  background-color: var(--hover-bg);
+}
+
 
 
 
