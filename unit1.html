@@ -30,17 +30,19 @@
     <div class="quiz-box">
       <h3>Unit 1 Practice Quiz</h3>
       <!-- Add questions here -->
-      <div class="question-box">
-        <p class="question">Which of the following has the highest boiling point?</p>
-        <ul class="choices">
-          <li onclick="checkAnswer(this, false, 'London dispersion forces are weak, so this compound boils easily.')">CH₄</li>
-          <li onclick="checkAnswer(this, false, 'Dipole-dipole interactions are stronger than dispersion, but not the strongest here.')">CH₃Cl</li>
-          <li onclick="checkAnswer(this, true, 'Hydrogen bonding in water leads to a much higher boiling point.')">H₂O</li>
-          <li onclick="checkAnswer(this, false, 'This molecule is nonpolar and lacks strong intermolecular forces.')">C₂H₆</li>
-        </ul>
-      <div class="feedback"></div>
-</div>
-
+      <div class="quiz-container">
+        <div class="question-box">
+        <p class="question-text">Which of the following has the highest boiling point?</p>
+          <div class="answer-options">
+            <button onclick="checkAnswer(this, false, 'London dispersion forces are weak, so CH₄ boils easily.')">CH₄</button>
+            <button onclick="checkAnswer(this, false, 'Dipole-dipole interactions are stronger than dispersion, but not the strongest here.')">CH₃Cl</button>
+            <button onclick="checkAnswer(this, true, 'Hydrogen bonding in water leads to a much higher boiling point.')">H₂O</button>
+            <button onclick="checkAnswer(this, false, 'C₂H₆ is nonpolar and lacks strong intermolecular forces.')">C₂H₆</button>
+          </div>
+          <div class="feedback-text"></div>
+        </div>
+      </div>
+    </div>
     </div>
   </div>
 
