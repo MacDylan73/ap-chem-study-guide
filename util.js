@@ -9,21 +9,44 @@ document.querySelectorAll('.subunit-header').forEach(button => {
 // SIDEBAR --------------------------------
 // Toggle for sidebar menu
 function toggleSidebar() {
-  document.getElementById('sidebar').classList.toggle('visible');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  const isVisible = sidebar.classList.toggle('visible');
+
+  // Show or hide overlay based on sidebar visibility
+  overlay.style.display = isVisible ? 'block' : 'none';
 }
 
 // Auto-close sidebar when clicking outside
 document.addEventListener('click', function (event) {
   const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
   const toggleButton = document.querySelector('.menu-icon');
 
   const clickedInsideSidebar = sidebar.contains(event.target);
   const clickedToggleButton = toggleButton && toggleButton.contains(event.target);
+  const clickedOverlay = overlay.contains(event.target);
 
-  if (!clickedInsideSidebar && !clickedToggleButton) {
+  if (!clickedInsideSidebar && !clickedToggleButton && !clickedOverlay) {
     sidebar.classList.remove('visible');
+    overlay.style.display = 'none';
   }
 });
+
+// Auto-close sidebar when clicking overlay
+document.getElementById('sidebar-overlay').addEventListener('click', function () {
+  document.getElementById('sidebar').classList.remove('visible');
+  this.style.display = 'none';
+});
+
+// Auto-close sidebar when pressing Escape
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    document.getElementById('sidebar').classList.remove('visible');
+    document.getElementById('sidebar-overlay').style.display = 'none';
+  }
+});
+
 
 //Auto-Close sidebar when click esc
 document.addEventListener('keydown', function (event) {
