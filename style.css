@@ -369,8 +369,11 @@ body {
 }
 
 .subunit-header {
-  background-color: var(--box-bg);
-  color: var(--text-color);
+  color: var(--bar-text);
+  background: none;
+  border: none;
+  font-size: 1rem;
+  transition: color 0.3s ease;
 }
 
 body {
@@ -383,18 +386,8 @@ body {
   border-color: var(--box-border);
 }
 
-.subunit-header h2 {
-  color: #0055aa; /* Deep blue for light mode */
-}
 
-.dark-mode .subunit-header h2 {
-  color: #ffffff; /* White for dark mode */
-}
 
-.dropdown-title {
-  color: var(--bar-text);
-  transition: color 0.3s ease;
-}
 
 
 
