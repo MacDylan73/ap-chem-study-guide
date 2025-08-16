@@ -294,7 +294,8 @@ body {
 .top-bar {
   position: fixed;
   top: 0;
-  width: 100%;
+  left: 0; 
+  width: 100vw; 
   height: 60px;
   background-color: var(--bar-bg);
   color: var(--bar-text);
@@ -305,6 +306,7 @@ body {
   z-index: 1000;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
+
 
 /* Title */
 .unit-title {
