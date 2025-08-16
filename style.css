@@ -298,15 +298,15 @@ body {
 /* Sidebar */
 .sidebar {
   position: fixed;
-  top: 60px;
+  top: 60px; 
   left: 0;
   width: 250px;
-  background-color: var(--sidebar-bg);
-  color: var(--sidebar-text);
   height: calc(100% - 60px);
   transform: translateX(-100%);
   transition: transform 0.3s ease;
   z-index: 999;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
   padding: 20px;
 }
 
@@ -343,6 +343,11 @@ body {
   background-color: #e0e0e0;
   padding: 5px;
   border-radius: 4px;
+}
+
+.subunit-content {
+  position: relative;
+  z-index: 1;
 }
 
 body {
