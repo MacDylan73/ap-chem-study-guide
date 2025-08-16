@@ -113,10 +113,10 @@
       <button class="subunit-header">1.2 Mass Spectra of Elements▾</button>
       <div class="subunit-content">
         <!-- Course content for Subunit 1.2 -->
-        <section class="notes-box">
+        <div class="notes-box">
           <h2>1.2 Mass Spectra of Elements</h2>
           <p>
-            Mass spectra is used to identify the isotopes of an element as well as their relative abundances in nature.
+            Mass spectra is used to identify the isotopes of an element as well as their relative abundances in nature.  Isotopes are the same element and usually have somewhat similar properties, but differ slightly in the number of neutrons, and in turn, atomic mass.
           </p>
           <img src="images/cl-spectrum.png" alt="Mass spectrum of chlorine" style="max-width: 100%; margin: 20px 0; border-radius: 8px;">
           <p>
@@ -127,7 +127,25 @@
           <p>
           <strong>Example:</strong> With a mass spectra of an unknown element, the element can be inferred from the relative abundance of each mass peak.  Based on the mass spectra above, the average mass is likely closest to <strong>91 g</strong>, which would be closest to <em>Zr</em> on the periodic table (<strong>91.22 g</strong>).
           </p>
-        </section>
+        </div>
+        <div class="section-divider">
+            <hr />
+            <h3>Check Your Understanding:</h3>
+            <p>Try this quick quiz to reinforce what you just learned about mass spectra. </p>
+          </div>
+
+          <div class="quiz-container">
+            <div class="question-box">
+            <p class="question-text">An unknown element occurs naturally in three weights: 20, 21, and 22 amu with percent abundances of 90.48%, 0.27%, and 9.25%, respectively.  Determine the element</p>
+              <div class="answer-options">
+                <button onclick="checkAnswer(this, true, 'Correct!  We would expect the element to have a mass somewhere between 20 and 21 amu which corresponds with Ne-20.18 amu')">Ne</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect, Na has an atomic mass of 22.99 amu - the unknown element has a lower mass')">Na</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect, F has an atomic mass of 18.99 amu - the unknown element has a higher mass')">F</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect. Mg has an atomic mass of 24.31 amu - the unknown element has a lower mass')">Mg</button>
+              </div>
+            <div class="feedback-text"></div>
+          </div>
+        </div>
       </div>
     </div>
 
