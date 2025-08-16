@@ -7,8 +7,7 @@ document.querySelectorAll('.subunit-header').forEach(button => {
 
 // Toggle for sidebar menu
 function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.style.transform = sidebar.style.transform === 'translateX(0%)' ? 'translateX(-100%)' : 'translateX(0%)';
+  document.getElementById('sidebar').classList.toggle('hidden');
 }
 
 //Themes
