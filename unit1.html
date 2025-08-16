@@ -10,7 +10,7 @@
 
   <div class="subunit-container">
     <div class="subunit">
-      <button class="subunit-header">1.1 Moles and Molar Masses ▾</button>
+      <button class="subunit-header">1.1 Moles and Molar Masses Notes ▾</button>
       <div class="subunit-content">
         <!-- Course content for Subunit 1.1 -->
         <div class="notes-box">
@@ -59,6 +59,18 @@
             </tr>
           </table>
           </p>
+          <div class="quiz-container">
+            <div class="question-box">
+            <p class="question-text">How many moles are in 45.68 g of Sodium (Na)?</p>
+              <div class="answer-options">
+                <button onclick="checkAnswer(this, false, 'Incorrect, this answer multiplies the weight of the sodium by its molar mass.  To obtain the number of moles we need to divide the weight of Na by its molar mass')">1050.18 mol</button>
+                <button onclick="checkAnswer(this, true, 'Correct!  This answer correctly divides the weight of Na given by its molar mass')">1.99 mol</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect, this answer divides the molar mass of Na by the weight of Na.  To obtain the number of moles we need to divide the weight of Na by its molar mass')">0.50 mol</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect. To obtain the number of moles we need to divide the weight of Na by its molar mass')">1.48 mol</button>
+              </div>
+            <div class="feedback-text"></div>
+          </div>
+        </div>
         </div>
       </div>
     </div>
