@@ -1,15 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Test Page</title>
+  <meta charset="UTF-8" />
+  <title>AP Chemistry Companion</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>testing</h1>
-  <p>This is a test message. </p>
-  <h2>Units</h2>
-  <ul>
-  <li><a href="unit1.html">Unit 1: Atomic Structure</a></li>
-  <li><a href="unit2.html">Unit 2: Molecular Bonding</a></li>
-  </ul>
+  <div class="container">
+
+    <!-- Intro Box -->
+    <div class="box">
+      <h1>Welcome to the AP Chemistry Companion</h1>
+      <p>
+        Created by a former AP Chem student who scored a 5 on the exam, this site is designed to help you master each unit with clarity and confidence. Whether you're reviewing concepts or practicing problems, you're in the right place.
+      </p>
+    </div>
+
+    <!-- Unit Links Box -->
+    <div class="box">
+      <h2>Explore the Units</h2>
+      <ul>
+        <li><a href="unit1.html">Unit 1: Atomic Structure</a></li>
+        <li><a href="unit2.html">Unit 2: Molecular Bonding</a></li>
+        <li><a href="unit3.html">Unit 3: Intermolecular Forces</a></li>
+        <!-- Add more units as needed -->
+      </ul>
+    </div>
+
+    <!-- Countdown Box -->
+    <div class="box">
+      <div class="countdown" id="countdownText">
+        Loading countdown...
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Countdown Script -->
+  <script>
+    const examDate = new Date("May 5, 2026"); // Update if needed
+    const today = new Date();
+    const diffTime = examDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    document.getElementById("countdownText").textContent =
+      `${diffDays} days until the AP Chemistry exam`;
+  </script>
 </body>
 </html>
