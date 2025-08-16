@@ -398,4 +398,12 @@ body {
   border-color: var(--box-border);
 }
 
+.subunit-header h2 {
+  color: #0055aa; /* Deep blue for light mode */
+}
+
+.dark-mode .subunit-header h2 {
+  color: #ffffff; /* White for dark mode */
+}
+
 
