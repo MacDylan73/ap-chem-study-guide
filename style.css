@@ -109,3 +109,37 @@ body {
   border-radius: 8px;
   margin-top: 30px;
 }
+
+.question-box {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.choices li {
+  list-style: none;
+  margin: 8px 0;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.choices li.correct {
+  background-color: #d4edda; /* green */
+  color: #155724;
+}
+
+.choices li.incorrect {
+  background-color: #f8d7da; /* red */
+  color: #721c24;
+}
+
+.feedback {
+  margin-top: 12px;
+  font-style: italic;
+  color: #333;
+}
+
