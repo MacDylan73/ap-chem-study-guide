@@ -1,3 +1,4 @@
+//Dropdowns ------------------------------
 // Toggle for subunit dropdowns
 document.querySelectorAll('.subunit-header').forEach(button => {
     button.addEventListener('click', () => {
@@ -5,14 +6,35 @@ document.querySelectorAll('.subunit-header').forEach(button => {
     });
 });
 
+// SIDEBAR --------------------------------
 // Toggle for sidebar menu
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('visible');
 }
 
-//Themes
-// Toggle Light/Dark Mode Themes
+// Auto-close sidebar when clicking outside
+document.addEventListener('click', function (event) {
+  const sidebar = document.getElementById('sidebar');
+  const toggleButton = document.getElementById('menuToggle'); // update this ID if needed
 
+  const clickedInsideSidebar = sidebar.contains(event.target);
+  const clickedToggleButton = toggleButton && toggleButton.contains(event.target);
+
+  if (!clickedInsideSidebar && !clickedToggleButton) {
+    sidebar.classList.remove('visible');
+  }
+});
+
+//Auto-Close sidebar when click esc
+document.addEventListener('keydown', function (event) {
+  if (event.key === 'Escape') {
+    document.getElementById('sidebar').classList.remove('visible');
+  }
+});
+
+
+// THEMES ---------------------------------
+// Toggle Light/Dark Mode Themes
 function toggleTheme() {
   const body = document.body;
   body.classList.toggle('dark-mode');
