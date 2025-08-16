@@ -448,13 +448,14 @@ body.dark-mode .subunit-header.active {
   height: 100vh;
   background: rgba(0, 0, 0, 0.4);
   z-index: 998;
-  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
 }
 .sidebar.visible + #sidebar-overlay {
-  display: block;
+  opacity: 1;
+  visibility: visible;
 }
-
-
 /* ===========================
    END OF FILE
    =========================== */
