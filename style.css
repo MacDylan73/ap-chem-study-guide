@@ -242,3 +242,24 @@ body {
   background-color: #d0eaff;
   font-weight: bold;
 }
+.section-divider {
+  text-align: center;
+  margin: 40px 0 20px;
+}
+
+.section-divider hr {
+  border: none;
+  border-top: 2px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.section-divider h3 {
+  font-size: 1.4rem;
+  color: #003366;
+  margin-bottom: 8px;
+}
+
+.section-divider p {
+  font-size: 1rem;
+  color: #444;
+}
