@@ -1,4 +1,32 @@
 /* style.css */
+:root {
+  --bg-color: #f4f4f9;
+  --text-color: #333333;
+  --box-bg: #ffffff;
+  --box-border: #cce0ff;
+  --link-color: #0077cc;
+  --link-hover: #0055aa;
+
+  --bar-bg: #ffffff;
+  --bar-text: #333333;
+  --sidebar-bg: #f0f0f0;
+  --sidebar-text: #333333;
+}
+
+.dark-mode {
+  --bg-color: #1e1e1e;
+  --text-color: #f0f0f0;
+  --box-bg: #2a2a2a;
+  --box-border: #444444;
+  --link-color: #66b2ff;
+  --link-hover: #99ccff;
+
+  --bar-bg: #222222;
+  --bar-text: #f0f0f0;
+  --sidebar-bg: #333333;
+  --sidebar-text: #f0f0f0;
+}
+
 * {
   box-sizing: border-box;
 }
