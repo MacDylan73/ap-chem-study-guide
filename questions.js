@@ -1,12 +1,12 @@
-function checkAnswer(element, isCorrect, explanation) {
-  const choices = element.parentElement.querySelectorAll('li');
-  choices.forEach(choice => {
-    choice.onclick = null; // disable further clicks
-    choice.classList.remove('correct', 'incorrect');
+function checkAnswer(button, isCorrect, explanation) {
+  const buttons = button.parentElement.querySelectorAll('button');
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    btn.classList.remove('correct', 'incorrect');
   });
 
-  element.classList.add(isCorrect ? 'correct' : 'incorrect');
+  button.classList.add(isCorrect ? 'correct' : 'incorrect');
 
-  const feedbackBox = element.parentElement.parentElement.querySelector('.feedback');
-  feedbackBox.textContent = explanation;
+  const feedback = button.parentElement.parentElement.querySelector('.feedback-text');
+  feedback.textContent = explanation;
 }
