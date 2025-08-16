@@ -440,6 +440,20 @@ body.dark-mode .subunit-header.active {
   padding: 5px;
   border-radius: 4px;
 }
+#sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+  display: none;
+}
+.sidebar.visible + #sidebar-overlay {
+  display: block;
+}
+
 
 /* ===========================
    END OF FILE
