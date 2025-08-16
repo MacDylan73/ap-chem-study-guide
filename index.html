@@ -66,13 +66,11 @@
   </div>
 
   <!-- Countdown Script -->
-  <script>
-    const examDate = new Date("May 5, 2026"); // Update if needed
-    const today = new Date();
-    const diffTime = examDate - today;
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    document.getElementById("countdownText").textContent =
-      `${diffDays} days until the AP Chemistry exam!`;
-  </script>
+ <script src="util.js" defer></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    renderCountdown("countdownText", "May 5, 2026");
+  });
+</script>
 </body>
 </html>
