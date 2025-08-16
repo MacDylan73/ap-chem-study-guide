@@ -158,10 +158,10 @@ li {
   background-color: var(--box-bg);
 }
 
-/* Spacing for first subunit */
+/* Spacing for first subunit 
 .subunit:first-child {
   margin-top: 80px;
-}
+} */
 
 /* Subunit header (collapsible) */
 .subunit-header {
