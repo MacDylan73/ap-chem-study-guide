@@ -263,3 +263,83 @@ body {
   font-size: 1rem;
   color: #444;
 }
+
+/* Top Bar */
+.top-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  background-color: var(--bar-bg);
+  color: var(--bar-text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Title */
+.unit-title {
+  margin: 0;
+  font-size: 1.2rem;
+  flex-grow: 1;
+  text-align: center;
+}
+
+/* Menu Icon */
+.menu-icon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 250px;
+  background-color: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  height: calc(100% - 60px);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  z-index: 999;
+  padding: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 15px 0;
+}
+
+.sidebar a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Theme Variables */
+:root {
+  --bar-bg: #ffffff;
+  --bar-text: #333333;
+  --sidebar-bg: #f0f0f0;
+  --sidebar-text: #333333;
+}
+
+.dark-mode {
+  --bar-bg: #222222;
+  --bar-text: #f0f0f0;
+  --sidebar-bg: #333333;
+  --sidebar-text: #f0f0f0;
+}
