@@ -50,3 +50,62 @@ a:hover {
   text-align: center;
   color: #444;
 }
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f4f4f9;
+  margin: 0;
+  padding: 20px;
+  color: #333;
+}
+
+.unit-title {
+  background-color: #4a90e2;
+  color: white;
+  padding: 15px;
+  font-size: 24px;
+  text-align: center;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.subunit-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.subunit {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: white;
+}
+
+.subunit-header {
+  background-color: #e0e7ff;
+  padding: 12px;
+  font-size: 18px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  cursor: pointer;
+}
+
+.subunit-content {
+  display: none;
+  padding: 10px 15px;
+  background-color: #f9f9ff;
+}
+
+.subunit-header.active + .subunit-content {
+  display: block;
+}
+
+.quiz-box {
+  background-color: #fffbe6;
+  border: 1px solid #f0d000;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 30px;
+}
