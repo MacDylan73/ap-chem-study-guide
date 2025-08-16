@@ -40,6 +40,13 @@ document.addEventListener('keydown', function (event) {
   }
 });
 
+// Highlight active link based on current URL
+document.querySelectorAll('.sidebar a').forEach(link => {
+  if (link.href === window.location.href) {
+    link.classList.add('active');
+  }
+});
+
 // THEMES ---------------------------------
 // Toggle Light/Dark Mode Themes
 function toggleTheme() {
