@@ -431,7 +431,7 @@ body.dark-mode .subunit-header.active {
 }
 .sidebar li {
   margin: 15px 0;
-  padding: 12px 16px;
+  padding: 6px 8px;
 }
 .sidebar a {
   color: inherit;
