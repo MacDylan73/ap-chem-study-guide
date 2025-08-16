@@ -123,13 +123,18 @@ body {
     font-size: 1.1rem;
   }
 }
+.subunit:first-child {
+  margin-top: 80px; /* Push it below the top bar */
+}
 
 
 .subunit-container {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  padding-top: 20px;
 }
+
 
 .subunit {
   border: 1px solid #ccc;
