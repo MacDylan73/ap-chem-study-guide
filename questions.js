@@ -1,7 +1,7 @@
 function checkAnswer(button, isCorrect, explanation) {
   const buttons = button.parentElement.querySelectorAll('button');
   buttons.forEach(btn => {
-    btn.disabled = true;
+    //btn.disabled = true;
     btn.classList.remove('correct', 'incorrect');
   });
 
