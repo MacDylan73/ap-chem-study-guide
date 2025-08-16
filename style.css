@@ -222,17 +222,19 @@ body {
   border-collapse: collapse;
   margin-top: 20px;
   font-family: 'Segoe UI', sans-serif;
+  border: 2px solid #333; /* Outer border */
 }
 
-.chem-table th,
 .chem-table td {
-  border: 1px solid #ccc;
-  padding: 10px;
+  border: 2px solid #333; /* Cell borders */
+  padding: 12px;
   text-align: center;
+  background-color: #fefefe;
+  color: #222;
 }
 
-.chem-table th {
-  background-color: #e0f0ff;
+.chem-table tr:first-child td {
+  background-color: #d0eaff; /* Header row styling */
   font-weight: bold;
 }
 
