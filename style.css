@@ -391,4 +391,10 @@ body {
   color: #ffffff; /* White for dark mode */
 }
 
+.dropdown-title {
+  color: var(--bar-text);
+  transition: color 0.3s ease;
+}
+
+
 
