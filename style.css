@@ -194,3 +194,26 @@ body {
   font-style: italic;
   color: #333;
 }
+
+.notes-box {
+  background-color: #f9f9ff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 30px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.notes-box h2 {
+  color: #0055aa;
+  margin-bottom: 12px;
+}
+
+.notes-box ul {
+  padding-left: 20px;
+  margin: 10px 0;
+}
+
+.notes-box li {
+  margin-bottom: 6px;
+}
