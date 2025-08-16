@@ -422,8 +422,8 @@ body.dark-mode .subunit-header.active {
   color: var(--sidebar-text);
   padding: 20px;
 }
-.sidebar.hidden {
-  transform: translateX(-100%);
+.sidebar.visible {
+  transform: translateX(0);
 }
 .sidebar ul {
   list-style: none;
