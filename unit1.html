@@ -8,21 +8,57 @@
       font-family: sans-serif;
       padding: 2rem;
       background-color: #f0f4fc;
-      color: #333;
     }
-    h1 {
-      color: #0055aa;
+
+    .question-box {
+      border: 2px solid #ccc;
+      padding: 1rem;
+      border-radius: 8px;
+      max-width: 500px;
+      background-color: #fff;
     }
-    a {
-      color: #0077cc;
-      text-decoration: none;
+
+    .question-box.correct {
+      border-color: green;
+      background-color: #e6ffe6;
+    }
+
+    .question-box.incorrect {
+      border-color: red;
+      background-color: #ffe6e6;
+    }
+
+    .choices button {
+      display: block;
+      margin: 0.5rem 0;
+      padding: 0.5rem;
+      width: 100%;
+      border: 1px solid #aaa;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+      cursor: pointer;
+    }
+
+    .choices button:hover {
+      background-color: #eef;
     }
   </style>
 </head>
 <body>
-  <h1>Unit 1: Atomic Structure</h1>
-  <p>This is a test page for Unit 1 content.</p>
+
+  <div class="question-box" id="questionBox">
+    <h3>Which subatomic particle has a negative charge?</h3>
+    <div class="choices">
+      <button onclick="checkAnswer('proton')">Proton</button>
+      <button onclick="checkAnswer('neutron')">Neutron</button>
+      <button onclick="checkAnswer('electron')">Electron</button>
+      <button onclick="checkAnswer('quark')">Quark</button>
+    </div>
+  </div>
 
   <p><a href="index.html">← Back to Home</a></p>
+
+  <!-- Link to external JS file -->
+  <script src="script.js"></script>
 </body>
 </html>
