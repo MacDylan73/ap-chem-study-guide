@@ -115,6 +115,12 @@ a:hover {
   margin-bottom: 2rem;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
+@media (max-width: 600px) {
+  .box {
+    padding: 0;
+    margin-top: 60px;
+  }
+}
 
 /* ===========================
    HEADERS
