@@ -407,7 +407,6 @@ body.dark-mode .subunit-header.active {
   cursor: pointer;
   padding: 4px;
   border-radius: 4px;
-  transition: box-shadow 0.2s ease-in-out, outline 0.2s ease-in-out;
 }
 .theme-toggle:hover {
   outline: 2px solid var(--hover-bg);
