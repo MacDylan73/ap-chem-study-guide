@@ -15,7 +15,7 @@ function toggleSidebar() {
 // Auto-close sidebar when clicking outside
 document.addEventListener('click', function (event) {
   const sidebar = document.getElementById('sidebar');
-  const toggleButton = document.getElementById('menuToggle'); // update this ID if needed
+  const toggleButton = document.querySelector('.menu-icon');
 
   const clickedInsideSidebar = sidebar.contains(event.target);
   const clickedToggleButton = toggleButton && toggleButton.contains(event.target);
