@@ -134,14 +134,18 @@ body {
 }
 
 .subunit-header {
-  background-color: #e0e7ff;
-  padding: 12px;
-  font-size: 18px;
-  width: 100%;
-  text-align: left;
+  background-color: transparent;
+  color: inherit;
   border: none;
+  font-size: 1.2rem;
+  padding: 10px;
+  text-align: left;
+  width: 100%;
   cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
 }
+
 
 .subunit-content {
   display: none;
@@ -430,6 +434,32 @@ body {
     gap: 10px;
   }
 }
+.subunit-header.active {
+  background-color: #007BFF; /* Blue */
+  color: white;
+}
+body.dark-mode .subunit-header.active {
+  background-color: white;
+  color: #111; /* Optional: dark text for contrast */
+}
+.subunit-header::after {
+  content: ' ▾';
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+.subunit-header.active::after {
+  transform: rotate(180deg);
+}
+.subunit-header:hover {
+  background-color: rgba(0, 123, 255, 0.1); /* Light blue tint */
+}
+
+body.dark-mode .subunit-header:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Soft white tint */
+}
+
+
+
 
 
 
