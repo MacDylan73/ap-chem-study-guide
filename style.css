@@ -217,3 +217,22 @@ body {
 .notes-box li {
   margin-bottom: 6px;
 }
+.chem-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.chem-table th,
+.chem-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.chem-table th {
+  background-color: #e0f0ff;
+  font-weight: bold;
+}
+
