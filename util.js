@@ -10,11 +10,7 @@ document.querySelectorAll('.subunit-header').forEach(button => {
 // Toggle for sidebar menu
 function toggleSidebar() {
   const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebar-overlay');
-  const isVisible = sidebar.classList.toggle('visible');
-
-  // Show or hide overlay based on sidebar visibility
-  overlay.style.display = isVisible ? 'block' : 'none';
+  sidebar.classList.toggle('visible');
 }
 
 // Auto-close sidebar when clicking outside
@@ -29,32 +25,20 @@ document.addEventListener('click', function (event) {
 
   if (!clickedInsideSidebar && !clickedToggleButton && !clickedOverlay) {
     sidebar.classList.remove('visible');
-    overlay.style.display = 'none';
   }
 });
 
 // Auto-close sidebar when clicking overlay
 document.getElementById('sidebar-overlay').addEventListener('click', function () {
   document.getElementById('sidebar').classList.remove('visible');
-  this.style.display = 'none';
 });
 
 // Auto-close sidebar when pressing Escape
 document.addEventListener('keydown', function (event) {
   if (event.key === 'Escape') {
     document.getElementById('sidebar').classList.remove('visible');
-    document.getElementById('sidebar-overlay').style.display = 'none';
   }
 });
-
-
-//Auto-Close sidebar when click esc
-document.addEventListener('keydown', function (event) {
-  if (event.key === 'Escape') {
-    document.getElementById('sidebar').classList.remove('visible');
-  }
-});
-
 
 // THEMES ---------------------------------
 // Toggle Light/Dark Mode Themes
