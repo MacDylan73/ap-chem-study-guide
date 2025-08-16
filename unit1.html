@@ -30,5 +30,14 @@
       <!-- Add questions here -->
     </div>
   </div>
+
+  <!-- Script -->
+  <script>
+  document.querySelectorAll('.subunit-header').forEach(button => {
+    button.addEventListener('click', () => {
+      button.classList.toggle('active');
+    });
+  });
+</script>
 </body>
 </html>
