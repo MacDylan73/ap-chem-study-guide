@@ -355,21 +355,6 @@ body {
   text-decoration: none;
 }
 
-/* Theme Variables */
-:root {
-  --bar-bg: #ffffff;
-  --bar-text: #333333;
-  --sidebar-bg: #f0f0f0;
-  --sidebar-text: #333333;
-}
-
-.dark-mode {
-  --bar-bg: #222222;
-  --bar-text: #f0f0f0;
-  --sidebar-bg: #333333;
-  --sidebar-text: #f0f0f0;
-}
-
 .sidebar a:hover {
   background-color: #e0e0e0;
   padding: 5px;
