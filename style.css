@@ -128,7 +128,7 @@ a:hover {
    HEADERS
    =========================== */
 h1, h2 {
-  color: var(--text-color);
+  color: var(--bar-text);
 }
 /* ===========================
    LISTS
