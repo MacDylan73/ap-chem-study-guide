@@ -111,14 +111,14 @@ a:hover {
 .box {
   border: 2px solid var(--box-border);
   border-radius: 10px;
-  padding: 2.5rem;
+  padding: 1.5rem;
   margin-bottom: 2rem;
   text-align: center;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 @media (max-width: 600px) {
   .box {
-    padding: 0;
+    padding: 1.5rem;
     gap: 10px;
     margin-top: 60px;
   }
