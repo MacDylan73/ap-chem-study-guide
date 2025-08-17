@@ -25,7 +25,7 @@
 .dark-mode {
   --bg-color: #1a1a1a;
   --text-color: #f0f0f0;
-  --box-bg: #2a2a2a;
+  --box-bg: #222222;
   --box-border: #444444;
   --link-color: #66b2ff;
   --link-hover: #99ccff;
@@ -104,7 +104,7 @@ a:hover {
    =========================== */
 .box, .notes-box, .quiz-box, .question-box, .subunit-header, .subunit-content {
   background-color: var(--box-bg);
-  color: var(--text-color);
+  color: var(--bar-text);
   border-color: var(--box-border);
 }
 
