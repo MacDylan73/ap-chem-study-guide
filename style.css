@@ -148,7 +148,7 @@ li {
 .countdown {
   font-size: 1.2rem;
   text-align: center;
-  color: #444;
+  color: var(--bar-text);
 }
 
 /* ===========================
