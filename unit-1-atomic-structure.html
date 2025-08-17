@@ -89,9 +89,9 @@
             <div class="question-box">
               <p class="question-text">How many moles are in 45.68 g of Sodium (Na)?</p>
               <div class="answer-options">
-                <button onclick="checkAnswer(this, false, 'Incorrect, this answer multiplies the weight of the sodium by its molar mass...')">1050.18 mol</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect, this answer multiplies the weight of the sodium by its molar mass')">1050.18 mol</button>
                 <button onclick="checkAnswer(this, true, 'Correct! This answer correctly divides the weight of Na by its molar mass')">1.99 mol</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, this answer divides the molar mass of Na by the weight of Na...')">0.50 mol</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect, this answer divides the molar mass of Na by the weight of Na')">0.50 mol</button>
                 <button onclick="checkAnswer(this, false, 'Incorrect. To obtain the number of moles we need to divide the weight of Na by its molar mass')">1.48 mol</button>
               </div>
               <div class="feedback-text"></div>
@@ -103,9 +103,9 @@
             <div class="question-box">
               <p class="question-text">What is the molar mass of Calcium Carbonate (CaCO₃)?</p>
               <div class="answer-options">
-                <button onclick="checkAnswer(this, false, 'Incorrect, this adds three Carbons instead of one...')">124.08 g/mol</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, only one Oxygen was added...')">68.078 g/mol</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, missing correct molar mass additions...')">83.11 g/mol</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect, this adds three Carbons instead of one. The subscript 3 only applies to the element preceding it, in this case Oxygen')">124.08 g/mol</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect, this correctly adds Ca and C, but only adds one O.  Three Oxygens should be added because of the subscript 3')">68.078 g/mol</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect, we need to add Ca, C, and three Oxygens together for the molar mass of the compound')">83.11 g/mol</button>
                 <button onclick="checkAnswer(this, true, 'Correct! This adds Ca, C, and three O atoms properly')">100.06 g/mol</button>
               </div>
               <div class="feedback-text"></div>
@@ -121,11 +121,11 @@
       <div class="subunit-content">
         <div class="notes-box">
           <h2>1.2 Mass Spectra of Elements</h2>
-          <p>Mass spectra is used to identify the isotopes of an element and their relative abundances...</p>
+          <p>Mass spectra is used to identify the isotopes of an element and their relative abundances.  An isotope is a variation of an element by the number of neutrons in the atom.  This variation in neutrons in the nucleus of an element is why some isotopes of the same element have different weights</p>
           <img src="images/cl-spectrum.png" alt="Mass spectrum of chlorine" class="spectrum-img">
-          <p><strong>Example:</strong> Cl-35 and Cl-37 average to 35.45 g — shown on the periodic table.</p>
+          <p><strong>Example:</strong> In the periodic table above, Cl is present in two isotopes: Cl-35 and Cl-37. The ratio of Cl-35 to Cl-37 is roughly 3:1, which is why the atomic mass shown on the periodic table is 35.45g</p>
           <img src="images/zr-spectrum.png" alt="Mass spectrum of zirconium" class="spectrum-img">
-          <p><strong>Example:</strong> Unknown element with average mass near 91 g → likely Zr (91.22 g).</p>
+          <p><strong>Example:</strong> With the graph of an unknown element like the one shown above, we can estimate two whole numbers the average mass will fall between based on their relative abundances.  Above, a large portion of the element has an isotope at 90 amu, but also has a small amount around 94 and 96 amu.  When averaged out we would estimate the avergage atomic mass to be around 91 or 92 amu, which looking on the periodic table we can see is closest to the element Zirconium (Zr) which is 91.22 amu </p>
         </div>
 
         <!-- 🧠 Quiz Section -->
@@ -138,12 +138,12 @@
         <!-- 📝 Quiz 1.2.1 -->
         <div class="quiz-container">
           <div class="question-box">
-            <p class="question-text">An unknown element occurs naturally in three weights: 20, 21, and 22 amu...</p>
+            <p class="question-text">An unknown element occurs naturally in three weights: 20, 21, and 22 amu, in the relative abundances of 90.48%, 0.27%, and 9.25%, respectively.  Identify the element</p>
             <div class="answer-options">
               <button onclick="checkAnswer(this, true, 'Correct! Ne-20.18 amu matches the weighted average.')">Ne</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Na is too heavy.')">Na</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, F is too light.')">F</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Mg is too heavy.')">Mg</button>
+              <button onclick="checkAnswer(this, false, 'Incorrect, Na is too heavy')">Na</button>
+              <button onclick="checkAnswer(this, false, 'Incorrect, F is too light')">F</button>
+              <button onclick="checkAnswer(this, false, 'Incorrect, Mg is too heavy')">Mg</button>
             </div>
             <div class="feedback-text"></div>
           </div>
