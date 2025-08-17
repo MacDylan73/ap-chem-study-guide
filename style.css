@@ -233,7 +233,7 @@ body.dark-mode .subunit-header.active {
    QUIZ BOX & QUESTIONS
    =========================== */
 .quiz-box {
-  background-color: var(--hover-bg);
+  background-color: var(--box-bg);
   border: 1px solid var(--box-border);
   padding: 15px;
   border-radius: 8px;
