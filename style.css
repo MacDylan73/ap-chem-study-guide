@@ -305,7 +305,7 @@ body.dark-mode .subunit-header.active {
    NOTES BOX
    =========================== */
 .notes-box {
-  background-color: #f9f9ff;
+  background-color: var(--box-bg);
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 20px;
@@ -314,7 +314,7 @@ body.dark-mode .subunit-header.active {
 }
 
 .notes-box h2 {
-  color: #0055aa;
+  color: var(--bar-text);
   margin-bottom: 12px;
 }
 
@@ -353,7 +353,7 @@ body.dark-mode .subunit-header.active {
 
 /* Table header row */
 .chem-table tr:first-child td {
-  background-color: #d0eaff;
+  background-color: var(--hover-bg);
   font-weight: bold;
 }
 
