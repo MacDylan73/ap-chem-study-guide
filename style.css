@@ -8,6 +8,7 @@
   --box-border: #cce0ff;
   --link-color: #0077cc;
   --link-hover: #0055aa;
+  --choice-bg: #eaf3fb;
 
   --bar-bg: #ffffff;
   --bar-text: #0055aa;
@@ -29,6 +30,7 @@
   --box-border: #444444;
   --link-color: #66b2ff;
   --link-hover: #99ccff;
+  --choice-bg: #2c313a;
 
   --bar-bg: #222222;
   --bar-text: #f0f0f0;
@@ -231,7 +233,7 @@ body.dark-mode .subunit-header.active {
    QUIZ BOX & QUESTIONS
    =========================== */
 .quiz-box {
-  background-color: #fffbe6;
+  background-color: var(--hover-bg);
   border: 1px solid #f0d000;
   padding: 15px;
   border-radius: 8px;
@@ -245,7 +247,7 @@ body.dark-mode .subunit-header.active {
 }
 
 .question-box {
-  background-color: #f0f4f8;
+  background-color: var(--choice-bg);
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
