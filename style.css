@@ -382,7 +382,7 @@ body.dark-mode .subunit-header.active {
 
 .section-divider p {
   font-size: 1rem;
-  color: #444;
+  color: var(--text-color);
 }
 
 /* ===========================
