@@ -376,7 +376,7 @@ body.dark-mode .subunit-header.active {
 
 .section-divider h3 {
   font-size: 1.4rem;
-  color: #003366;
+  color: var(--bar-text);
   margin-bottom: 8px;
 }
 
