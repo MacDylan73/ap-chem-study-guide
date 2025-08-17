@@ -234,7 +234,7 @@ body.dark-mode .subunit-header.active {
    =========================== */
 .quiz-box {
   background-color: var(--hover-bg);
-  border: 1px solid #f0d000;
+  border: 1px solid var(--box-border);
   padding: 15px;
   border-radius: 8px;
   margin-top: 30px;
