@@ -355,6 +355,7 @@ body.dark-mode .subunit-header.active {
 .chem-table tr:first-child td {
   background-color: var(--hover-bg);
   font-weight: bold;
+  color: var(--bar-text);
 }
 
 /* ===========================
