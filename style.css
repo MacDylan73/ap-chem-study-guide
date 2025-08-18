@@ -300,7 +300,7 @@ body.dark-mode .subunit-header.active {
 .feedback, .feedback-text {
   margin-top: 12px;
   font-style: italic;
-  color: #333;
+  color: var(--bar-text);
 }
 
 /* ===========================
