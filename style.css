@@ -143,6 +143,26 @@ ul {
 li {
   margin: 0.5rem 0;
 }
+ul.custom-block-list {
+  list-style: none; /* Remove default bullets */
+  padding-left: 0;
+}
+
+ul.custom-block-list li {
+  position: relative;
+  padding-left: 1.5em;
+}
+
+ul.custom-block-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 0.6em;
+  height: 0.6em;
+  background-color: var(--bar-text); 
+  border-radius: 2px; 
+}
 
 /* ===========================
    COUNTDOWN TIMER
