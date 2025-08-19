@@ -103,5 +103,30 @@
     renderCountdown("countdownText", "May 5, 2026");
   });
 </script>
+<!-- Firestore Script -->
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
+    authDomain: "ap-chem-course-guide.firebaseapp.com",
+    projectId: "ap-chem-course-guide",
+    storageBucket: "ap-chem-course-guide.firebasestorage.app",
+    messagingSenderId: "601341546125",
+    appId: "1:601341546125:web:152f1fb623c69351c81cc4",
+    measurementId: "G-X2H058B7KT"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
+  
 </body>
 </html>
