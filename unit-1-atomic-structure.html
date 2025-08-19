@@ -389,10 +389,116 @@
               <div class="feedback-text"></div>
             </div>
           </div>
-        
         </div>
       </div>
     </div>
+
+   <!-- 🧬 Subunit 1.7: Periodic Trends -->
+    <div class="subunit">
+      <button class="subunit-header">1.3 Periodic Trends</button>
+      <div class="subunit-content">
+        <div class="notes-box">
+          <h2>Periodic Trends</h2>
+          <p><strong>Periodicity </strong>refers to the repetitive patterns that occur in the periodic table - these allow accurate predictions to be made regarding atomic properties when no specific information is given:</p>
+          <ul class="custom-block-list">
+            <li><strong>Atomic Radii: </strong>
+              <ul class="custom-block-list">
+                <li>The atomic radius is greater as you move down the periodic table because additional electrons occupy extra valence shells</li>
+                <li>Radius is greater as you move left on the periodic table because all electrons occupy the same shell, but there is a lesser degree of charge on the further left elements, resulting in slightly greater radii</li>
+                <li>This largely corresponds with Coulomb's Law</li>
+              </ul>
+            </li>
+            <li><strong>Ionization Energy: </strong>
+              <ul class="custom-block-list">
+                <li>Ionization energy is the energy required to remove an electron from an atom, and is closely related to atomic radii</li>
+                <li>Larger atomic radii (left and down on the periodic table) results in weaker attraction between the nucleus and electrons - thus there is a low ionization energy</li>
+                <li>Smaller atomic radii (right and up on periodic table) results in stronger attraction between the nucleus and electrons - thus there is a high ionization energy</li>
+                <li>Ionization increases right and up on the periodic table, decreasing left and down</li>
+              </ul>
+            </li>
+            <li><strong>Electronegativity: </strong>
+              <ul class="custom-block-list">
+                <li>The ability of an atom in a molecule to attract shared electrons to itself - again tied to the atomic radii trend</li>
+                <li>Noble gasses do not share atoms in a molecule and thus do not have electronegativity values</li>
+                <li>Smaller electronegativity (less attraction of electrons in a molecule) left and down on periodic table</li>
+                <li>Higher electronegativity right and up on periodic table: lots of attraction towards shared electrons in a molecule (F is most electronegative)</li>
+              </ul>
+            </li>
+            <li><strong>Electron Affinity: </strong>
+              <ul class="custom-block-list">
+                <li>The energy charge when an atom gains an electron to form a negatively charged ion: either endothermic or exothermic</li>
+                <li>The stronger attraction a nucleus has to valence electrons makes electron affinity more negative (non-metals generally negative, metals are positive)</li>
+                <li>Electron affinity roughly increases right and up on the periodic table (difficult to determine for metals and group 2/18)</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 🧠 Quiz Section -->
+        <div class="section-divider">
+          <hr />
+          <h3>Check Your Understanding:</h3>
+          <p>Try this quick quiz to reinforce what you just learned about elemental composition.</p>
+        </div>
+
+        <!-- 📝 Quiz 1.3.1 -->
+        <div class="quiz-container">
+          <div class="question-box">
+            <p class="question-text">A scientist has a pure sample of Calcium Oxide (CaO).  What is the percent composition of Oxygen in Calcium Oxide?</p>
+            <div class="answer-options">
+              <button onclick="checkAnswer(this, false, 'Incorrect, this is the result of dividing the atomic mass of O by the atmoic mass of Ca, but to find the percent composition of O we need to divide its atomic mass by the atomic mass of the compound CaO')">39.90%</button>
+              <button onclick="checkAnswer(this, false, 'Incorrect, this choice might be obtained by dividing the atomic mass of the compound CaO by the atomic mass of O.  To find the percent composition of O we need to flip the division')">3.51%</button>
+              <button onclick="checkAnswer(this, false, 'Incorrect, this is the percent composition of Ca in CaO.  To find the percent composition for O, divide the atomic mass of O by the atomic mass of the compound')">71.48%</button>
+              <button onclick="checkAnswer(this, true, 'Correct! Oxygen makes up about 28.52% of the total mass of a molecule of CaO')">28.52%</button>
+            </div>
+            <div class="feedback-text"></div>
+          </div>
+        </div>
+
+      <!-- 📝 Quiz 1.3.2 -->
+        <div class="quiz-container">
+          <div class="question-box">
+            <p class="question-text">C₆H₁₂O₆ is the chemical formula for glucose.  What is the emperical formula of glucose?</p>
+            <div class="answer-options">
+              <button onclick="checkAnswer(this, false, 'Incorrect, this is a more complex chemical (or molecular) formula.  An emperical formula is the most simplified version of the formula')">C₁₂H₂₄O₁₂</button>
+              <button onclick="checkAnswer(this, false, 'Incorrect, this is the chemical (or molecular) formula for glucose. An emperical formula is the most simplified version of the formula')">C₆H₁₂O₆</button>
+              <button onclick="checkAnswer(this, false, 'Incorrect, although this is a more simplified formula, it can still be further simplified.  An emperical formula is the most simplified version of the formula')">C₃H₆O₃</button>
+              <button onclick="checkAnswer(this, true, 'Correct! This simplifies the subscripts down to the lowest values possible while maintaining the same ratio of elements')">CH₂O</button>
+            </div>
+            <div class="feedback-text"></div>
+          </div>
+        </div>
+
+      <!-- 📝 Quiz 1.3.3 -->
+        <div class="quiz-container">
+          <div class="question-box">
+            <p class="question-text">A compound is measured to consist of 25.0% Hydrogen and 75.0% Carbon.  What is the emperical formula of the measured compound?</p>
+            <div class="answer-options">
+              <button onclick="checkAnswer(this, false, 'Incorrect, this could be a more complex chemical formula, but not the emperical formula of the given compound')">C₂H₈</button>
+              <button onclick="checkAnswer(this, true, 'Correct!  Since the problem gives us percent we can just us the same numbers but in grams. From there we divide each weight by their respective atomic mass - 25.0g/1.01g and 75.02g/12.01g.  This gives us roughly 24.8 H and 6.2 C atoms in the molecule, which we can simplify to 4 H and 1 C by dividing both values by the value of the element with the lowest value, in this case C.  So, CH₄ will be the molecular and emperical formula for this compound')">CH₄</button>
+              <button onclick="checkAnswer(this, false, 'Incorrect, this choice may result from inverting the H and C masses')">H₄C</button>
+              <button onclick="checkAnswer(this, false, 'Incorrect, this choice likely resulted from an error in determining the number of H atoms in the compound')">CH₂</button>
+            </div>
+            <div class="feedback-text"></div>
+          </div>
+        </div>
+
+      <!-- 📝 Quiz 1.3.4 -->
+        <div class="quiz-container">
+          <div class="question-box">
+            <p class="question-text">A compound was analyzed and found to be composed of 48.0% Carbon, 4.0% Hydrogen, 22.4% Nitrogen, 12.8% Sulfur, and 12.8% Oxygen. The compound also was found to have a molecular mass of 500 amu.  Determine the molecular formula for the compound </p>
+            <div class="answer-options">
+              <button onclick="checkAnswer(this, false, 'Incorrect, this choice does not contain the correct ratio of elements')">C₂₀H₁₅N₈S₄O₄</button>
+              <button onclick="checkAnswer(this, true, 'Correct! We can get this answer by first replacing the percent signs with grams. Now we divide each element by their atomic masses - 48g/12.01g, 4g/1.01g, 22.4g/14.01g, 12.8g/32.07g, 12.8g/15.99g. Sulfur will result in the lowest number of molecules (0.3991) so we divide all elements by this number to obtain whole numbers.  While this gives us whole numbers of elements to create a formula with the correct ratio, it is important to note that the molecule would only have a molecular mass of 250 amu, so all element subscripts must be doubled to reach 500 amu ')">C₂₀H₂₀N₈SO₄</button>
+              <button onclick="checkAnswer(this, false, 'Incorrect, this choice does not contain the correct ratio of elements')">C₁₅H₁₅N₆S₂O₂</button>
+              <button onclick="checkAnswer(this, false, 'Incorrect, this choice determines the correct ratio of elements (and emperical formula), but this molecule only has a molecular mass of 250 amu when all elements are added up')">C₁₀H₁₀N₄SO₂</button>
+            </div>
+            <div class="feedback-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
     
 </div>
