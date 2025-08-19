@@ -628,5 +628,51 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 
+<!-- Firebase -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
+    authDomain: "ap-chem-course-guide.firebaseapp.com",
+    projectId: "ap-chem-course-guide",
+    storageBucket: "ap-chem-course-guide.firebasestorage.app",
+    messagingSenderId: "601341546125",
+    appId: "1:601341546125:web:152f1fb623c69351c81cc4",
+    measurementId: "G-X2H058B7KT"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+
+  document.getElementById("signupNowBtn").addEventListener("click", () => {
+    signInWithPopup(auth, provider)
+      .then(result => {
+        const user = result.user;
+        console.log("Signed in as:", user.displayName);
+        document.getElementById("signupModal").style.display = "none";
+        localStorage.removeItem("unitClicks"); // Optional: reset gating
+        // Optionally unlock content or show a welcome message
+      })
+      .catch(error => {
+        console.error("Sign-in error:", error);
+      });
+  });
+
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    console.log("User is already signed in:", user.email);
+    // Hide modal, unlock content, etc.
+    document.getElementById("signupModal").style.display = "none";
+    localStorage.removeItem("unitClicks");
+  }
+});
+
+</script>
+
 </body>
 </html>
