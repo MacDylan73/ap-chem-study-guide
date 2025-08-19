@@ -18,6 +18,7 @@
 
   <!-- 📚 Sidebar Navigation -->
   <nav id="sidebar" class="sidebar">
+    <button id="signInBtn">Sign In</button>
     <ul>
       <li><a href="index.html">🏠 Home</a></li>
       <li><a href="unit-1-atomic-structure.html">Unit 1 – Atomic Structure</a></li>
@@ -103,11 +104,15 @@
     renderCountdown("countdownText", "May 5, 2026");
   });
 </script>
+
+  
 <!-- Firestore Script -->
   <script type="module">
   // Import the functions you need from the SDKs you need
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
+  import { getAuth } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -126,7 +131,32 @@
   // Initialize Firebase
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+
+  export { auth };
+
+  //Google login
+  import { GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+  const provider = new GoogleAuthProvider();
+
+  document.getElementById("signInBtn").addEventListener("click", () => {
+    signInWithPopup(auth, provider)
+      .then(result => {
+        const user = result.user;
+        console.log("Signed in as:", user.displayName);
+        // You can now show gated content or update UI
+      })
+      .catch(error => {
+        console.error("Sign-in error:", error);
+      });
+  });
+
 </script>
+  
+
   
 </body>
 </html>
