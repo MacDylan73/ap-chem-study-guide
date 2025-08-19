@@ -378,12 +378,13 @@
           <!-- 📝 Quiz 1.6.2 -->
           <div class="quiz-container">
             <div class="question-box">
-              <p class="question-text">What is the correct electron configuration of Nitrogen (N)?</p>
+              <p class="question-text">Identify the element shown and the number of electrons on the rightmost peak</p>
+               <img src="PEG.jpg" alt="PEG of B" class="spectrum-img">
               <div class="answer-options">
-                <button onclick="checkAnswer(this, false, 'Incorrect, this configuration has swapped the p and s labels on the subshells! The AP Chem exam will not give trick choices like this but you should know the relative order of initial subshells and their capacities - s² p⁶ d¹⁰ f¹²')">1p²2p²2s³</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, this does have the correct number of electrons, but the 2s subshell should be filled before the 2p subshell begins to recieve electrons')">1s²2s¹2p⁴</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, this is the electron configuration for O')">1s²2s²2p⁴</button>
-                <button onclick="checkAnswer(this, true, 'Correct!  This configuration fills each shell up in order and contains the correct total number of electrons">1s²2s²2p³</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect, the rightmost peak does only have 1 electron, but the peaks represent subshells not electrons, so the element cannot be Li')">Li, 1 electron</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect, remember that each peak represents a subshell, so in this case, 1s, 2s, and 2p are shown')">Li, 2 electrons</button>
+                <button onclick="checkAnswer(this, true, 'Correct! This element has three subshells shown, so we know they are 1s, 2s, 2p.  We know the s subshell will never carry more than 2 electrons, and since the 2p subshell is present we know both 1s and 2s are filled with 2 electrons in this case.  This means that the peak on the right, 2p, has half the number of electrons, so it has 1 electron')">B, 1 electron</button>
+                <button onclick="checkAnswer(this, false, 'Incorrect, the element is correctly identified here but the right most subshell should only have half the electrons that the first two shells have">B, 2 electrons</button>
               </div>
               <div class="feedback-text"></div>
             </div>
