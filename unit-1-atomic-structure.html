@@ -572,9 +572,39 @@
     </div>
   </div>
 
+
+<!-- Site Gating -->
+<div id="signupModal" style="display:none;" class="modal">
+  <div class="modal-content">
+    <span id="closeModal" class="close">&times;</span>
+    <h2>Enjoying the content?</h2>
+    <p>Sign up to continue accessing all units for free!</p>
+    <button id="signupNowBtn">Sign Up</button>
+  </div>
+</div>
+
   <!-- Script -->
 <script src="questions.js" defer></script>
 <script src="util.js" defer></script>
+  
+<script>
+  let clickCount = 0;
+  const maxFreeClicks = 3;
+
+  document.querySelectorAll(".subunit-header").forEach(link => {
+    link.addEventListener("click", () => {
+      clickCount++;
+      if (clickCount === maxFreeClicks) {
+        document.getElementById("signupModal").style.display = "block";
+      }
+    });
+  });
+
+  // Close modal
+  document.getElementById("closeModal").addEventListener("click", () => {
+    document.getElementById("signupModal").style.display = "none";
+  });
+</script>
 
 </body>
 </html>
