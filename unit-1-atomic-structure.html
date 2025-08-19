@@ -570,6 +570,7 @@
         <div class="feedback-text"></div>
       </div>
     </div>
+    <button id="signOutBtn">Sign Out</button>
   </div>
 
 
@@ -671,6 +672,26 @@ onAuthStateChanged(auth, user => {
     localStorage.removeItem("unitClicks");
   }
 });
+
+  import { getAuth, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+const auth = getAuth();
+signOut(auth)
+  .then(() => {
+    console.log("Signed out successfully");
+  })
+  .catch(error => {
+    console.error("Sign-out error:", error);
+  });
+
+  document.getElementById("signOutBtn").addEventListener("click", () => {
+  signOut(auth).then(() => {
+    alert("Signed out!");
+    location.reload(); // Optional: refresh to reset UI
+  });
+});
+
+
 
 </script>
 
