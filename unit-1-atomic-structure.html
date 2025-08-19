@@ -589,47 +589,44 @@
 
 
   <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const maxFreeClicks = 3;
+document.addEventListener("DOMContentLoaded", () => {
+  const maxFreeClicks = 3;
+  let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
+  let gated = clickCount >= maxFreeClicks;
 
+  const modal = document.getElementById("signupModal");
+  const closeBtn = document.getElementById("closeModal");
+
+  // Show modal
+  function showModal() {
+    modal.style.display = "block";
+  }
+
+  // Hide modal
+  closeBtn.addEventListener("click", () => {
+    modal.style.display = "none";
+  });
+
+  // Click handler
   document.querySelectorAll(".subunit-header").forEach(link => {
-    link.addEventListener("click", () => {
+    link.addEventListener("click", (e) => {
+      if (gated) {
+        e.preventDefault();
+        showModal();
+        return;
+      }
+
       clickCount++;
-      if (clickCount === maxFreeClicks) {
-        document.getElementById("signupModal").style.display = "block";
+      localStorage.setItem("unitClicks", clickCount);
+
+      if (clickCount >= maxFreeClicks) {
+        gated = true;
+        showModal();
       }
     });
   });
-
-  // Close modal
-  document.getElementById("closeModal").addEventListener("click", () => {
-    document.getElementById("signupModal").style.display = "none";
-  });
-
-  let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
-const maxFreeClicks = 3;
-let gated = false;
-
-document.querySelectorAll(".subunit-header").forEach(link => {
-  link.addEventListener("click", (e) => {
-    if (gated) {
-      e.preventDefault();
-      document.getElementById("signupModal").style.display = "block";
-      return;
-    }
-
-    clickCount++;
-    localStorage.setItem("unitClicks", clickCount);
-
-    if (clickCount >= maxFreeClicks) {
-      gated = true;
-      document.getElementById("signupModal").style.display = "block";
-    }
-  });
-});
 });
 </script>
-
 
 </body>
 </html>
