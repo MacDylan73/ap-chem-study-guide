@@ -586,9 +586,10 @@
   <!-- Script -->
 <script src="questions.js" defer></script>
 <script src="util.js" defer></script>
-  
-<script>
-  const maxFreeClicks = 3;
+
+document.addEventListener("DOMContentLoaded", () => {
+  <script>
+    const maxFreeClicks = 3;
 
   document.querySelectorAll(".subunit-header").forEach(link => {
     link.addEventListener("click", () => {
@@ -626,6 +627,7 @@ document.querySelectorAll(".subunit-header").forEach(link => {
   });
 });
 </script>
+});
 
 </body>
 </html>
