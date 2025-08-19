@@ -604,6 +604,28 @@
   document.getElementById("closeModal").addEventListener("click", () => {
     document.getElementById("signupModal").style.display = "none";
   });
+
+  let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
+const maxFreeClicks = 3;
+let gated = false;
+
+document.querySelectorAll(".subunit-header").forEach(link => {
+  link.addEventListener("click", (e) => {
+    if (gated) {
+      e.preventDefault();
+      document.getElementById("signupModal").style.display = "block";
+      return;
+    }
+
+    clickCount++;
+    localStorage.setItem("unitClicks", clickCount);
+
+    if (clickCount >= maxFreeClicks) {
+      gated = true;
+      document.getElementById("signupModal").style.display = "block";
+    }
+  });
+});
 </script>
 
 </body>
