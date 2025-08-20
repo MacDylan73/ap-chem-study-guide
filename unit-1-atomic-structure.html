@@ -649,20 +649,26 @@ document.addEventListener("DOMContentLoaded", () => {
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
 
-  document.getElementById("signInBtn").addEventListener("click", () => {
-    signInWithPopup(auth, provider)
-      .then(result => {
-        const user = result.user;
-        console.log("Signed in as:", user.displayName);
-        document.getElementById("signupModal").style.display = "none";
-        localStorage.removeItem("unitClicks"); // Optional: reset gating
-        // Optionally unlock content or show a welcome message
-      })
-      .catch(error => {
-        console.error("Sign-in error:", error);
-      });
-  });
-
+  document.addEventListener("DOMContentLoaded", () => {
+  const signInBtn = document.getElementById("signInBtn");
+  if (signInBtn) {
+    signInBtn.addEventListener("click", () => {
+      signInWithPopup(auth, provider)
+        .then(result => {
+          const user = result.user;
+          console.log("Signed in as:", user.displayName);
+          document.getElementById("signupModal").style.display = "none";
+          localStorage.removeItem("unitClicks"); // Optional: reset gating
+          // Optionally unlock content or show a welcome message
+        })
+        .catch(error => {
+          console.error("Sign-in error:", error);
+        });
+    });
+  } else {
+    console.warn("Sign-in button not found in DOM");
+  }
+});
   import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
 onAuthStateChanged(auth, user => {
