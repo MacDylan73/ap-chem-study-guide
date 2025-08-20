@@ -738,6 +738,9 @@ async function isUsernameTaken(username) {
         signInWithPopup(auth, provider)
           .then(result => {
             console.log("Signed in as:", result.user.displayName);
+            console.log("Signed in as:", result.user.email);
+            console.log("User UID:", result.user.uid);
+
             window.isSignedIn = true;
 
             // ✅ Step 2: Check if username exists
