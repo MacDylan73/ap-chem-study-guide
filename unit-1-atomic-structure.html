@@ -816,12 +816,15 @@ document.getElementById("submitUsernameBtn").onclick = async () => {
 
   try {
     const userRef = doc(db, "users", user.uid);
+    console.log("Attempting to write to:", userRef.path);
+    console.log("Authenticated UID:", user.uid);
     await setDoc(userRef, { username }, { merge: true });
     document.getElementById("usernameModal").style.display = "none";
     console.log("Username saved successfully:", username);
   } catch (error) {
     console.error("Firestore write failed:", error);
-    alert("Could not save username. Please try again.");
+    alert("Could not save username. Make sure you're signed in and try again.");
+    console.error("Firestore write failed:", error.code, error.message);
   }
 };
 
