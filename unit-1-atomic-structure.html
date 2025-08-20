@@ -798,18 +798,6 @@ async function isUsernameTaken(username) {
   document.getElementById("usernameModal").style.display = "none";
 };
 
-
-  // ✅ Basic validation
-  const isValid = /^[a-zA-Z0-9_]{3,20}$/.test(username);
-  if (!isValid) {
-    alert("Username must be 3–20 characters and contain only letters, numbers, or underscores.");
-    input.focus();
-    return;
-  }
-
-  const userRef = doc(db, "users", user.uid);
-  await setDoc(userRef, { username }, { merge: true });
-
   document.getElementById("usernameModal").style.display = "none";
 };
 
