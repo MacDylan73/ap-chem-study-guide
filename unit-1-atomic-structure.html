@@ -704,7 +704,6 @@ provider.setCustomParameters({
   // 🔍 Check if user has a username
  async function checkUsername(user) {
   const userRef = doc(db, "users", user.uid);
-   await setDoc(userRef, { username }, { merge: true });
   const snapshot = await getDoc(userRef);
 
   const modal = document.getElementById("usernameModal");
