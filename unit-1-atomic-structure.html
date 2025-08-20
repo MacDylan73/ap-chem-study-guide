@@ -703,12 +703,26 @@ import {
   const userRef = doc(db, "users", user.uid);
   const snapshot = await getDoc(userRef);
 
-  if (!snapshot.exists() || !snapshot.data().username) {
-    const modal = document.getElementById("usernameModal");
-    const input = document.getElementById("usernameInput");
+  const modal = document.getElementById("usernameModal");
+  const input = document.getElementById("usernameInput");
 
+  if (!snapshot.exists()) {
+    console.log("User document does not exist — showing modal");
     modal.style.display = "block";
-    input.focus(); // 👈 Autofocus here
+    input.focus();
+    return;
+  }
+
+  const data = snapshot.data();
+  console.log("User document data:", data);
+
+  if (!data.username) {
+    console.log("Username missing — showing modal");
+    modal.style.display = "block";
+    input.focus();
+  } else {
+    console.log("Username found:", data.username);
+    modal.style.display = "none"; // ✅ Hide modal if username exists
   }
 }
 
