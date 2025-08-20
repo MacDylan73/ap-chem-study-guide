@@ -789,10 +789,11 @@ async function isUsernameTaken(username) {
         // Handle username submission
      
 document.getElementById("submitUsernameBtn").onclick = async () => {
-  console.log("Current user:", user);
   const input = document.getElementById("usernameInput");
   const username = input.value.trim();
-  const user = getAuth().currentUser;
+  const user = getAuth().currentUser; // ✅ Declare before using
+
+  console.log("Current user:", user); // ✅ Now safe to log
 
   if (!username || !user || !user.uid) {
     alert("You're not signed in. Please sign in first.");
