@@ -673,17 +673,14 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // Sign in
-   document.addEventListener("click", (e) => {
+  document.addEventListener("click", (e) => {
   if (e.target && e.target.id === "signInBtn") {
     signInWithPopup(auth, provider)
       .then(result => {
-        const user = result.user;
-        console.log("Signed in as:", user.displayName);
-        document.getElementById("signupModal").style.display = "none";
-        localStorage.removeItem("unitClicks");
-
-         gated = false;
+        console.log("Signed in as:", result.user.displayName);
+        if (typeof window.unlockContent === "function") {
+          window.unlockContent();
+        }
       })
       .catch(error => {
         console.error("Sign-in error:", error.code, error.message);
@@ -691,16 +688,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-    // Auth state listener
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        console.log("User is already signed in:", user.email);
-        modal.style.display = "none";
-        localStorage.removeItem("unitClicks");
-
-         gated = false;
-      }
-    });
+onAuthStateChanged(auth, user => {
+  if (user) {
+    console.log("User is already signed in:", user.email);
+    if (typeof window.unlockContent === "function") {
+      window.unlockContent();
+    }
+  }
+});
 
     // Sign out
     if (signOutBtn) {
