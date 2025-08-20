@@ -592,43 +592,45 @@
 
   <script>
   function handleGating(maxFreeClicks = 3) {
-    let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
-    let gated = clickCount >= maxFreeClicks;
+  let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
 
-    const modal = document.getElementById("signupModal");
+  const modal = document.getElementById("signupModal");
 
-    function showModal() {
-      modal.style.display = "block";
-    }
-
-    function updateClickCount() {
-      clickCount++;
-      localStorage.setItem("unitClicks", clickCount);
-      if (clickCount >= maxFreeClicks) {
-        gated = true;
-        showModal();
-      }
-    }
-
-    function unlockContent() {
-      gated = false;
-      localStorage.removeItem("unitClicks");
-      modal.style.display = "none";
-    }
-
-    document.querySelectorAll(".subunit-header").forEach(link => {
-      link.addEventListener("click", (e) => {
-        if (gated) {
-          e.preventDefault();
-          showModal();
-          return;
-        }
-        updateClickCount();
-      });
-    });
-
-    return { unlockContent };
+  function isGated() {
+    return !window.isSignedIn && clickCount >= maxFreeClicks;
   }
+
+  function showModal() {
+    modal.style.display = "block";
+  }
+
+  function updateClickCount() {
+    clickCount++;
+    localStorage.setItem("unitClicks", clickCount);
+    if (isGated()) {
+      showModal();
+    }
+  }
+
+  function unlockContent() {
+    window.isSignedIn = true;
+    localStorage.removeItem("unitClicks");
+    modal.style.display = "none";
+  }
+
+  document.querySelectorAll(".subunit-header").forEach(link => {
+    link.addEventListener("click", (e) => {
+      if (isGated()) {
+        e.preventDefault();
+        showModal();
+        return;
+      }
+      updateClickCount();
+    });
+  });
+
+  return { unlockContent };
+}
 
   document.addEventListener("DOMContentLoaded", () => {
     const { unlockContent } = handleGating();
@@ -693,6 +695,7 @@
     signInWithPopup(auth, provider)
       .then(result => {
         console.log("Signed in as:", result.user.displayName);
+        window.isSignedIn = true;
         if (typeof window.unlockContent === "function") {
           window.unlockContent();
         }
@@ -706,6 +709,7 @@
 onAuthStateChanged(auth, user => {
   if (user) {
     console.log("User is already signed in:", user.email);
+    window.isSignedIn = true;
     if (typeof window.unlockContent === "function") {
       window.unlockContent();
     }
