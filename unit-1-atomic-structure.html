@@ -721,6 +721,9 @@ async function isUsernameTaken(username) {
 }
 
   document.addEventListener("DOMContentLoaded", () => {
+
+    document.getElementById("usernameModal").style.display = "none";
+
     const modal = document.getElementById("signupModal");
     const closeBtn = document.getElementById("closeModal");
     const signInBtn = document.getElementById("signInBtn");
