@@ -789,6 +789,7 @@ async function isUsernameTaken(username) {
         // Handle username submission
      
 document.getElementById("submitUsernameBtn").onclick = async () => {
+  console.log("Current user:", user);
   const input = document.getElementById("usernameInput");
   const username = input.value.trim();
   const user = getAuth().currentUser;
