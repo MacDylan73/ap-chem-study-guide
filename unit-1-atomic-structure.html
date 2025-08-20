@@ -788,14 +788,16 @@ async function isUsernameTaken(username) {
 
         // Handle username submission
      
- document.getElementById("submitUsernameBtn").onclick = async () => {
+document.getElementById("submitUsernameBtn").onclick = async () => {
   const input = document.getElementById("usernameInput");
   const username = input.value.trim();
   const user = getAuth().currentUser;
 
-  if (!username || !user) return;
+  if (!username || !user || !user.uid) {
+    alert("You're not signed in. Please sign in first.");
+    return;
+  }
 
-  // ✅ Validate format
   const isValid = /^[a-zA-Z0-9_]{3,20}$/.test(username);
   if (!isValid) {
     alert("Username must be 3–20 characters and contain only letters, numbers, or underscores.");
@@ -803,7 +805,6 @@ async function isUsernameTaken(username) {
     return;
   }
 
-  // ✅ Check for duplicates
   const taken = await isUsernameTaken(username);
   if (taken) {
     alert("That username is already taken. Try another one.");
@@ -811,11 +812,15 @@ async function isUsernameTaken(username) {
     return;
   }
 
-  // ✅ Save to Firestore
-  const userRef = doc(db, "users", user.uid);
-  await setDoc(userRef, { username }, { merge: true });
-
-  document.getElementById("usernameModal").style.display = "none";
+  try {
+    const userRef = doc(db, "users", user.uid);
+    await setDoc(userRef, { username }, { merge: true });
+    document.getElementById("usernameModal").style.display = "none";
+    console.log("Username saved successfully:", username);
+  } catch (error) {
+    console.error("Firestore write failed:", error);
+    alert("Could not save username. Please try again.");
+  }
 };
 
 
