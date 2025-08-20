@@ -682,6 +682,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("Signed in as:", user.displayName);
         document.getElementById("signupModal").style.display = "none";
         localStorage.removeItem("unitClicks");
+
+         gated = false;
       })
       .catch(error => {
         console.error("Sign-in error:", error.code, error.message);
@@ -695,6 +697,8 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("User is already signed in:", user.email);
         modal.style.display = "none";
         localStorage.removeItem("unitClicks");
+
+         gated = false;
       }
     });
 
