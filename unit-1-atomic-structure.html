@@ -658,6 +658,18 @@
 
 <!-- Firebase -->
 <script type="module">
+  import {
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
  import {
   getFirestore,
   doc,
@@ -755,7 +767,7 @@ async function isUsernameTaken(username) {
         checkUsername(user);
 
         // Handle username submission
-        document.getElementById("submitUsernameBtn").onclick = async () => {
+     
  document.getElementById("submitUsernameBtn").onclick = async () => {
   const input = document.getElementById("usernameInput");
   const username = input.value.trim();
