@@ -585,6 +585,15 @@
   </div>
 </div>
 
+  <!-- Modal for Username -->
+  <div id="usernameModal" style="display:none;" class="modal">
+  <div class="modal-content">
+    <h2>Choose a username</h2>
+    <input type="text" id="usernameInput" placeholder="Enter a unique username" />
+    <button id="submitUsernameBtn">Submit</button>
+  </div>
+  </div>
+
   <!-- Script -->
 <script src="questions.js" defer></script>
 <script src="util.js" defer></script>
@@ -649,74 +658,166 @@
 
 <!-- Firebase -->
 <script type="module">
-  import {
-    initializeApp
-  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+ import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-  import {
-    getAuth,
-    GoogleAuthProvider,
-    signInWithPopup,
-    signOut,
-    onAuthStateChanged
-  } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+
+  // Firebase config
+  const firebaseConfig = {
+    apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
+    authDomain: "ap-chem-course-guide.firebaseapp.com",
+    projectId: "ap-chem-course-guide",
+    storageBucket: "ap-chem-course-guide.appspot.com",
+    messagingSenderId: "601341546125",
+    appId: "1:601341546125:web:152f1fb623c69351c81cc4",
+    measurementId: "G-X2H058B7KT"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  const db = getFirestore(app);
+
+  // 🔍 Check if user has a username
+ async function checkUsername(user) {
+  const userRef = doc(db, "users", user.uid);
+  const snapshot = await getDoc(userRef);
+
+  if (!snapshot.exists() || !snapshot.data().username) {
+    const modal = document.getElementById("usernameModal");
+    const input = document.getElementById("usernameInput");
+
+    modal.style.display = "block";
+    input.focus(); // 👈 Autofocus here
+  }
+}
+
+  // 🔍 Check if a username is already taken
+async function isUsernameTaken(username) {
+  const usersRef = collection(db, "users");
+  const q = query(usersRef, where("username", "==", username));
+  const snapshot = await getDocs(q);
+  return !snapshot.empty;
+}
 
   document.addEventListener("DOMContentLoaded", () => {
-    // Firebase setup
-    const firebaseConfig = {
-      apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
-      authDomain: "ap-chem-course-guide.firebaseapp.com",
-      projectId: "ap-chem-course-guide",
-      storageBucket: "ap-chem-course-guide.firebasestorage.app",
-      messagingSenderId: "601341546125",
-      appId: "1:601341546125:web:152f1fb623c69351c81cc4",
-      measurementId: "G-X2H058B7KT"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const provider = new GoogleAuthProvider();
-
-    // DOM elements
     const modal = document.getElementById("signupModal");
     const closeBtn = document.getElementById("closeModal");
     const signInBtn = document.getElementById("signInBtn");
     const signOutBtn = document.getElementById("signOutBtn");
 
-    // Close modal
     if (closeBtn) {
       closeBtn.addEventListener("click", () => {
         modal.style.display = "none";
       });
     }
 
-  document.addEventListener("click", (e) => {
-  if (e.target && e.target.id === "signInBtn") {
-    signInWithPopup(auth, provider)
-      .then(result => {
-        console.log("Signed in as:", result.user.displayName);
+    // 🔐 Sign In
+    document.addEventListener("click", (e) => {
+      if (e.target && e.target.id === "signInBtn") {
+        signInWithPopup(auth, provider)
+          .then(result => {
+            console.log("Signed in as:", result.user.displayName);
+            window.isSignedIn = true;
+
+            // ✅ Step 2: Check if username exists
+            checkUsername(result.user);
+
+            // Hide sign-in button
+            signInBtn.style.display = "none";
+
+            // Unlock gated content
+            if (typeof window.unlockContent === "function") {
+              window.unlockContent();
+            }
+          })
+          .catch(error => {
+            console.error("Sign-in error:", error.code, error.message);
+          });
+      }
+    });
+
+    // 🔄 Auth State Listener
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        console.log("User is already signed in:", user.email);
         window.isSignedIn = true;
+
+        // ✅ Step 2 again: Check username on page load
+        checkUsername(user);
+
+        // Handle username submission
+        document.getElementById("submitUsernameBtn").onclick = async () => {
+ document.getElementById("submitUsernameBtn").onclick = async () => {
+  const input = document.getElementById("usernameInput");
+  const username = input.value.trim();
+  const user = getAuth().currentUser;
+
+  if (!username || !user) return;
+
+  // ✅ Validate format
+  const isValid = /^[a-zA-Z0-9_]{3,20}$/.test(username);
+  if (!isValid) {
+    alert("Username must be 3–20 characters and contain only letters, numbers, or underscores.");
+    input.focus();
+    return;
+  }
+
+  // ✅ Check for duplicates
+  const taken = await isUsernameTaken(username);
+  if (taken) {
+    alert("That username is already taken. Try another one.");
+    input.focus();
+    return;
+  }
+
+  // ✅ Save to Firestore
+  const userRef = doc(db, "users", user.uid);
+  await setDoc(userRef, { username }, { merge: true });
+
+  document.getElementById("usernameModal").style.display = "none";
+};
+
+
+  // ✅ Basic validation
+  const isValid = /^[a-zA-Z0-9_]{3,20}$/.test(username);
+  if (!isValid) {
+    alert("Username must be 3–20 characters and contain only letters, numbers, or underscores.");
+    input.focus();
+    return;
+  }
+
+  const userRef = doc(db, "users", user.uid);
+  await setDoc(userRef, { username }, { merge: true });
+
+  document.getElementById("usernameModal").style.display = "none";
+};
+
+        // Unlock gated content
         if (typeof window.unlockContent === "function") {
           window.unlockContent();
         }
-      })
-      .catch(error => {
-        console.error("Sign-in error:", error.code, error.message);
-      });
-  }
-});
 
-onAuthStateChanged(auth, user => {
-  if (user) {
-    console.log("User is already signed in:", user.email);
-    window.isSignedIn = true;
-    if (typeof window.unlockContent === "function") {
-      window.unlockContent();
-    }
-  }
-});
+        // Hide sign-in button
+        signInBtn.style.display = "none";
+      } else {
+        // 🔁 Signed out: reset UI
+        window.isSignedIn = false;
+        document.getElementById("signupModal").style.display = "none";
+        document.getElementById("usernameModal").style.display = "none";
+        signInBtn.style.display = "inline-block";
+      }
+    });
 
-    // Sign out
+    // 🚪 Sign Out
     if (signOutBtn) {
       signOutBtn.addEventListener("click", () => {
         signOut(auth).then(() => {
