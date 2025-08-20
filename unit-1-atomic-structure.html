@@ -591,43 +591,58 @@
 
 
   <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const maxFreeClicks = 3;
-  let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
-  let gated = clickCount >= maxFreeClicks;
+  function handleGating(maxFreeClicks = 3) {
+    let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
+    let gated = clickCount >= maxFreeClicks;
 
-  const modal = document.getElementById("signupModal");
-  const closeBtn = document.getElementById("closeModal");
+    const modal = document.getElementById("signupModal");
 
-  // Show modal
-  function showModal() {
-    modal.style.display = "block";
-  }
+    function showModal() {
+      modal.style.display = "block";
+    }
 
-  // Hide modal
-  closeBtn.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  // Click handler
-  document.querySelectorAll(".subunit-header").forEach(link => {
-    link.addEventListener("click", (e) => {
-      if (gated) {
-        e.preventDefault();
-        showModal();
-        return;
-      }
-
+    function updateClickCount() {
       clickCount++;
       localStorage.setItem("unitClicks", clickCount);
-
       if (clickCount >= maxFreeClicks) {
         gated = true;
         showModal();
       }
+    }
+
+    function unlockContent() {
+      gated = false;
+      localStorage.removeItem("unitClicks");
+      modal.style.display = "none";
+    }
+
+    document.querySelectorAll(".subunit-header").forEach(link => {
+      link.addEventListener("click", (e) => {
+        if (gated) {
+          e.preventDefault();
+          showModal();
+          return;
+        }
+        updateClickCount();
+      });
     });
+
+    return { unlockContent };
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const { unlockContent } = handleGating();
+
+    const closeBtn = document.getElementById("closeModal");
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => {
+        document.getElementById("signupModal").style.display = "none";
+      });
+    }
+
+    // ✅ Make unlockContent available globally for Firebase script
+    window.unlockContent = unlockContent;
   });
-});
 </script>
 
 <!-- Firebase -->
