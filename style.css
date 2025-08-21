@@ -634,3 +634,16 @@ body.dark-mode .subunit-header.active {
     margin-bottom: 0.5rem;
   }
 }
+/* checkmarks */
+.subunit-complete-indicator {
+  margin-left: 1rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.subunit-complete-indicator .checkmark {
+  color: #43a047; /* green */
+  font-size: 1.5em;
+}
