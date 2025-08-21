@@ -19,7 +19,7 @@
 
   <!-- 📚 Sidebar Navigation -->
   <nav id="sidebar" class="sidebar">
-    <button id="signInBtn">Sign Up</button>
+    <button id="sidebarSignInBtn">Sign Up</button>
     <ul>
       <li><a href="index.html">🏠 Home</a></li>
       <li><a href="unit-1-atomic-structure.html">Unit 1 – Atomic Structure</a></li>
@@ -575,52 +575,48 @@
   </div>
 
 
-<!-- Site Gating -->
-<div id="signupModal" style="display:none;" class="modal">
+<!-- ...everything above remains unchanged... -->
+
+<!-- Site Gating & Authentication Modals -->
+<!-- Gating Modal -->
+<div id="signupModal" class="modal" style="display:none;">
   <div class="modal-content">
-    <span id="closeModal" class="close">&times;</span>
+    <span id="closeSignupModal" class="close">&times;</span>
     <h2>Enjoying the content?</h2>
     <p>Sign up to continue accessing all units for free!</p>
-    <button id="signInBtn">Sign Up</button>
+    <button id="signupModalSignInBtn">Sign Up</button>
   </div>
 </div>
 
-  <!-- Modal for Username -->
-  <div id="usernameModal" style="display:none;" class="modal">
+<!-- Username Modal -->
+<div id="usernameModal" class="modal" style="display:none;">
   <div class="modal-content">
     <h2>Choose a username</h2>
     <input type="text" id="usernameInput" placeholder="Enter a unique username" />
     <button id="submitUsernameBtn">Submit</button>
   </div>
-  </div>
+</div>
 
-  <!-- Script -->
 <script src="questions.js" defer></script>
 <script src="util.js" defer></script>
 
-
-  <script>
-  function handleGating(maxFreeClicks = 3) {
+<script>
+/* ----------- Site Gating Logic ----------- */
+function handleGating(maxFreeClicks = 3) {
   let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
-
   const modal = document.getElementById("signupModal");
 
   function isGated() {
     return !window.isSignedIn && clickCount >= maxFreeClicks;
   }
-
   function showModal() {
     modal.style.display = "block";
   }
-
   function updateClickCount() {
     clickCount++;
     localStorage.setItem("unitClicks", clickCount);
-    if (isGated()) {
-      showModal();
-    }
+    if (isGated()) showModal();
   }
-
   function unlockContent() {
     window.isSignedIn = true;
     localStorage.removeItem("unitClicks");
@@ -641,27 +637,23 @@
   return { unlockContent };
 }
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const { unlockContent } = handleGating();
+document.addEventListener("DOMContentLoaded", () => {
+  const { unlockContent } = handleGating();
 
-    const closeBtn = document.getElementById("closeModal");
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        document.getElementById("signupModal").style.display = "none";
-      });
-    }
-
-    // ✅ Make unlockContent available globally for Firebase script
-    window.unlockContent = unlockContent;
-  });
+  // Close signup modal
+  const closeSignupBtn = document.getElementById("closeSignupModal");
+  if (closeSignupBtn) {
+    closeSignupBtn.addEventListener("click", () => {
+      document.getElementById("signupModal").style.display = "none";
+    });
+  }
+  window.unlockContent = unlockContent;
+});
 </script>
 
-<!-- Firebase -->
+<!-- ----------- Firebase Auth & Username Logic ----------- -->
 <script type="module">
-  import {
-  initializeApp
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -669,8 +661,7 @@ import {
   signOut,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
- import {
+import {
   getFirestore,
   doc,
   getDoc,
@@ -681,57 +672,44 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
+  authDomain: "ap-chem-course-guide.firebaseapp.com",
+  projectId: "ap-chem-course-guide",
+  storageBucket: "ap-chem-course-guide.appspot.com",
+  messagingSenderId: "601341546125",
+  appId: "1:601341546125:web:152f1fb623c69351c81cc4",
+  measurementId: "G-X2H058B7KT"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt: "select_account" });
+const db = getFirestore(app);
 
+// DEBUG: expose for browser console
+window.db = db;
+window.auth = auth;
+window.setDoc = setDoc;
+window.doc = doc;
 
-
-  // Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
-    authDomain: "ap-chem-course-guide.firebaseapp.com",
-    projectId: "ap-chem-course-guide",
-    storageBucket: "ap-chem-course-guide.appspot.com",
-    messagingSenderId: "601341546125",
-    appId: "1:601341546125:web:152f1fb623c69351c81cc4",
-    measurementId: "G-X2H058B7KT"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-provider.setCustomParameters({
-  prompt: "select_account"
-});
-  const db = getFirestore(app);
-
-  // 🔍 Check if user has a username
- async function checkUsername(user) {
+// Helper: Check if user doc has a username, show modal if not
+async function checkUsername(user) {
   const userRef = doc(db, "users", user.uid);
   const snapshot = await getDoc(userRef);
-
   const modal = document.getElementById("usernameModal");
   const input = document.getElementById("usernameInput");
 
-  if (!snapshot.exists()) {
-    console.log("User document does not exist — showing modal");
-    modal.style.display = "block";
-    input.focus();
-    return;
-  }
-
-  const data = snapshot.data();
-  console.log("User document data:", data);
-
-  if (!data.username) {
-    console.log("Username missing — showing modal");
+  if (!snapshot.exists() || !snapshot.data().username) {
     modal.style.display = "block";
     input.focus();
   } else {
-    console.log("Username found:", data.username);
-    modal.style.display = "none"; // ✅ Hide modal if username exists
+    modal.style.display = "none";
   }
 }
 
-  // 🔍 Check if a username is already taken
+// Helper: Check if username is taken
 async function isUsernameTaken(username) {
   const usersRef = collection(db, "users");
   const q = query(usersRef, where("username", "==", username));
@@ -739,132 +717,95 @@ async function isUsernameTaken(username) {
   return !snapshot.empty;
 }
 
-  document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", () => {
+  // Get buttons
+  const sidebarSignInBtn = document.getElementById("sidebarSignInBtn");
+  const signupModalSignInBtn = document.getElementById("signupModalSignInBtn");
+  const signOutBtn = document.getElementById("signOutBtn");
+  const submitUsernameBtn = document.getElementById("submitUsernameBtn");
 
-    document.getElementById("usernameModal").style.display = "none";
-
-    const modal = document.getElementById("signupModal");
-    const closeBtn = document.getElementById("closeModal");
-    const signInBtn = document.getElementById("signInBtn");
-    const signOutBtn = document.getElementById("signOutBtn");
-
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        modal.style.display = "none";
-      });
-    }
-
-    // 🔐 Sign In
-    document.addEventListener("click", (e) => {
-      if (e.target && e.target.id === "signInBtn") {
-        signInWithPopup(auth, provider)
-          .then(result => {
-            console.log("Signed in as:", result.user.displayName);
-            console.log("Signed in as:", result.user.email);
-            console.log("User UID:", result.user.uid);
-
-            window.isSignedIn = true;
-
-            // ✅ Step 2: Check if username exists
-            checkUsername(result.user);
-
-            // Hide sign-in button
-            signInBtn.style.display = "none";
-
-            // Unlock gated content
-            if (typeof window.unlockContent === "function") {
-              window.unlockContent();
-            }
-          })
-          .catch(error => {
-            console.error("Sign-in error:", error.code, error.message);
-          });
-      }
-    });
-
-    // 🔄 Auth State Listener
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        console.log("User is already signed in:", user.email);
+  // Attach sign in handlers to both buttons
+  function signInHandler() {
+    signInWithPopup(auth, provider)
+      .then(result => {
         window.isSignedIn = true;
-
-        // ✅ Step 2 again: Check username on page load
-        checkUsername(user);
-
-        // Handle username submission
- window.db = db;
-window.auth = auth;
-window.setDoc = setDoc;
-window.doc = doc;
-        
-document.getElementById("submitUsernameBtn").onclick = async () => {
-  const input = document.getElementById("usernameInput");
-  const username = input.value.trim();
-  const user = getAuth().currentUser; // ✅ Declare before using
-
-  console.log("Current user:", user); // ✅ Now safe to log
-
-  if (!username || !user || !user.uid) {
-    alert("You're not signed in. Please sign in first.");
-    return;
-  }
-
-  const isValid = /^[a-zA-Z0-9_]{3,20}$/.test(username);
-  if (!isValid) {
-    alert("Username must be 3–20 characters and contain only letters, numbers, or underscores.");
-    input.focus();
-    return;
-  }
-
-  const taken = await isUsernameTaken(username);
-  if (taken) {
-    alert("That username is already taken. Try another one.");
-    input.focus();
-    return;
-  }
-
-  try {
-    const userRef = doc(db, "users", user.uid);
-    console.log("Attempting to write to:", userRef.path);
-    console.log("Authenticated UID:", user.uid);
-    await setDoc(userRef, { username }, { merge: true });
-    document.getElementById("usernameModal").style.display = "none";
-    console.log("Username saved successfully:", username);
-  } catch (error) {
-    console.error("Firestore write failed:", error);
-    alert("Could not save username. Make sure you're signed in and try again.");
-    console.error("Firestore write failed:", error.code, error.message);
-  }
-};
-
-
-        // Unlock gated content
-        if (typeof window.unlockContent === "function") {
-          window.unlockContent();
-        }
-
-        // Hide sign-in button
-        signInBtn.style.display = "none";
-      } else {
-        // 🔁 Signed out: reset UI
-        window.isSignedIn = false;
+        checkUsername(result.user);
+        if (window.unlockContent) window.unlockContent();
+        // Hide sign-in buttons
+        if (sidebarSignInBtn) sidebarSignInBtn.style.display = "none";
+        if (signupModalSignInBtn) signupModalSignInBtn.style.display = "none";
         document.getElementById("signupModal").style.display = "none";
-        document.getElementById("usernameModal").style.display = "none";
-        signInBtn.style.display = "inline-block";
-      }
-    });
-
-    // 🚪 Sign Out
-    if (signOutBtn) {
-      signOutBtn.addEventListener("click", () => {
-        signOut(auth).then(() => {
-          alert("Signed out!");
-          location.reload();
-        });
+      })
+      .catch(error => {
+        console.error("Sign-in error:", error.code, error.message);
       });
+  }
+  if (sidebarSignInBtn)
+    sidebarSignInBtn.addEventListener("click", signInHandler);
+  if (signupModalSignInBtn)
+    signupModalSignInBtn.addEventListener("click", signInHandler);
+
+  // Auth State Listener
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      window.isSignedIn = true;
+      checkUsername(user);
+      if (window.unlockContent) window.unlockContent();
+      if (sidebarSignInBtn) sidebarSignInBtn.style.display = "none";
+      if (signupModalSignInBtn) signupModalSignInBtn.style.display = "none";
+    } else {
+      window.isSignedIn = false;
+      document.getElementById("signupModal").style.display = "none";
+      document.getElementById("usernameModal").style.display = "none";
+      if (sidebarSignInBtn) sidebarSignInBtn.style.display = "inline-block";
+      if (signupModalSignInBtn) signupModalSignInBtn.style.display = "inline-block";
     }
   });
-</script>
 
+  // Username submit logic
+  if (submitUsernameBtn) {
+    submitUsernameBtn.onclick = async () => {
+      const input = document.getElementById("usernameInput");
+      const username = input.value.trim();
+      const user = auth.currentUser;
+
+      if (!username || !user || !user.uid) {
+        alert("You're not signed in. Please sign in first.");
+        return;
+      }
+      const isValid = /^[a-zA-Z0-9_]{3,20}$/.test(username);
+      if (!isValid) {
+        alert("Username must be 3–20 characters and contain only letters, numbers, or underscores.");
+        input.focus();
+        return;
+      }
+      const taken = await isUsernameTaken(username);
+      if (taken) {
+        alert("That username is already taken. Try another one.");
+        input.focus();
+        return;
+      }
+      try {
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, { username }, { merge: true });
+        document.getElementById("usernameModal").style.display = "none";
+      } catch (error) {
+        console.error("Firestore write failed:", error);
+        alert("Could not save username. Make sure you're signed in and try again.");
+      }
+    };
+  }
+
+  // Sign Out
+  if (signOutBtn) {
+    signOutBtn.addEventListener("click", () => {
+      signOut(auth).then(() => {
+        alert("Signed out!");
+        location.reload();
+      });
+    });
+  }
+});
+</script>
 </body>
 </html>
