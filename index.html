@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- 🌟 Top Navigation Bar -->
+  <!-- 🌟 Top Navigation Bar -->
   <header class="top-bar">
     <div class="menu-icon" onclick="toggleSidebar()">☰</div>
     <h1 class="unit-title">AP Chemistry Study Guide and Practice Tests</h1>
@@ -18,12 +18,19 @@
 
   <!-- 📚 Sidebar Navigation -->
   <nav id="sidebar" class="sidebar">
-    <button id="signInBtn">Sign In</button>
+    <button id="sidebarSignInBtn">Sign In</button>
     <ul>
       <li><a href="index.html">🏠 Home</a></li>
       <li><a href="unit-1-atomic-structure.html">Unit 1 – Atomic Structure</a></li>
       <li><a href="unit2.html">Unit 2 – Molecular & Ionic Compounds</a></li>
       <li><a href="unit3.html">Unit 3 – Intermolecular Forces</a></li>
+      <li><a href="unit4.html">Unit 4 – Chemical Reactions</a></li>
+      <li><a href="unit5.html">Unit 5 – Kinetics</a></li>
+      <li><a href="unit6.html">Unit 6 – Thermochemistry</a></li>
+      <li><a href="unit7.html">Unit 7 – Equilibrium</a></li>
+      <li><a href="unit8.html">Unit 8 – Acids and Bases</a></li>
+      <li><a href="unit9.html">Unit 9 – Thermodynamics and Electrochemistry</a></li>
+      <!-- Add more units as needed -->
     </ul>
   </nav>
 
@@ -31,12 +38,11 @@
   <div id="sidebar-overlay"></div>
 
   <div class="container">
-
     <!-- Intro Box -->
     <div class="box">
       <h1>Welcome to the Sample AP Chemistry Study Guide</h1>
       <p>
-        Created by a former AP Chem student who scored a 5 on the exam, this site is designed to help you understand every concept in each unit, as well as the types of questions you will be expected to answer on your AP exam.  All content in this course is based directly on information from the College Board CED and AP Classroom. 
+        Created by a former AP Chem student who scored a 5 on the exam, this site is designed to help you understand every concept in each unit, as well as the types of questions you will be expected to answer on your AP exam. All content in this course is based directly on information from the College Board CED and AP Classroom.
       </p>
     </div>
 
@@ -45,7 +51,7 @@
       <h2>AP Chem Unit Notes and Practice Tests</h2>
       <ul>
         <li><a href="unit-1-atomic-structure.html">Unit 1: Atomic Structure and Properties</a></li>
-        <li><a href="unit2.html">Unit 2: Commpound Structure and Properties</a></li>
+        <li><a href="unit2.html">Unit 2: Compound Structure and Properties</a></li>
         <li><a href="unit3.html">Unit 3: Properties of Substances and Mixtures</a></li>
         <li><a href="unit4.html">Unit 4: Chemical Reactions</a></li>
         <li><a href="unit5.html">Unit 5: Kinetics</a></li>
@@ -57,36 +63,33 @@
       </ul>
     </div>
 
-    <!-- Format Box -->
-<div class="box">
-  <h2>AP Chemistry Exam Format</h2>
-  <ul>
-    <li>
-      <strong>Section I: Multiple Choice</strong>
+    <!-- Format Box (restored to your original content) -->
+    <div class="box">
+      <h2>AP Chemistry Course Exam Format</h2>
       <ul>
-        <li><strong>% of Score:</strong> 50%</li>
-        <li><strong>Time Limit:</strong> 1 hour 30 minutes</li>
-        <li><strong>Calculator Allowed:</strong> Yes</li>
-        <li><strong>Formula Sheet Provided:</strong> Yes</li>
-        <li><strong>Questions:</strong> 60 multiple-choice questions</li>
+        <li><strong>Section I: Multiple Choice (MCQ)</strong>
+          <ul>
+            <li>60 questions</li>
+            <li>90 minutes</li>
+            <li>50% of exam score</li>
+          </ul>
+        </li>
+        <li><strong>Section II: Free Response (FRQ)</strong>
+          <ul>
+            <li>7 questions (3 long, 4 short)</li>
+            <li>105 minutes</li>
+            <li>50% of exam score</li>
+          </ul>
+        </li>
       </ul>
-    </li>
-    <li>
-      <strong>Section II: Free Response</strong>
-      <ul>
-        <li><strong>% of Score:</strong> 50%</li>
-        <li><strong>Time Limit:</strong> 1 hour 45 minutes</li>
-        <li><strong>Calculator Allowed:</strong> Yes</li>
-        <li><strong>Formula Sheet Provided:</strong> Yes</li>
-        <li><strong>Questions:</strong> 7 free-response (3 long, 4 short)</li>
-      </ul>
-    </li>
-  </ul>
-  <p>
-    <strong>Details:</strong><br>
-    Both sections allow a scientific calculator and the official AP Chemistry formula sheet.  Total exam time is roughly 3 hours and 15 minutes with a brief break between the multiple choice section and free response section.
-  </p>
-</div>
+      <p>
+        <strong>Exam Details:</strong><br>
+        Both sections allow a scientific calculator and the official AP Chemistry formula sheet.<br>
+        Total exam time is roughly 3 hours and 15 minutes with a brief break between the multiple choice section and free response section.<br>
+        <br>
+        The official College Board AP Chemistry Exam format and rules can be found <a href="https://apstudents.collegeboard.org/courses/ap-chemistry" target="_blank">here</a>.
+      </p>
+    </div>
 
     <!-- Countdown Box -->
     <div class="box">
@@ -94,112 +97,101 @@
         Loading countdown...
       </div>
     </div>
-
   </div>
 
-<!-- Bottom Bar for Index Page -->
-<div id="indexBottomBar" class="bottom-bar">
-  <div class="bottom-bar-left" id="bottomBarLeft">
-    <!-- Auth buttons injected by JS (Sign In, Sign Out, Change Username) -->
+  <!-- Username Modal -->
+  <div id="usernameModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span id="closeUsernameModal" class="close">&times;</span>
+      <h2>Change Username</h2>
+      <input type="text" id="usernameInput" placeholder="Enter new username" />
+      <button id="saveUsernameBtn">Save</button>
+    </div>
   </div>
-  <div class="bottom-bar-center">
-    <!-- No center buttons needed on index page -->
+
+  <!-- Bottom Bar for Index Page -->
+  <div id="indexBottomBar" class="bottom-bar">
+    <div class="bottom-bar-left" id="bottomBarLeft"></div>
+    <div class="bottom-bar-center"></div>
+    <div class="bottom-bar-right">
+      <button id="futureFeatureBtn" disabled>Future Feature</button>
+    </div>
   </div>
-  <div class="bottom-bar-right">
-    <button id="futureFeatureBtn" disabled>Future Feature</button>
-  </div>
-</div>
-<script>
-function updateIndexBarAuthButtons() {
-  const leftDiv = document.getElementById("bottomBarLeft");
-  leftDiv.innerHTML = "";
-  if (window.isSignedIn) {
-    const signOutBtn = document.createElement("button");
-    signOutBtn.textContent = "Sign Out";
-    signOutBtn.onclick = () => window.signOut && window.signOut();
-    leftDiv.appendChild(signOutBtn);
 
-    const changeUsernameBtn = document.createElement("button");
-    changeUsernameBtn.textContent = "Change Username";
-    changeUsernameBtn.onclick = () => {
-      document.getElementById("usernameModal").style.display = "block";
-      document.getElementById("usernameInput").focus();
-    };
-    leftDiv.appendChild(changeUsernameBtn);
-  } else {
-    const signInBtn = document.createElement("button");
-    signInBtn.textContent = "Sign In";
-    signInBtn.onclick = () => window.signInHandler && window.signInHandler();
-    leftDiv.appendChild(signInBtn);
-  }
-}
+  <!-- Utility and countdown scripts -->
+  <script src="util.js" defer></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      renderCountdown("countdownText", "May 5, 2026");
+    });
 
-function setupIndexBarAuthSync() {
-  document.addEventListener("authstatechanged", updateIndexBarAuthButtons);
-  setInterval(updateIndexBarAuthButtons, 1000);
-}
+    // Username modal logic
+    document.addEventListener('DOMContentLoaded', () => {
+      const usernameModal = document.getElementById('usernameModal');
+      const closeUsernameModal = document.getElementById('closeUsernameModal');
+      const saveUsernameBtn = document.getElementById('saveUsernameBtn');
+      const usernameInput = document.getElementById('usernameInput');
 
-document.addEventListener("DOMContentLoaded", () => {
-  updateIndexBarAuthButtons();
-  setupIndexBarAuthSync();
-});
-</script>
-<!-- Firestore Script -->
-  <script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-analytics.js";
-  import { getAuth } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+      closeUsernameModal.onclick = () => {
+        usernameModal.style.display = 'none';
+      };
+      saveUsernameBtn.onclick = () => {
+        const newUsername = usernameInput.value.trim();
+        if (newUsername) {
+          window.username = newUsername;
+          localStorage.setItem('username', newUsername);
+          usernameModal.style.display = 'none';
+          updateIndexBarAuthButtons();
+        }
+      };
+    });
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
-    authDomain: "ap-chem-course-guide.firebaseapp.com",
-    projectId: "ap-chem-course-guide",
-    storageBucket: "ap-chem-course-guide.firebasestorage.app",
-    messagingSenderId: "601341546125",
-    appId: "1:601341546125:web:152f1fb623c69351c81cc4",
-    measurementId: "G-X2H058B7KT"
-  };
+    // Auth UI logic for bottom bar
+    function updateIndexBarAuthButtons() {
+      const leftDiv = document.getElementById("bottomBarLeft");
+      leftDiv.innerHTML = "";
+      if (window.isSignedIn) {
+        const signOutBtn = document.createElement("button");
+        signOutBtn.textContent = "Sign Out";
+        signOutBtn.onclick = () => firebase.auth().signOut && firebase.auth().signOut();
+        leftDiv.appendChild(signOutBtn);
 
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+        const changeUsernameBtn = document.createElement("button");
+        changeUsernameBtn.textContent = "Change Username";
+        changeUsernameBtn.onclick = () => {
+          document.getElementById("usernameModal").style.display = "block";
+          document.getElementById("usernameInput").focus();
+        };
+        leftDiv.appendChild(changeUsernameBtn);
+      } else {
+        const signInBtn = document.createElement("button");
+        signInBtn.textContent = "Sign In";
+        signInBtn.onclick = () => {
+          const provider = new firebase.auth.GoogleAuthProvider();
+          firebase.auth().signInWithPopup(provider);
+        };
+        leftDiv.appendChild(signInBtn);
+      }
+    }
 
-
-  //Google login
-  import { GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-  const provider = new GoogleAuthProvider();
-
-  document.getElementById("signInBtn").addEventListener("click", () => {
-    signInWithPopup(auth, provider)
-      .then(result => {
-        const user = result.user;
-        console.log("Signed in as:", user.displayName);
-        // You can now show gated content or update UI
-      })
-      .catch(error => {
-        console.error("Sign-in error:", error);
+    // Sync auth state and UI
+    if (window.firebase && window.firebase.auth) {
+      firebase.auth().onAuthStateChanged((user) => {
+        window.isSignedIn = !!user;
+        if (user && user.displayName) {
+          window.username = user.displayName;
+          localStorage.setItem("username", user.displayName);
+        } else {
+          window.username = localStorage.getItem("username") || "";
+        }
+        updateIndexBarAuthButtons();
       });
-  });
+    }
 
-</script>
-
- <!-- Countdown Script -->
- <script src="util.js" defer></script>
-<script>
-  window.addEventListener('DOMContentLoaded', function() {
-    renderCountdown("countdownText", "May 5, 2026");
-  });
-</script>
-
-  
+    document.addEventListener("DOMContentLoaded", updateIndexBarAuthButtons);
+  </script>
+  <!-- Firebase scripts (add your config/init here if needed) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </body>
 </html>
