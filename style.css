@@ -561,13 +561,13 @@ body.dark-mode .subunit-header.active {
 /* ===========================
    BOTTOM BAR
    =========================== */
-#unit1BottomBar.bottom-bar {
+.bottom-bar {
   width: 100%;
-  background: #1a237e;
-  color: #fff;
+  background: var(--bar-bg);
+  color: var(--bar-text);
   display: flex;
   align-items: center;
-  position: relative; /* Needed for absolute centering */
+  position: relative;
   box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
   padding: 0.75rem 2rem;
   font-size: 1rem;
@@ -601,10 +601,10 @@ body.dark-mode .subunit-header.active {
   justify-content: flex-end;
   min-width: 150px;
   flex: 0 0 auto;
-  margin-left: auto; /* ensures alignment to the far right */
+  margin-left: auto;
 }
 
-#unit1BottomBar button {
+.bottom-bar button {
   background: #3949ab;
   color: #fff;
   border: none;
@@ -614,9 +614,10 @@ body.dark-mode .subunit-header.active {
   font-weight: 500;
   transition: background 0.2s;
 }
-#unit1BottomBar button:hover:not(:disabled) {
+.bottom-bar button:hover:not(:disabled) {
   background: #303f9f;
 }
+.bottom-bar button:disabled,
 #futureFeatureBtn {
   background: #757575;
   cursor: not-allowed;
@@ -624,7 +625,7 @@ body.dark-mode .subunit-header.active {
 
 /* mobile fix */
 @media (max-width: 600px) {
-  #unit1BottomBar.bottom-bar {
+  .bottom-bar {
     flex-direction: column;
     align-items: stretch;
     padding: 0.5rem 0.5rem;
@@ -648,29 +649,30 @@ body.dark-mode .subunit-header.active {
     top: unset !important;
     transform: unset !important;
   }
-  #unit1BottomBar button {
+  .bottom-bar button {
     width: 100%;
     min-width: unset;
     margin-bottom: 0.5rem;
   }
 }
 
-/* === BOTTOM BAR DARK MODE ========== */
-body.dark-mode #unit1BottomBar.bottom-bar {
+/* Dark mode for bottom bar */
+body.dark-mode .bottom-bar {
   background: var(--bar-bg);
   color: var(--bar-text);
   border-top: 1px solid var(--box-border);
 }
-body.dark-mode #unit1BottomBar button {
+body.dark-mode .bottom-bar button {
   background: #343456;
   color: #f0f0f0;
   border: 1px solid #44445a;
 }
-body.dark-mode #unit1BottomBar button:hover:not(:disabled) {
+body.dark-mode .bottom-bar button:hover:not(:disabled) {
   background: #44445a;
   color: #fff;
   border-color: #5d5d7a;
 }
+body.dark-mode .bottom-bar button:disabled,
 body.dark-mode #futureFeatureBtn {
   background: #444444;
   color: #757575;
