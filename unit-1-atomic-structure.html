@@ -575,8 +575,6 @@
   </div>
 
 
-<!-- ...everything above remains unchanged... -->
-
 <!-- Site Gating & Authentication Modals -->
 <!-- Gating Modal -->
 <div id="signupModal" class="modal" style="display:none;">
@@ -696,11 +694,15 @@ window.doc = doc;
 
 // Helper: Check if user doc has a username, show modal if not
 async function checkUsername(user) {
-  const userRef = doc(db, "users", user.uid);
-  const snapshot = await getDoc(userRef);
   const modal = document.getElementById("usernameModal");
   const input = document.getElementById("usernameInput");
 
+  if (!user || !user.uid) {
+    modal.style.display = "none";
+    return;
+  }
+  const userRef = doc(db, "users", user.uid);
+  const snapshot = await getDoc(userRef);
   if (!snapshot.exists() || !snapshot.data().username) {
     modal.style.display = "block";
     input.focus();
