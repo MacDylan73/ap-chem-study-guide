@@ -681,10 +681,6 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-  window.db = db;
-window.auth = auth;
-window.setDoc = setDoc;
-window.doc = doc;
 
 
 
@@ -796,7 +792,11 @@ async function isUsernameTaken(username) {
         checkUsername(user);
 
         // Handle username submission
-     
+ window.db = db;
+window.auth = auth;
+window.setDoc = setDoc;
+window.doc = doc;
+        
 document.getElementById("submitUsernameBtn").onclick = async () => {
   const input = document.getElementById("usernameInput");
   const username = input.value.trim();
