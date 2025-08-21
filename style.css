@@ -634,19 +634,33 @@ body.dark-mode .subunit-header.active {
     margin-bottom: 0.5rem;
   }
 }
-/* checkmarks */
-.subunit-complete-indicator {
-  margin-left: 1rem;
-  width: 24px;
-  height: 24px;
+/* ===========================
+   SUBUNIT COMPLETION CHECKMARKS
+   =========================== */
+
+/* Make subunit-header a flex container to position checkmark at far right */
+.subunit-header {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
+  width: 100%;
+  gap: 1rem;
+  position: relative;
 }
-.subunit-complete-indicator .checkmark {
+
+/* Checkmark indicator, hidden by default */
+.subunit-checkmark {
   color: #43a047; /* green */
   font-size: 1.5em;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
+
+/* Show checkmark only when header is completed */
+.subunit-header.completed .subunit-checkmark {
+  opacity: 1;
+}
+
 
 /* === BOTTOM BAR DARK MODE ========== */
 body.dark-mode #unit1BottomBar.bottom-bar {
