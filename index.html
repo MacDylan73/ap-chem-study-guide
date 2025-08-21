@@ -97,7 +97,7 @@
     </div>
   </div>
 
-  <!-- Username Modal -->
+ <!-- Username Modal -->
   <div id="usernameModal" class="modal" style="display:none;">
     <div class="modal-content">
       <span id="closeUsernameModal" class="close">&times;</span>
@@ -116,90 +116,103 @@
     </div>
   </div>
 
-  <!-- Utility and countdown scripts -->
+  <!-- Utility scripts -->
   <script src="util.js" defer></script>
   <script>
     window.addEventListener('DOMContentLoaded', function() {
       renderCountdown("countdownText", "May 5, 2026");
     });
+  </script>
 
-   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+  <!-- Modular Firebase Auth and UI Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-  const firebaseConfig = {
-    apiKey: "...",
-    authDomain: "...",
-    projectId: "...",
-    // etc
-  };
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: "select_account" });
-  const db = getFirestore(app);
-
-  window.signInHandler = function() {
-    signInWithPopup(auth, provider)
-      .then(result => { window.isSignedIn = true; })
-      .catch(error => { alert("Sign-in failed!"); });
-  };
-  window.signOut = function() {
-    signOut(auth).then(() => { window.isSignedIn = false; location.reload(); });
-  };
-
-  function updateIndexBarAuthButtons() {
-    const leftDiv = document.getElementById("bottomBarLeft");
-    leftDiv.innerHTML = "";
-    if (window.isSignedIn) {
-      const signOutBtn = document.createElement("button");
-      signOutBtn.textContent = "Sign Out";
-      signOutBtn.onclick = () => window.signOut();
-      leftDiv.appendChild(signOutBtn);
-
-      const changeUsernameBtn = document.createElement("button");
-      changeUsernameBtn.textContent = "Change Username";
-      changeUsernameBtn.onclick = () => {
-        document.getElementById("usernameModal").style.display = "block";
-        document.getElementById("usernameInput").focus();
-      };
-      leftDiv.appendChild(changeUsernameBtn);
-    } else {
-      const signInBtn = document.createElement("button");
-      signInBtn.textContent = "Sign In";
-      signInBtn.onclick = () => window.signInHandler();
-      leftDiv.appendChild(signInBtn);
-    }
-  }
-
-  onAuthStateChanged(auth, (user) => {
-    window.isSignedIn = !!user;
-    updateIndexBarAuthButtons();
-  });
-
-  document.addEventListener("DOMContentLoaded", updateIndexBarAuthButtons);
-
-  // Username modal logic (Firestore save)
-  document.addEventListener('DOMContentLoaded', () => {
-    const usernameModal = document.getElementById('usernameModal');
-    const closeUsernameModal = document.getElementById('closeUsernameModal');
-    const saveUsernameBtn = document.getElementById('saveUsernameBtn');
-    const usernameInput = document.getElementById('usernameInput');
-    closeUsernameModal.onclick = () => { usernameModal.style.display = 'none'; };
-    saveUsernameBtn.onclick = async () => {
-      const newUsername = usernameInput.value.trim();
-      if (newUsername && window.isSignedIn && auth.currentUser) {
-        try {
-          const userRef = doc(db, "users", auth.currentUser.uid);
-          await setDoc(userRef, { username: newUsername }, { merge: true });
-          usernameModal.style.display = 'none';
-        } catch (e) {
-          alert("Could not save username.");
-        }
-      } else {
-        alert("Please sign in first!");
-      }
+    // Fill in your actual Firebase config here!
+    const firebaseConfig = {
+      apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
+      authDomain: "ap-chem-course-guide.firebaseapp.com",
+      projectId: "ap-chem-course-guide",
+      storageBucket: "ap-chem-course-guide.appspot.com",
+      messagingSenderId: "601341546125",
+      appId: "1:601341546125:web:152f1fb623c69351c81cc4",
+      measurementId: "G-X2H058B7KT"
     };
-  });
-</script>
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    const db = getFirestore(app);
+
+    window.signInHandler = function() {
+      signInWithPopup(auth, provider)
+        .then(result => {
+          window.isSignedIn = true;
+        })
+        .catch(error => { alert("Sign-in failed!"); });
+    };
+    window.signOut = function() {
+      signOut(auth).then(() => {
+        window.isSignedIn = false;
+        location.reload();
+      });
+    };
+
+    function updateIndexBarAuthButtons() {
+      const leftDiv = document.getElementById("bottomBarLeft");
+      leftDiv.innerHTML = "";
+      if (window.isSignedIn) {
+        const signOutBtn = document.createElement("button");
+        signOutBtn.textContent = "Sign Out";
+        signOutBtn.onclick = () => window.signOut();
+        leftDiv.appendChild(signOutBtn);
+
+        const changeUsernameBtn = document.createElement("button");
+        changeUsernameBtn.textContent = "Change Username";
+        changeUsernameBtn.onclick = () => {
+          document.getElementById("usernameModal").style.display = "block";
+          document.getElementById("usernameInput").focus();
+        };
+        leftDiv.appendChild(changeUsernameBtn);
+      } else {
+        const signInBtn = document.createElement("button");
+        signInBtn.textContent = "Sign In";
+        signInBtn.onclick = () => window.signInHandler();
+        leftDiv.appendChild(signInBtn);
+      }
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      window.isSignedIn = !!user;
+      updateIndexBarAuthButtons();
+    });
+
+    document.addEventListener("DOMContentLoaded", updateIndexBarAuthButtons);
+
+    // Username modal logic (Firestore save)
+    document.addEventListener('DOMContentLoaded', () => {
+      const usernameModal = document.getElementById('usernameModal');
+      const closeUsernameModal = document.getElementById('closeUsernameModal');
+      const saveUsernameBtn = document.getElementById('saveUsernameBtn');
+      const usernameInput = document.getElementById('usernameInput');
+      closeUsernameModal.onclick = () => { usernameModal.style.display = 'none'; };
+      saveUsernameBtn.onclick = async () => {
+        const newUsername = usernameInput.value.trim();
+        if (newUsername && window.isSignedIn && auth.currentUser) {
+          try {
+            const userRef = doc(db, "users", auth.currentUser.uid);
+            await setDoc(userRef, { username: newUsername }, { merge: true });
+            usernameModal.style.display = 'none';
+          } catch (e) {
+            alert("Could not save username.");
+          }
+        } else {
+          alert("Please sign in first!");
+        }
+      };
+    });
+  </script>
+</body>
+</html>
