@@ -612,25 +612,14 @@
 <script src="questions.js" defer></script>
 <script src="util.js" defer></script>
 <script>
-  function handleBottomBarVisibility() {
-  const bottomBar = document.getElementById("bottomBar");
-  window.addEventListener("scroll", () => {
-    const atBottom = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 10);
-    bottomBar.style.display = atBottom ? "flex" : "none";
-  });
-}
-
-// Populate left side buttons depending on auth state
+  // Swap IDs to use the new bottom bar
 function updateBottomBarAuthButtons() {
   const leftDiv = document.getElementById("bottomBarLeft");
   leftDiv.innerHTML = "";
   if (window.isSignedIn) {
-    // Signed in: Show Sign Out and Change Username
     const signOutBtn = document.createElement("button");
     signOutBtn.textContent = "Sign Out";
-    signOutBtn.onclick = () => {
-      window.signOut && window.signOut();
-    };
+    signOutBtn.onclick = () => window.signOut && window.signOut();
     leftDiv.appendChild(signOutBtn);
 
     const changeUsernameBtn = document.createElement("button");
@@ -641,37 +630,25 @@ function updateBottomBarAuthButtons() {
     };
     leftDiv.appendChild(changeUsernameBtn);
   } else {
-    // Not signed in: Show Sign In
     const signInBtn = document.createElement("button");
     signInBtn.textContent = "Sign In";
-    signInBtn.onclick = () => {
-      window.signInHandler && window.signInHandler();
-    };
+    signInBtn.onclick = () => window.signInHandler && window.signInHandler();
     leftDiv.appendChild(signInBtn);
   }
 }
 
-// Wire up center and right buttons
 function setupBottomBarButtons() {
-  document.getElementById("returnHomeBtn").onclick = () => {
-    window.location.href = "/index.html";
-  };
-  document.getElementById("nextUnitBtn").onclick = () => {
-    window.location.href = "/unit-2-compound-structure-and-properties.html"; 
-  };
+  document.getElementById("returnHomeBtn").onclick = () => window.location.href = "/";
+  document.getElementById("nextUnitBtn").onclick = () => window.location.href = "/unit-2.html";
   // Future feature button is a placeholder (disabled)
 }
 
-// Re-render left bar on sign-in/sign-out events
 function setupBottomBarAuthSync() {
-  // Listen for custom events or use onAuthStateChanged if available
   document.addEventListener("authstatechanged", updateBottomBarAuthButtons);
-  // Or poll window.isSignedIn every second as a fallback
   setInterval(updateBottomBarAuthButtons, 1000);
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  handleBottomBarVisibility();
   setupBottomBarButtons();
   updateBottomBarAuthButtons();
   setupBottomBarAuthSync();
