@@ -97,7 +97,53 @@
 
   </div>
 
+<!-- Bottom Bar for Index Page -->
+<div id="indexBottomBar" class="bottom-bar">
+  <div class="bottom-bar-left" id="bottomBarLeft">
+    <!-- Auth buttons injected by JS (Sign In, Sign Out, Change Username) -->
+  </div>
+  <div class="bottom-bar-center">
+    <!-- No center buttons needed on index page -->
+  </div>
+  <div class="bottom-bar-right">
+    <button id="futureFeatureBtn" disabled>Future Feature</button>
+  </div>
+</div>
+<script>
+function updateIndexBarAuthButtons() {
+  const leftDiv = document.getElementById("bottomBarLeft");
+  leftDiv.innerHTML = "";
+  if (window.isSignedIn) {
+    const signOutBtn = document.createElement("button");
+    signOutBtn.textContent = "Sign Out";
+    signOutBtn.onclick = () => window.signOut && window.signOut();
+    leftDiv.appendChild(signOutBtn);
 
+    const changeUsernameBtn = document.createElement("button");
+    changeUsernameBtn.textContent = "Change Username";
+    changeUsernameBtn.onclick = () => {
+      document.getElementById("usernameModal").style.display = "block";
+      document.getElementById("usernameInput").focus();
+    };
+    leftDiv.appendChild(changeUsernameBtn);
+  } else {
+    const signInBtn = document.createElement("button");
+    signInBtn.textContent = "Sign In";
+    signInBtn.onclick = () => window.signInHandler && window.signInHandler();
+    leftDiv.appendChild(signInBtn);
+  }
+}
+
+function setupIndexBarAuthSync() {
+  document.addEventListener("authstatechanged", updateIndexBarAuthButtons);
+  setInterval(updateIndexBarAuthButtons, 1000);
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  updateIndexBarAuthButtons();
+  setupIndexBarAuthSync();
+});
+</script>
 <!-- Firestore Script -->
   <script type="module">
   // Import the functions you need from the SDKs you need
