@@ -558,10 +558,11 @@ body.dark-mode .subunit-header.active {
 /* ===========================
    END OF FILE
    =========================== */
+/* === BOTTOM BAR STYLES (LIGHT & DARK) ========== */
 #unit1BottomBar.bottom-bar {
   width: 100%;
-  background: #1a237e;
-  color: #fff;
+  background: var(--bar-bg);
+  color: var(--bar-text);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -570,6 +571,8 @@ body.dark-mode .subunit-header.active {
   font-size: 1rem;
   border-radius: 0; /* No rounded corners */
   margin-top: 2rem;
+  border-top: 1px solid var(--box-border);
+  transition: background 0.3s, color 0.3s;
 }
 
 .bottom-bar-left, .bottom-bar-center, .bottom-bar-right {
@@ -598,7 +601,8 @@ body.dark-mode .subunit-header.active {
   border-radius: 4px;
   cursor: pointer;
   font-weight: 500;
-  transition: background 0.2s;
+  transition: background 0.2s, color 0.2s;
+  border: 1px solid #303f9f;
 }
 #unit1BottomBar button:hover:not(:disabled) {
   background: #303f9f;
@@ -606,6 +610,27 @@ body.dark-mode .subunit-header.active {
 #futureFeatureBtn {
   background: #757575;
   cursor: not-allowed;
+}
+
+/* === BOTTOM BAR DARK MODE ========== */
+body.dark-mode #unit1BottomBar.bottom-bar {
+  background: var(--bar-bg);
+  color: var(--bar-text);
+  border-top: 1px solid var(--box-border);
+}
+body.dark-mode #unit1BottomBar button {
+  background: #343456;
+  color: #f0f0f0;
+  border: 1px solid #44445a;
+}
+body.dark-mode #unit1BottomBar button:hover:not(:disabled) {
+  background: #44445a;
+  color: #fff;
+  border-color: #5d5d7a;
+}
+body.dark-mode #futureFeatureBtn {
+  background: #444444;
+  color: #757575;
 }
 
 /* mobile fix */
@@ -635,23 +660,15 @@ body.dark-mode .subunit-header.active {
   }
 }
 /* checkmarks */
- .subunit-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    gap: 1rem;
-    position: relative;
-  }
-  .subunit-checkmark {
-    display: inline-flex;
-    align-items: center;
-    margin-left: auto;
-    font-size: 1.4em;
-    color: #43a047;
-    transition: opacity 0.2s;
-    opacity: 0;
-  }
-  .subunit-header.completed .subunit-checkmark {
-    opacity: 1;
-  }
+.subunit-complete-indicator {
+  margin-left: 1rem;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.subunit-complete-indicator .checkmark {
+  color: #43a047; /* green */
+  font-size: 1.5em;
+}
