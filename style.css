@@ -579,7 +579,10 @@ body.dark-mode .subunit-header.active {
 }
 .bottom-bar-center {
   flex: 1;
-  justify-content: center;
+  display: flex;
+  justify-content: center;  /* Center horizontally */
+  align-items: center;
+  gap: 2rem;                /* Space between the buttons */
 }
 .bottom-bar-left {
   min-width: 180px;
