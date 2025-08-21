@@ -635,15 +635,23 @@ body.dark-mode .subunit-header.active {
   }
 }
 /* checkmarks */
-.subunit-complete-indicator {
-  margin-left: 1rem;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.subunit-complete-indicator .checkmark {
-  color: #43a047; /* green */
-  font-size: 1.5em;
-}
+ .subunit-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 1rem;
+    position: relative;
+  }
+  .subunit-checkmark {
+    display: inline-flex;
+    align-items: center;
+    margin-left: auto;
+    font-size: 1.4em;
+    color: #43a047;
+    transition: opacity 0.2s;
+    opacity: 0;
+  }
+  .subunit-header.completed .subunit-checkmark {
+    opacity: 1;
+  }
