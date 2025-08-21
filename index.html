@@ -123,73 +123,83 @@
       renderCountdown("countdownText", "May 5, 2026");
     });
 
-    // Username modal logic
-    document.addEventListener('DOMContentLoaded', () => {
-      const usernameModal = document.getElementById('usernameModal');
-      const closeUsernameModal = document.getElementById('closeUsernameModal');
-      const saveUsernameBtn = document.getElementById('saveUsernameBtn');
-      const usernameInput = document.getElementById('usernameInput');
+   <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-      closeUsernameModal.onclick = () => {
-        usernameModal.style.display = 'none';
+  const firebaseConfig = {
+    apiKey: "...",
+    authDomain: "...",
+    projectId: "...",
+    // etc
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: "select_account" });
+  const db = getFirestore(app);
+
+  window.signInHandler = function() {
+    signInWithPopup(auth, provider)
+      .then(result => { window.isSignedIn = true; })
+      .catch(error => { alert("Sign-in failed!"); });
+  };
+  window.signOut = function() {
+    signOut(auth).then(() => { window.isSignedIn = false; location.reload(); });
+  };
+
+  function updateIndexBarAuthButtons() {
+    const leftDiv = document.getElementById("bottomBarLeft");
+    leftDiv.innerHTML = "";
+    if (window.isSignedIn) {
+      const signOutBtn = document.createElement("button");
+      signOutBtn.textContent = "Sign Out";
+      signOutBtn.onclick = () => window.signOut();
+      leftDiv.appendChild(signOutBtn);
+
+      const changeUsernameBtn = document.createElement("button");
+      changeUsernameBtn.textContent = "Change Username";
+      changeUsernameBtn.onclick = () => {
+        document.getElementById("usernameModal").style.display = "block";
+        document.getElementById("usernameInput").focus();
       };
-      saveUsernameBtn.onclick = () => {
-        const newUsername = usernameInput.value.trim();
-        if (newUsername) {
-          window.username = newUsername;
-          localStorage.setItem('username', newUsername);
+      leftDiv.appendChild(changeUsernameBtn);
+    } else {
+      const signInBtn = document.createElement("button");
+      signInBtn.textContent = "Sign In";
+      signInBtn.onclick = () => window.signInHandler();
+      leftDiv.appendChild(signInBtn);
+    }
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    window.isSignedIn = !!user;
+    updateIndexBarAuthButtons();
+  });
+
+  document.addEventListener("DOMContentLoaded", updateIndexBarAuthButtons);
+
+  // Username modal logic (Firestore save)
+  document.addEventListener('DOMContentLoaded', () => {
+    const usernameModal = document.getElementById('usernameModal');
+    const closeUsernameModal = document.getElementById('closeUsernameModal');
+    const saveUsernameBtn = document.getElementById('saveUsernameBtn');
+    const usernameInput = document.getElementById('usernameInput');
+    closeUsernameModal.onclick = () => { usernameModal.style.display = 'none'; };
+    saveUsernameBtn.onclick = async () => {
+      const newUsername = usernameInput.value.trim();
+      if (newUsername && window.isSignedIn && auth.currentUser) {
+        try {
+          const userRef = doc(db, "users", auth.currentUser.uid);
+          await setDoc(userRef, { username: newUsername }, { merge: true });
           usernameModal.style.display = 'none';
-          updateIndexBarAuthButtons();
+        } catch (e) {
+          alert("Could not save username.");
         }
-      };
-    });
-
-    // Auth UI logic for bottom bar
-    function updateIndexBarAuthButtons() {
-      const leftDiv = document.getElementById("bottomBarLeft");
-      leftDiv.innerHTML = "";
-      if (window.isSignedIn) {
-        const signOutBtn = document.createElement("button");
-        signOutBtn.textContent = "Sign Out";
-        signOutBtn.onclick = () => firebase.auth().signOut && firebase.auth().signOut();
-        leftDiv.appendChild(signOutBtn);
-
-        const changeUsernameBtn = document.createElement("button");
-        changeUsernameBtn.textContent = "Change Username";
-        changeUsernameBtn.onclick = () => {
-          document.getElementById("usernameModal").style.display = "block";
-          document.getElementById("usernameInput").focus();
-        };
-        leftDiv.appendChild(changeUsernameBtn);
       } else {
-        const signInBtn = document.createElement("button");
-        signInBtn.textContent = "Sign In";
-        signInBtn.onclick = () => {
-          const provider = new firebase.auth.GoogleAuthProvider();
-          firebase.auth().signInWithPopup(provider);
-        };
-        leftDiv.appendChild(signInBtn);
+        alert("Please sign in first!");
       }
-    }
-
-    // Sync auth state and UI
-    if (window.firebase && window.firebase.auth) {
-      firebase.auth().onAuthStateChanged((user) => {
-        window.isSignedIn = !!user;
-        if (user && user.displayName) {
-          window.username = user.displayName;
-          localStorage.setItem("username", user.displayName);
-        } else {
-          window.username = localStorage.getItem("username") || "";
-        }
-        updateIndexBarAuthButtons();
-      });
-    }
-
-    document.addEventListener("DOMContentLoaded", updateIndexBarAuthButtons);
-  </script>
-  <!-- Firebase scripts (add your config/init here if needed) -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-</body>
-</html>
+    };
+  });
+</script>
