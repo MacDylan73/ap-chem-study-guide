@@ -567,15 +567,15 @@ body.dark-mode .subunit-header.active {
   color: #fff;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  position: relative; /* Needed for absolute centering */
   box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
   padding: 0.75rem 2rem;
   font-size: 1rem;
-  border-radius: 0; /* No rounded corners */
+  border-radius: 0;
   margin-top: 2rem;
+  min-height: 56px; /* ensures enough height for buttons */
 }
 
-/* Organized bottom bar sections */
 .bottom-bar-left {
   display: flex;
   align-items: center;
@@ -584,13 +584,7 @@ body.dark-mode .subunit-header.active {
   min-width: 180px;
   flex: 0 0 auto;
 }
-.bottom-bar-center {
-  display: flex;
-  align-items: center;
-  gap: 2rem;
-  justify-content: center;
-  flex: 1 1 0%;
-}
+
 .bottom-bar-right {
   display: flex;
   align-items: center;
@@ -598,6 +592,18 @@ body.dark-mode .subunit-header.active {
   justify-content: flex-end;
   min-width: 150px;
   flex: 0 0 auto;
+}
+
+/* ABSOLUTE CENTERING FOR THE MIDDLE BUTTONS */
+.bottom-bar-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  z-index: 1;
 }
 
 #unit1BottomBar button {
@@ -626,10 +632,13 @@ body.dark-mode .subunit-header.active {
     padding: 0.5rem 0.5rem;
     font-size: 0.95rem;
     gap: 0.5rem;
+    min-height: unset;
+    position: static;
   }
   .bottom-bar-left,
   .bottom-bar-center,
   .bottom-bar-right {
+    position: static !important;
     justify-content: center;
     flex-direction: row;
     flex-wrap: wrap;
@@ -637,6 +646,9 @@ body.dark-mode .subunit-header.active {
     min-width: unset;
     width: 100%;
     margin-bottom: 0.5rem;
+    left: unset !important;
+    top: unset !important;
+    transform: unset !important;
   }
   #unit1BottomBar button {
     width: 100%;
