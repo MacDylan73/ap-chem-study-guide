@@ -528,6 +528,23 @@ body.dark-mode .subunit-header.active {
   opacity: 1;
   visibility: visible;
 }
+.sidebar {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--box-border) var(--sidebar-bg);
+}
+
+/* For Chrome/Webkit browsers: */
+.sidebar::-webkit-scrollbar {
+  width: 8px;
+}
+.sidebar::-webkit-scrollbar-thumb {
+  background: var(--box-border);
+  border-radius: 4px;
+}
+.sidebar::-webkit-scrollbar-track {
+  background: var(--sidebar-bg);
+}
 /* === SIGN IN =========================== */
 .modal {
   display: none;
