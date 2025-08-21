@@ -558,3 +558,51 @@ body.dark-mode .subunit-header.active {
 /* ===========================
    END OF FILE
    =========================== */
+
+#bottomBar.topbar-style {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background: #1a237e;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 100;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+}
+.bottombar-left, .bottombar-center, .bottombar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.bottombar-center {
+  flex: 1;
+  justify-content: center;
+}
+.bottombar-left {
+  min-width: 180px;
+}
+.bottombar-right {
+  min-width: 150px;
+}
+#bottomBar button {
+  background: #3949ab;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+#bottomBar button:hover:not(:disabled) {
+  background: #303f9f;
+}
+#futureFeatureBtn {
+  background: #757575;
+  cursor: not-allowed;
+}
