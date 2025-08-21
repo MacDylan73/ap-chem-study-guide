@@ -558,6 +558,9 @@ body.dark-mode .subunit-header.active {
 /* ===========================
    END OF FILE
    =========================== */
+/* ===========================
+   BOTTOM BAR
+   =========================== */
 #unit1BottomBar.bottom-bar {
   width: 100%;
   background: #1a237e;
@@ -572,24 +575,31 @@ body.dark-mode .subunit-header.active {
   margin-top: 2rem;
 }
 
-.bottom-bar-left, .bottom-bar-center, .bottom-bar-right {
+/* Organized bottom bar sections */
+.bottom-bar-left {
   display: flex;
   align-items: center;
   gap: 1rem;
+  justify-content: flex-start;
+  min-width: 180px;
+  flex: 0 0 auto;
 }
 .bottom-bar-center {
-  flex: 1;
   display: flex;
-  justify-content: center;  /* Center horizontally */
   align-items: center;
-  gap: 2rem;                /* Space between the buttons */
-}
-.bottom-bar-left {
-  min-width: 180px;
+  gap: 2rem;
+  justify-content: center;
+  flex: 1 1 0%;
 }
 .bottom-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-end;
   min-width: 150px;
+  flex: 0 0 auto;
 }
+
 #unit1BottomBar button {
   background: #3949ab;
   color: #fff;
@@ -634,33 +644,6 @@ body.dark-mode .subunit-header.active {
     margin-bottom: 0.5rem;
   }
 }
-/* ===========================
-   SUBUNIT COMPLETION CHECKMARKS
-   =========================== */
-
-/* Make subunit-header a flex container to position checkmark at far right */
-.subunit-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  gap: 1rem;
-  position: relative;
-}
-
-/* Checkmark indicator, hidden by default */
-.subunit-checkmark {
-  color: #43a047; /* green */
-  font-size: 1.5em;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-
-/* Show checkmark only when header is completed */
-.subunit-header.completed .subunit-checkmark {
-  opacity: 1;
-}
-
 
 /* === BOTTOM BAR DARK MODE ========== */
 body.dark-mode #unit1BottomBar.bottom-bar {
@@ -681,4 +664,43 @@ body.dark-mode #unit1BottomBar button:hover:not(:disabled) {
 body.dark-mode #futureFeatureBtn {
   background: #444444;
   color: #757575;
+}
+
+/* ===========================
+   SUBUNIT COMPLETION CHECKMARKS
+   =========================== */
+.subunit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  position: relative;
+  gap: 1rem;
+}
+
+.subunit-title {
+  flex: 1 1 auto;
+}
+
+.subunit-checkmark {
+  color: #43a047;
+  font-size: 1.5em;
+  opacity: 0;
+  transition: opacity 0.2s;
+  margin-left: 1rem;
+}
+
+.subunit-header.completed .subunit-checkmark {
+  opacity: 1;
+}
+
+.subunit-header::after {
+  content: ' ▾';
+  font-size: 1.2em;
+  margin-left: 0.5em;
+  color: inherit;
+  transition: transform 0.3s;
+}
+.subunit-header.active::after {
+  transform: rotate(180deg);
 }
