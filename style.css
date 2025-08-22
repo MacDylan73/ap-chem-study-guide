@@ -1017,3 +1017,89 @@ body.dark-mode #indexBottomBar #futureFeatureBtn {
   background: #444444;
   color: #757575;
 }
+/* ===========================
+   MODAL TAB BUTTONS (Register / Sign In)
+   =========================== */
+
+/* Tabs container */
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1em;
+  background: var(--choice-bg);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+}
+
+/* Individual tab button */
+.tabSignIn,
+.tabRegister {
+  flex: 1 1 0;
+  padding: 0.55em 0;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.08em;
+  color: var(--bar-text);
+  background: none;
+  border: none;
+  border-right: 1px solid var(--box-border);
+  transition: background 0.18s, color 0.18s;
+  outline: none;
+}
+.tabRegister:last-child,
+.tabSignIn:last-child {
+  border-right: none;
+}
+
+/* Active tab */
+.tabSignIn.active,
+.tabRegister.active {
+  background: var(--box-bg);
+  color: var(--link-color);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border-bottom: 3px solid var(--link-color);
+  z-index: 1;
+}
+
+/* Focus and hover states */
+.tabSignIn:hover:not(.active),
+.tabRegister:hover:not(.active) {
+  background: var(--hover-bg);
+  color: var(--link-hover);
+}
+
+body.dark-mode .tab-buttons {
+  background: var(--choice-bg);
+}
+body.dark-mode .tabSignIn,
+body.dark-mode .tabRegister {
+  color: var(--bar-text);
+  background: none;
+  border-right: 1px solid var(--box-border);
+}
+body.dark-mode .tabSignIn.active,
+body.dark-mode .tabRegister.active {
+  background: var(--box-bg);
+  color: var(--link-color);
+  border-bottom: 3px solid var(--link-color);
+}
+body.dark-mode .tabSignIn:hover:not(.active),
+body.dark-mode .tabRegister:hover:not(.active) {
+  background: var(--hover-bg);
+  color: var(--link-hover);
+}
+
+/* Mobile tweaks */
+@media (max-width: 600px) {
+  .tab-buttons {
+    font-size: 1em;
+    border-radius: 6px;
+  }
+  .tabSignIn,
+  .tabRegister {
+    padding: 0.45em 0;
+    font-size: 1em;
+  }
+}
