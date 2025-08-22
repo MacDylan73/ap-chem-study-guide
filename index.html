@@ -213,7 +213,9 @@
       } else {
         const signInBtn = document.createElement("button");
         signInBtn.textContent = "Sign In";
-        // signInBtn.onclick = () => window.signInHandler();
+        signInBtn.onclick = function() {
+  document.getElementById('modalSignIn').style.display = 'flex';
+        };
         leftDiv.appendChild(signInBtn);
       }
     }
