@@ -843,6 +843,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Attach sign in handlers to both buttons
   function signInHandler() {
+    document.getElementById("signupModal").style.display = "none";
     signInWithPopup(auth, provider)
       .then(result => {
         window.isSignedIn = true;
