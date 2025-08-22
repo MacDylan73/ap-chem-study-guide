@@ -688,7 +688,9 @@ function updateBottomBarAuthButtons() {
   } else {
     const signInBtn = document.createElement("button");
     signInBtn.textContent = "Sign In";
-    // signInBtn.onclick = () => window.signInHandler && window.signInHandler();
+    signInBtn.onclick = function() {
+  document.getElementById('modalSignIn').style.display = 'flex';
+};
     leftDiv.appendChild(signInBtn);
   }
 }
@@ -847,7 +849,6 @@ document.addEventListener("DOMContentLoaded", () => {
         checkUsername(result.user);
         if (window.unlockContent) window.unlockContent();
         // Hide sign-in buttons
-        if (sidebarSignInBtn) sidebarSignInBtn.style.display = "none";
         if (signupModalSignInBtn) signupModalSignInBtn.style.display = "none";
         document.getElementById("signupModal").style.display = "none";
       })
@@ -855,8 +856,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Sign-in error:", error.code, error.message);
       });
   }
-  if (sidebarSignInBtn)
-    sidebarSignInBtn.addEventListener("click", signInHandler);
   if (signupModalSignInBtn)
     signupModalSignInBtn.addEventListener("click", signInHandler);
 
