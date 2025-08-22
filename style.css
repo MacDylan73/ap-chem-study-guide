@@ -828,13 +828,13 @@ body.dark-mode #futureFeatureBtn {
   margin: auto;
 }
 .modal {
-  background: rgba(0,0,0,0.42);
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
   z-index: 9999;
-  display: none;
-  align-items: center;
-  justify-content: center;
+  display: flex; /* <-- use flex for centering */
+  align-items: center; /* vertical center */
+  justify-content: center; /* horizontal center */
+  background: rgba(0,0,0,0.42);
 }
 .close {
   color: var(--link-color, #555);
