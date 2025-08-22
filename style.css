@@ -324,6 +324,15 @@ body.dark-mode .subunit-header.active {
   font-style: italic;
   color: var(--bar-text);
 }
+.answer-options {
+  max-height: none;
+  overflow: visible;
+}
+
+.question-box {
+  overflow: visible;
+  position: relative;
+}
 
 /* ===========================
    NOTES BOX
