@@ -864,7 +864,7 @@ body.dark-mode #futureFeatureBtn {
    =========================== */
 #indexBottomBar.bottom-bar {
   width: 100%;
-  background: var(--bar-bg);
+  background: var(--bar-bg2);
   color: var(--bar-text);
   display: flex;
   align-items: center;
