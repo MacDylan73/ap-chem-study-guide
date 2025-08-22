@@ -325,12 +325,11 @@ body.dark-mode .subunit-header.active {
   color: var(--bar-text);
 }
 .answer-options {
-  max-height: none;
-  overflow: visible;
+  max-height: none !important;
+  overflow: visible !important;
 }
-
 .question-box {
-  overflow: visible;
+  overflow: visible !important;
   position: relative;
 }
 
