@@ -898,3 +898,122 @@ body.dark-mode #futureFeatureBtn {
 .subunit-header.active::after {
   transform: rotate(180deg);
 }
+/* ===========================
+   INDEX PAGE BOTTOM BAR
+   =========================== */
+#indexBottomBar.bottom-bar {
+  width: 100%;
+  background: #1a237e;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.15);
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border-radius: 0;
+  margin-top: 2rem;
+  min-height: 56px;
+  z-index: 900;
+}
+
+#indexBottomBar .bottom-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-start;
+  min-width: 180px;
+  flex: 0 0 auto;
+}
+#indexBottomBar .bottom-bar-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  z-index: 1;
+}
+#indexBottomBar .bottom-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: flex-end;
+  min-width: 150px;
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+#indexBottomBar button {
+  background: #3949ab;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s;
+}
+#indexBottomBar button:hover:not(:disabled) {
+  background: #303f9f;
+}
+#indexBottomBar #futureFeatureBtn {
+  background: #757575;
+  cursor: not-allowed;
+  color: #eaeaea;
+}
+
+/* Mobile fix */
+@media (max-width: 600px) {
+  #indexBottomBar.bottom-bar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.5rem 0.5rem;
+    font-size: 0.95rem;
+    gap: 0.5rem;
+    min-height: unset;
+    position: static;
+  }
+  #indexBottomBar .bottom-bar-left,
+  #indexBottomBar .bottom-bar-center,
+  #indexBottomBar .bottom-bar-right {
+    position: static !important;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-width: unset;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    left: unset !important;
+    top: unset !important;
+    transform: unset !important;
+  }
+  #indexBottomBar button {
+    width: 100%;
+    min-width: unset;
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* Dark mode for index bottom bar */
+body.dark-mode #indexBottomBar.bottom-bar {
+  background: var(--bar-bg);
+  color: var(--bar-text);
+  border-top: 1px solid var(--box-border);
+}
+body.dark-mode #indexBottomBar button {
+  background: #343456;
+  color: #f0f0f0;
+  border: 1px solid #44445a;
+}
+body.dark-mode #indexBottomBar button:hover:not(:disabled) {
+  background: #44445a;
+  color: #fff;
+  border-color: #5d5d7a;
+}
+body.dark-mode #indexBottomBar #futureFeatureBtn {
+  background: #444444;
+  color: #757575;
+}
