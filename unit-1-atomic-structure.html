@@ -19,7 +19,6 @@
 
   <!-- 📚 Sidebar Navigation -->
   <nav id="sidebar" class="sidebar">
-    <button id="sidebarSignInBtn">Sign Up</button>
     <ul>
       <li><a href="index.html">🏠 Home</a></li>
       <li><a href="unit-1-atomic-structure.html">Unit 1 – Atomic Structure</a></li>
@@ -998,6 +997,15 @@ closeBtn.onclick = () => { modal.style.display = 'none'; };
 
 // Optionally, show modal logic elsewhere in your code:
 // modal.style.display = 'block';
+document.getElementById('signupModalSignInBtn').onclick = function() {
+  document.getElementById('modalSignIn').style.display = 'block';
+};
+document.getElementById('signInBtn').onclick = function() {
+  document.getElementById('modalSignIn').style.display = 'block';
+};
+
+
+    
   </script>
   
 </body>
