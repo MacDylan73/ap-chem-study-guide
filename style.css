@@ -553,35 +553,7 @@ body.dark-mode .subunit-header.active {
 .sidebar::-webkit-scrollbar-track {
   background: var(--sidebar-bg);
 }
-/* === SIGN IN =========================== */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1000;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.6); /* Dim background */
-}
 
-.modal-content {
-  background-color: #fff;
-  margin: 10% auto;
-  padding: 2rem;
-  border-radius: 8px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 0 20px rgba(0,0,0,0.3);
-}
-
-.close {
-  float: right;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
 /* ===========================
    END OF FILE
    =========================== */
@@ -817,37 +789,6 @@ body.dark-mode #futureFeatureBtn {
   font-size: 0.95em;
   margin-top: .3em;
 }
-.modal-content {
-  background: var(--modal-bg, var(--sidebar-bg, #fff));
-  color: var(--link-color, #222);
-  border-radius: 12px;
-  box-shadow: 0 6px 32px rgba(0,0,0,0.17);
-  padding: 2em;
-  min-width: 320px;
-  max-width: 400px;
-  margin: auto;
-}
-.modal {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: 9999;
-  display: flex; /* <-- use flex for centering */
-  align-items: center; /* vertical center */
-  justify-content: center; /* horizontal center */
-  background: rgba(0,0,0,0.42);
-}
-.close {
-  color: var(--link-color, #555);
-  font-size: 1.6em;
-  position: absolute;
-  right: 18px;
-  top: 15px;
-  cursor: pointer;
-  transition: color 0.2s;
-}
-.close:hover {
-  color: var(--accent-bg, #3949ab);
-}
 .divider {
   display: flex;
   align-items: center;
@@ -865,4 +806,171 @@ body.dark-mode #futureFeatureBtn {
 .divider-text {
   white-space: nowrap;
   font-weight: 500;
+}
+/* === MODAL STYLES (Unified, Theme-aware) ========== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  inset: 0; /* shorthand for top:0; right:0; bottom:0; left:0; */
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6); /* Dim background */
+  /* Center modal-content with flexbox */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  position: relative;
+  background-color: var(--box-bg); /* Theme-aware */
+  color: var(--text-color);        /* Theme-aware */
+  border-radius: 10px;
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  box-shadow: 0 0 24px rgba(0,0,0,0.30);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  border: 2px solid var(--box-border);
+  margin: 0; /* Remove margin, centering is handled by flex */
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--link-color);
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
+  transition: color 0.2s;
+  line-height: 1;
+  padding: 0;
+}
+.close:hover,
+.close:focus {
+  color: var(--link-hover);
+}
+
+/* Divider for modal "or" (Google vs email) */
+.modal-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5em 0;
+  color: var(--link-color);
+  font-size: 1.1em;
+}
+.modal-divider .modal-line {
+  flex: 1;
+  height: 1px;
+  background: var(--box-border);
+  margin: 0 10px;
+}
+.modal-divider .modal-divider-text {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* Modal button styles */
+.modal-content button,
+.modal-content input[type="button"] {
+  background: var(--link-color);
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-weight: 600;
+  padding: 0.8em 1.4em;
+  margin: 1em 0;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: background 0.2s, color 0.2s;
+}
+.modal-content button:hover {
+  background: var(--link-hover);
+  color: #fff;
+}
+
+/* Google sign-in button with icon (example) */
+.google-signin-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75em;
+  background: #fff;
+  color: #222;
+  border: 1px solid var(--box-border);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.google-signin-btn:hover {
+  background: var(--choice-bg);
+  color: #111;
+}
+
+/* For SVG icon in button */
+.google-signin-btn svg {
+  height: 1.2em;
+  width: 1.2em;
+  vertical-align: middle;
+  margin-right: 0.5em;
+}
+
+/* Input fields in modals */
+.modal-content input[type="text"],
+.modal-content input[type="password"],
+.modal-content input[type="email"] {
+  width: 85%;
+  padding: 0.6em 0.9em;
+  margin: 0.7em 0 1em 0;
+  border: 1px solid var(--box-border);
+  border-radius: 6px;
+  font-size: 1em;
+  background: var(--box-bg);
+  color: var(--text-color);
+  box-sizing: border-box;
+  transition: border 0.2s;
+}
+.modal-content input[type="text"]:focus,
+.modal-content input[type="password"]:focus,
+.modal-content input[type="email"]:focus {
+  border-color: var(--link-color);
+  outline: none;
+}
+
+/* Modal in dark mode */
+body.dark-mode .modal-content {
+  background-color: var(--box-bg);
+  color: var(--text-color);
+  border-color: var(--box-border);
+}
+body.dark-mode .modal-divider .modal-line,
+body.dark-mode .modal-content input,
+body.dark-mode .google-signin-btn {
+  background: var(--box-bg);
+  border-color: var(--box-border);
+  color: var(--text-color);
+}
+body.dark-mode .google-signin-btn {
+  color: #f0f0f0;
+  background: #222;
+}
+body.dark-mode .modal-content button,
+body.dark-mode .modal-content input[type="button"] {
+  background: var(--link-color);
+  color: #f0f0f0;
+}
+body.dark-mode .modal-content button:hover {
+  background: var(--link-hover);
+  color: #fff;
+}
+body.dark-mode .close {
+  color: var(--link-color);
+}
+body.dark-mode .close:hover,
+body.dark-mode .close:focus {
+  color: var(--link-hover);
 }
