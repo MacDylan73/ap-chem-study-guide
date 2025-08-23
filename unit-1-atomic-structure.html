@@ -667,15 +667,61 @@
 
 <script src="questions.js" defer></script>
 <script src="util.js" defer></script>
-<script>
-  // Swap IDs to use the new bottom bar
+<!-- Swap IDs to use the new bottom bar -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  query,
+  where,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
+  authDomain: "ap-chem-course-guide.firebaseapp.com",
+  projectId: "ap-chem-course-guide",
+  storageBucket: "ap-chem-course-guide.appspot.com",
+  messagingSenderId: "601341546125",
+  appId: "1:601341546125:web:152f1fb623c69351c81cc4",
+  measurementId: "G-X2H058B7KT"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+provider.setCustomParameters({ prompt: "select_account" });
+const db = getFirestore(app);
+
+window.db = db;
+window.auth = auth;
+window.setDoc = setDoc;
+window.doc = doc;
+
+// --- Bottom bar authentication buttons ---
 function updateBottomBarAuthButtons() {
   const leftDiv = document.getElementById("bottomBarLeft");
   leftDiv.innerHTML = "";
   if (window.isSignedIn) {
     const signOutBtn = document.createElement("button");
     signOutBtn.textContent = "Sign Out";
-    signOutBtn.onclick = () => window.signOut && window.signOut();
+    signOutBtn.onclick = () => signOut(auth).then(() => {
+      window.isSignedIn = false;
+      location.reload();
+    });
     leftDiv.appendChild(signOutBtn);
 
     const changeUsernameBtn = document.createElement("button");
@@ -689,8 +735,8 @@ function updateBottomBarAuthButtons() {
     const signInBtn = document.createElement("button");
     signInBtn.textContent = "Sign In";
     signInBtn.onclick = function() {
-  document.getElementById('modalSignIn').style.display = 'flex';
-};
+      document.getElementById('modalSignIn').style.display = 'flex';
+    };
     leftDiv.appendChild(signInBtn);
   }
 }
@@ -698,9 +744,9 @@ function updateBottomBarAuthButtons() {
 function setupBottomBarButtons() {
   document.getElementById("returnHomeBtn").onclick = () => window.location.href = "/ap-chem-study-guide/";
   document.getElementById("nextUnitBtn").onclick = () => window.location.href = "/unit-2-compound-structure-and-properties.html";
-  // Future feature button is a placeholder (disabled)
 }
 
+// --- Auth state sync ---
 function setupBottomBarAuthSync() {
   document.addEventListener("authstatechanged", updateBottomBarAuthButtons);
   setInterval(updateBottomBarAuthButtons, 1000);
@@ -711,10 +757,8 @@ document.addEventListener("DOMContentLoaded", () => {
   updateBottomBarAuthButtons();
   setupBottomBarAuthSync();
 });
-</script>
 
-<script>
-/* ----------- Site Gating Logic ----------- */
+// --- Site gating logic ---
 function handleGating(maxFreeClicks = 3) {
   let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
   const modal = document.getElementById("signupModal");
@@ -762,191 +806,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   window.unlockContent = unlockContent;
 });
-</script>
 
-<!-- ----------- Firebase Auth & Username Logic ----------- -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
-  signOut,
-  onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  setDoc,
-  collection,
-  query,
-  where,
-  getDocs
-} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-// Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
-  authDomain: "ap-chem-course-guide.firebaseapp.com",
-  projectId: "ap-chem-course-guide",
-  storageBucket: "ap-chem-course-guide.appspot.com",
-  messagingSenderId: "601341546125",
-  appId: "1:601341546125:web:152f1fb623c69351c81cc4",
-  measurementId: "G-X2H058B7KT"
-};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-provider.setCustomParameters({ prompt: "select_account" });
-const db = getFirestore(app);
-
-// DEBUG: expose for browser console
-window.db = db;
-window.auth = auth;
-window.setDoc = setDoc;
-window.doc = doc;
-
-// Helper: Check if user doc has a username, show modal if not
-async function checkUsername(user) {
-  const modal = document.getElementById("usernameModal");
-  const input = document.getElementById("usernameInput");
-
-  if (!user || !user.uid) {
-    modal.style.display = "none";
-    return;
-  }
-  const userRef = doc(db, "users", user.uid);
-  const snapshot = await getDoc(userRef);
-  if (!snapshot.exists() || !snapshot.data().username) {
-    modal.style.display = "block";
-    input.focus();
-  } else {
-    modal.style.display = "none";
-  }
-}
-
-// Helper: Check if username is taken
-async function isUsernameTaken(username) {
-  const usersRef = collection(db, "users");
-  const q = query(usersRef, where("username", "==", username));
-  const snapshot = await getDocs(q);
-  return !snapshot.empty;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  // Get buttons
-  const sidebarSignInBtn = document.getElementById("sidebarSignInBtn");
-  const signupModalSignInBtn = document.getElementById("signupModalSignInBtn");
-  const signOutBtn = document.getElementById("signOutBtn");
-  const submitUsernameBtn = document.getElementById("submitUsernameBtn");
-
-  // Attach sign in handlers to both buttons
-  function signInHandler() {
-    document.getElementById("signupModal").style.display = "none";
-    signInWithPopup(auth, provider)
-      .then(result => {
-        window.isSignedIn = true;
-        checkUsername(result.user);
-        if (window.unlockContent) window.unlockContent();
-        // Hide sign-in buttons
-        if (signupModalSignInBtn) signupModalSignInBtn.style.display = "none";
-        document.getElementById("signupModal").style.display = "none";
-      })
-      .catch(error => {
-        console.error("Sign-in error:", error.code, error.message);
-      });
-  }
-  if (signupModalSignInBtn)
-    signupModalSignInBtn.addEventListener("click", signInHandler);
-
-  // Auth State Listener
-  onAuthStateChanged(auth, user => {
-    if (user) {
-      window.isSignedIn = true;
-      checkUsername(user);
-      if (window.unlockContent) window.unlockContent();
-      if (sidebarSignInBtn) sidebarSignInBtn.style.display = "none";
-      if (signupModalSignInBtn) signupModalSignInBtn.style.display = "none";
-    } else {
-      window.isSignedIn = false;
-      document.getElementById("signupModal").style.display = "none";
-      document.getElementById("usernameModal").style.display = "none";
-      if (sidebarSignInBtn) sidebarSignInBtn.style.display = "inline-block";
-      if (signupModalSignInBtn) signupModalSignInBtn.style.display = "inline-block";
-    }
-  });
-
-  // Username submit logic
-  if (submitUsernameBtn) {
-    submitUsernameBtn.onclick = async () => {
-      const input = document.getElementById("usernameInput");
-      const username = input.value.trim();
-      const user = auth.currentUser;
-
-      if (!username || !user || !user.uid) {
-        alert("You're not signed in. Please sign in first.");
-        return;
-      }
-      const isValid = /^[a-zA-Z0-9_]{3,20}$/.test(username);
-      if (!isValid) {
-        alert("Username must be 3–20 characters and contain only letters, numbers, or underscores.");
-        input.focus();
-        return;
-      }
-      const taken = await isUsernameTaken(username);
-      if (taken) {
-        alert("That username is already taken. Try another one.");
-        input.focus();
-        return;
-      }
-      try {
-        const userRef = doc(db, "users", user.uid);
-        await setDoc(userRef, { username }, { merge: true });
-        document.getElementById("usernameModal").style.display = "none";
-      } catch (error) {
-        console.error("Firestore write failed:", error);
-        alert("Could not save username. Make sure you're signed in and try again.");
-      }
-    };
-  }
-
-  // Sign Out
-  if (signOutBtn) {
-    signOutBtn.addEventListener("click", () => {
-      signOut(auth).then(() => {
-        alert("Signed out!");
-        location.reload();
-      });
-    });
-  }
-});
-</script>
-
-<!-- checkmarks -->
-  <script>
-function updateSubunitCheckmarks() {
-  document.querySelectorAll('.subunit').forEach(subunitDiv => {
-    let subunitHeader = subunitDiv.querySelector('.subunit-header');
-    if (!subunitHeader) return;
-    let subunitKey = subunitHeader.textContent.trim();
-    let isComplete = localStorage.getItem('quizComplete_' + subunitKey) === 'true';
-    if (isComplete) {
-      subunitHeader.classList.add('completed');
-    } else {
-      subunitHeader.classList.remove('completed');
-    }
-  });
-}
-document.addEventListener('DOMContentLoaded', () => {
-  updateSubunitCheckmarks();
-  window.updateSubunitCheckmarks = updateSubunitCheckmarks;
-});
-
-
- // Firebase imports assumed initialized elsewhere
-// import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
+// --- Auth modal and tab logic ---
 const modal = document.getElementById('modalSignIn');
 const closeBtn = document.getElementById('closeSignInModal');
 const tabSignIn = document.getElementById('tabSignIn');
@@ -973,18 +834,17 @@ tabRegister.addEventListener('click', () => {
   authError.textContent = '';
 });
 
+// Email/Password Auth
 emailAuthForm.addEventListener('submit', async (e) => {
   e.preventDefault();
   authError.textContent = '';
   const email = document.getElementById('authEmail').value;
   const password = document.getElementById('authPassword').value;
-  const auth = firebase.auth();
   try {
     if(isRegisterMode) {
-      await auth.createUserWithEmailAndPassword(email, password);
-      // Optionally set displayName in Firestore/profile here
+      await createUserWithEmailAndPassword(auth, email, password);
     } else {
-      await auth.signInWithEmailAndPassword(email, password);
+      await signInWithEmailAndPassword(auth, email, password);
     }
     modal.style.display = 'none';
   } catch (err) {
@@ -992,11 +852,11 @@ emailAuthForm.addEventListener('submit', async (e) => {
   }
 });
 
+// Google Sign-In
 googleSignInBtn.addEventListener('click', async () => {
   authError.textContent = '';
-  const provider = new firebase.auth.GoogleAuthProvider();
   try {
-    await firebase.auth().signInWithPopup(provider);
+    await signInWithPopup(auth, provider);
     modal.style.display = 'none';
   } catch (err) {
     authError.textContent = err.message;
@@ -1007,7 +867,6 @@ googleSignInBtn.addEventListener('click', async () => {
 closeBtn.onclick = () => { modal.style.display = 'none'; };
 
 // Optionally, show modal logic elsewhere in your code:
-// modal.style.display = 'block';
 document.getElementById('signupModalSignInBtn').onclick = function() {
   document.getElementById('modalSignIn').style.display = 'block';
 };
@@ -1015,8 +874,45 @@ document.getElementById('signInBtn').onclick = function() {
   document.getElementById('modalSignIn').style.display = 'block';
 };
 
+// --- Username modal logic (Firestore save) ---
+const usernameModal = document.getElementById('usernameModal');
+const closeUsernameModal = document.getElementById('closeUsernameModal');
+const saveUsernameBtn = document.getElementById('saveUsernameBtn');
+const usernameInput = document.getElementById('usernameInput');
+closeUsernameModal.onclick = () => { usernameModal.style.display = 'none'; };
+saveUsernameBtn.onclick = async () => {
+  const newUsername = usernameInput.value.trim();
+  if (newUsername && window.isSignedIn && auth.currentUser) {
+    try {
+      const userRef = doc(db, "users", auth.currentUser.uid);
+      await setDoc(userRef, { username: newUsername }, { merge: true });
+      usernameModal.style.display = 'none';
+    } catch (e) {
+      alert("Could not save username.");
+    }
+  } else {
+    alert("Please sign in first!");
+  }
+};
 
-    
+// --- Subunit checkmarks ---
+function updateSubunitCheckmarks() {
+  document.querySelectorAll('.subunit').forEach(subunitDiv => {
+    let subunitHeader = subunitDiv.querySelector('.subunit-header');
+    if (!subunitHeader) return;
+    let subunitKey = subunitHeader.textContent.trim();
+    let isComplete = localStorage.getItem('quizComplete_' + subunitKey) === 'true';
+    if (isComplete) {
+      subunitHeader.classList.add('completed');
+    } else {
+      subunitHeader.classList.remove('completed');
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded', () => {
+  updateSubunitCheckmarks();
+  window.updateSubunitCheckmarks = updateSubunitCheckmarks;
+});
 </script>
   
 </body>
