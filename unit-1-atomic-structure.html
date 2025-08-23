@@ -690,7 +690,7 @@ import {
   getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
-// Firebase config
+// --- Firebase setup ---
 const firebaseConfig = {
   apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
   authDomain: "ap-chem-course-guide.firebaseapp.com",
@@ -706,68 +706,71 @@ const provider = new GoogleAuthProvider();
 provider.setCustomParameters({ prompt: "select_account" });
 const db = getFirestore(app);
 
-window.db = db;
-window.auth = auth;
-window.setDoc = setDoc;
-window.doc = doc;
+// --- Element refs ---
+const bottomBarLeft = document.getElementById("bottomBarLeft");
+const signupModal = document.getElementById("signupModal");
+const sidebarSignInBtn = document.getElementById("sidebarSignInBtn");
+const signupModalSignInBtn = document.getElementById("signupModalSignInBtn");
+const signInBtn = document.getElementById("signInBtn"); // if exists
+const usernameModal = document.getElementById("usernameModal");
+const usernameInput = document.getElementById("usernameInput");
+const submitUsernameBtn = document.getElementById("submitUsernameBtn");
+const closeSignupBtn = document.getElementById("closeSignupModal");
+const closeUsernameModal = document.getElementById("closeUsernameModal");
 
-// --- Bottom bar authentication buttons ---
+// --- Dynamic Bottom Bar ---
 function updateBottomBarAuthButtons() {
-  const leftDiv = document.getElementById("bottomBarLeft");
-  leftDiv.innerHTML = "";
+  bottomBarLeft.innerHTML = "";
   if (window.isSignedIn) {
     const signOutBtn = document.createElement("button");
     signOutBtn.textContent = "Sign Out";
-    signOutBtn.onclick = () => signOut(auth).then(() => {
-      window.isSignedIn = false;
-      location.reload();
-    });
-    leftDiv.appendChild(signOutBtn);
+    signOutBtn.onclick = () => {
+      signOut(auth).then(() => {
+        window.isSignedIn = false;
+        updateBottomBarAuthButtons();
+        // Optionally reload if you want to reset page state
+        location.reload();
+      });
+    };
+    bottomBarLeft.appendChild(signOutBtn);
 
     const changeUsernameBtn = document.createElement("button");
     changeUsernameBtn.textContent = "Change Username";
     changeUsernameBtn.onclick = () => {
-      document.getElementById("usernameModal").style.display = "block";
-      document.getElementById("usernameInput").focus();
+      usernameModal.style.display = "block";
+      usernameInput.focus();
     };
-    leftDiv.appendChild(changeUsernameBtn);
+    bottomBarLeft.appendChild(changeUsernameBtn);
   } else {
     const signInBtn = document.createElement("button");
     signInBtn.textContent = "Sign In";
-    signInBtn.onclick = function() {
-      document.getElementById('modalSignIn').style.display = 'flex';
+    signInBtn.onclick = () => {
+      signupModal.style.display = "block";
     };
-    leftDiv.appendChild(signInBtn);
+    bottomBarLeft.appendChild(signInBtn);
   }
 }
 
 function setupBottomBarButtons() {
-  document.getElementById("returnHomeBtn").onclick = () => window.location.href = "/ap-chem-study-guide/";
-  document.getElementById("nextUnitBtn").onclick = () => window.location.href = "/unit-2-compound-structure-and-properties.html";
+  const returnHomeBtn = document.getElementById("returnHomeBtn");
+  if (returnHomeBtn) returnHomeBtn.onclick = () => window.location.href = "/ap-chem-study-guide/";
+  const nextUnitBtn = document.getElementById("nextUnitBtn");
+  if (nextUnitBtn) nextUnitBtn.onclick = () => window.location.href = "/unit-2-compound-structure-and-properties.html";
 }
 
-// --- Auth state sync ---
 function setupBottomBarAuthSync() {
-  document.addEventListener("authstatechanged", updateBottomBarAuthButtons);
   setInterval(updateBottomBarAuthButtons, 1000);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  setupBottomBarButtons();
-  updateBottomBarAuthButtons();
-  setupBottomBarAuthSync();
-});
-
-// --- Site gating logic ---
+// --- Soft Gating Logic ---
 function handleGating(maxFreeClicks = 3) {
   let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
-  const modal = document.getElementById("signupModal");
 
   function isGated() {
     return !window.isSignedIn && clickCount >= maxFreeClicks;
   }
   function showModal() {
-    modal.style.display = "block";
+    signupModal.style.display = "block";
   }
   function updateClickCount() {
     clickCount++;
@@ -777,7 +780,8 @@ function handleGating(maxFreeClicks = 3) {
   function unlockContent() {
     window.isSignedIn = true;
     localStorage.removeItem("unitClicks");
-    modal.style.display = "none";
+    signupModal.style.display = "none";
+    updateBottomBarAuthButtons();
   }
 
   document.querySelectorAll(".subunit-header").forEach(link => {
@@ -794,108 +798,127 @@ function handleGating(maxFreeClicks = 3) {
   return { unlockContent };
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const { unlockContent } = handleGating();
+// --- Username Modal Logic ---
+async function checkUsername(user) {
+  if (!user || !user.uid) {
+    usernameModal.style.display = "none";
+    return;
+  }
+  const userRef = doc(db, "users", user.uid);
+  const snapshot = await getDoc(userRef);
+  if (!snapshot.exists() || !snapshot.data().username) {
+    usernameModal.style.display = "block";
+    usernameInput.focus();
+  } else {
+    usernameModal.style.display = "none";
+  }
+}
+async function isUsernameTaken(username) {
+  const usersRef = collection(db, "users");
+  const q = query(usersRef, where("username", "==", username));
+  const snapshot = await getDocs(q);
+  return !snapshot.empty;
+}
 
-  // Close signup modal
-  const closeSignupBtn = document.getElementById("closeSignupModal");
+// --- Sign In Handler ---
+function signInHandler() {
+  signupModal.style.display = "none"; // Hide gating modal immediately
+  signInWithPopup(auth, provider)
+    .then(result => {
+      window.isSignedIn = true;
+      checkUsername(result.user);
+      unlockContent(); // Remove gating and update UI
+      updateBottomBarAuthButtons();
+    })
+    .catch(error => {
+      alert("Sign-in failed!");
+      signupModal.style.display = "none";
+    });
+}
+
+// --- Attach event handlers ---
+document.addEventListener("DOMContentLoaded", () => {
+  setupBottomBarButtons();
+  updateBottomBarAuthButtons();
+  setupBottomBarAuthSync();
+
+  const gating = handleGating();
+  window.unlockContent = gating.unlockContent;
+
+  // Sidebar sign-in button
+  if (sidebarSignInBtn)
+    sidebarSignInBtn.addEventListener("click", signInHandler);
+
+  // Gating modal sign-in
+  if (signupModalSignInBtn)
+    signupModalSignInBtn.addEventListener("click", signInHandler);
+
+  // Close gating modal
   if (closeSignupBtn) {
     closeSignupBtn.addEventListener("click", () => {
-      document.getElementById("signupModal").style.display = "none";
+      signupModal.style.display = "none";
     });
   }
-  window.unlockContent = unlockContent;
-});
 
-// --- Auth modal and tab logic ---
-const modal = document.getElementById('modalSignIn');
-const closeBtn = document.getElementById('closeSignInModal');
-const tabSignIn = document.getElementById('tabSignIn');
-const tabRegister = document.getElementById('tabRegister');
-const emailAuthForm = document.getElementById('emailAuthForm');
-const submitAuthBtn = document.getElementById('submitAuthBtn');
-const authError = document.getElementById('authError');
-const googleSignInBtn = document.getElementById('googleSignInBtn');
+  // Username modal close
+  if (closeUsernameModal) {
+    closeUsernameModal.addEventListener("click", () => {
+      usernameModal.style.display = "none";
+    });
+  }
 
-let isRegisterMode = false;
-
-tabSignIn.addEventListener('click', () => {
-  isRegisterMode = false;
-  tabSignIn.classList.add('active');
-  tabRegister.classList.remove('active');
-  submitAuthBtn.textContent = 'Sign In';
-  authError.textContent = '';
-});
-tabRegister.addEventListener('click', () => {
-  isRegisterMode = true;
-  tabRegister.classList.add('active');
-  tabSignIn.classList.remove('active');
-  submitAuthBtn.textContent = 'Register';
-  authError.textContent = '';
-});
-
-// Email/Password Auth
-emailAuthForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  authError.textContent = '';
-  const email = document.getElementById('authEmail').value;
-  const password = document.getElementById('authPassword').value;
-  try {
-    if(isRegisterMode) {
-      await createUserWithEmailAndPassword(auth, email, password);
-    } else {
-      await signInWithEmailAndPassword(auth, email, password);
-    }
-    modal.style.display = 'none';
-  } catch (err) {
-    authError.textContent = err.message;
+  // Username submit
+  if (submitUsernameBtn) {
+    submitUsernameBtn.onclick = async () => {
+      const username = usernameInput.value.trim();
+      const user = auth.currentUser;
+      if (!username || !user || !user.uid) {
+        alert("You're not signed in. Please sign in first.");
+        return;
+      }
+      const isValid = /^[a-zA-Z0-9_]{3,20}$/.test(username);
+      if (!isValid) {
+        alert("Username must be 3–20 characters and contain only letters, numbers, or underscores.");
+        usernameInput.focus();
+        return;
+      }
+      const taken = await isUsernameTaken(username);
+      if (taken) {
+        alert("That username is already taken. Try another one.");
+        usernameInput.focus();
+        return;
+      }
+      try {
+        const userRef = doc(db, "users", user.uid);
+        await setDoc(userRef, { username }, { merge: true });
+        usernameModal.style.display = "none";
+      } catch (error) {
+        alert("Could not save username. Make sure you're signed in and try again.");
+      }
+    };
   }
 });
 
-// Google Sign-In
-googleSignInBtn.addEventListener('click', async () => {
-  authError.textContent = '';
-  try {
-    await signInWithPopup(auth, provider);
-    modal.style.display = 'none';
-  } catch (err) {
-    authError.textContent = err.message;
-  }
-});
-
-// Close modal logic
-closeBtn.onclick = () => { modal.style.display = 'none'; };
-
-// Optionally, show modal logic elsewhere in your code:
-document.getElementById('signupModalSignInBtn').onclick = function() {
-  document.getElementById('modalSignIn').style.display = 'block';
-};
-document.getElementById('signInBtn').onclick = function() {
-  document.getElementById('modalSignIn').style.display = 'block';
-};
-
-// --- Username modal logic (Firestore save) ---
-const usernameModal = document.getElementById('usernameModal');
-const closeUsernameModal = document.getElementById('closeUsernameModal');
-const saveUsernameBtn = document.getElementById('saveUsernameBtn');
-const usernameInput = document.getElementById('usernameInput');
-closeUsernameModal.onclick = () => { usernameModal.style.display = 'none'; };
-saveUsernameBtn.onclick = async () => {
-  const newUsername = usernameInput.value.trim();
-  if (newUsername && window.isSignedIn && auth.currentUser) {
-    try {
-      const userRef = doc(db, "users", auth.currentUser.uid);
-      await setDoc(userRef, { username: newUsername }, { merge: true });
-      usernameModal.style.display = 'none';
-    } catch (e) {
-      alert("Could not save username.");
-    }
+// --- Firebase Auth State Listener ---
+onAuthStateChanged(auth, user => {
+  if (user) {
+    window.isSignedIn = true;
+    checkUsername(user);
+    if (window.unlockContent) window.unlockContent();
+    updateBottomBarAuthButtons();
+    if (sidebarSignInBtn) sidebarSignInBtn.style.display = "none";
+    if (signupModalSignInBtn) signupModalSignInBtn.style.display = "none";
   } else {
-    alert("Please sign in first!");
+    window.isSignedIn = false;
+    signupModal.style.display = "none";
+    usernameModal.style.display = "none";
+    if (sidebarSignInBtn) sidebarSignInBtn.style.display = "inline-block";
+    if (signupModalSignInBtn) signupModalSignInBtn.style.display = "inline-block";
+    updateBottomBarAuthButtons();
   }
-};
+});
 
-// --- Subunit checkmarks ---
+// --- Quiz checkmarks logic ---
 function updateSubunitCheckmarks() {
   document.querySelectorAll('.subunit').forEach(subunitDiv => {
     let subunitHeader = subunitDiv.querySelector('.subunit-header');
