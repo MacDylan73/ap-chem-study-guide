@@ -20,7 +20,7 @@
 /* ===========================
    TITLE IN TOP BAR
    =========================== */
-.unit-title, .topbar-title {
+.topbar-title {
   margin: 0;
   font-size: 1.2rem;
   flex-grow: 1;
