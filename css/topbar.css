@@ -1,1 +1,48 @@
+/* ===========================
+   TOP BAR
+   =========================== */
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 60px;
+  background-color: var(--bar-bg);
+  color: var(--bar-text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
 
+/* ===========================
+   TITLE IN TOP BAR
+   =========================== */
+.unit-title, .topbar-title {
+  margin: 0;
+  font-size: 1.2rem;
+  flex-grow: 1;
+  text-align: center;
+  color: var(--bar-text);
+}
+
+/* ===========================
+   ICONS IN TOP BAR
+   =========================== */
+.menu-icon,
+.theme-toggle {
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+}
+.theme-toggle:hover {
+  outline: 2px solid var(--hover-bg);
+  outline-offset: 2px;
+}
+.menu-icon:hover {
+  outline: 2px solid var(--hover-bg);
+  outline-offset: 2px;
+}
