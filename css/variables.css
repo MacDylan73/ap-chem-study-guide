@@ -1,1 +1,59 @@
+/* ===========================
+   ROOT VARIABLES
+   =========================== */
+:root {
+  --bg-color:
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===========================
+   ROOT VARIABLES
+   =========================== */
+:root {
+  --bg-color: #f4f4f9;
+  --text-color: #333333;
+  --box-bg: #ffffff;
+  --box-border: #cce0ff;
+  --link-color: #0077cc;
+  --link-hover: #0055aa;
+  --choice-bg: #eaf3fb;
+
+  --bar-bg: #ffffff;
+  --bar-text: #0055aa;
+  --sidebar-bg: #f0f8ff;
+  --sidebar-text: #003366;
+
+  --hover-light: rgba(0, 123, 255, 0.12);
+  --hover-dark: #3a3a3a;
+  --hover-bg: var(--hover-light);
+}
+
+/* ===========================
+   DARK MODE VARIABLES
+   =========================== */
+.dark-mode {
+  --bg-color: #1a1a1a;
+  --text-color: #f0f0f0;
+  --box-bg: #222222;
+  --box-border: #444444;
+  --link-color: #66b2ff;
+  --link-hover: #99ccff;
+  --choice-bg: #2c313a;
+
+  --bar-bg: #222222;
+  --bar-text: #f0f0f0;
+  --sidebar-bg: #333333;
+  --sidebar-text: #f0f0f0;
+  --hover-bg: var(--hover-dark);
+}
 
