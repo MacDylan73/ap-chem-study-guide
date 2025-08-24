@@ -111,8 +111,10 @@
     } from './js/auth.js';
 
     // Render topbar and sidebar
+    document.addEventListener('DOMContentLoaded', () => {
     loadTopbar("AP Chemistry Study Guide and Practice Tests");
     loadSidebar();
+    });
 
     // Setup username modal logic (wires up events)
     setupUsernameModal();
