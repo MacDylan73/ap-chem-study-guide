@@ -42,6 +42,9 @@
 /* ===========================
    GLOBAL ELEMENTS
    =========================== */
+body, .subunit-container, .bottom-bar, .notes-box, #topbar-container, #sidebar-container {
+  transition: background-color 1s, color 1s, border-color 1s;
+}
 * {
   box-sizing: border-box;
 }
