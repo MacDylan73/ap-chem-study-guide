@@ -45,3 +45,24 @@ function checkAnswer(button, isCorrect, explanation) {
     if (window.updateSubunitCheckmarks) window.updateSubunitCheckmarks();
   }
 }
+
+// Quiz checkmarks logic (now in questions.js)
+export function updateSubunitCheckmarks() {
+  document.querySelectorAll('.subunit').forEach(subunitDiv => {
+    let subunitHeader = subunitDiv.querySelector('.subunit-header');
+    if (!subunitHeader) return;
+    let subunitKey = subunitHeader.textContent.trim();
+    let isComplete = localStorage.getItem('quizComplete_' + subunitKey) === 'true';
+    if (isComplete) {
+      subunitHeader.classList.add('completed');
+    } else {
+      subunitHeader.classList.remove('completed');
+    }
+  });
+}
+
+// Optionally, set this up automatically on DOMContentLoaded
+document.addEventListener('DOMContentLoaded', () => {
+  updateSubunitCheckmarks();
+  window.updateSubunitCheckmarks = updateSubunitCheckmarks;
+});
