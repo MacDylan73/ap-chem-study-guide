@@ -182,11 +182,11 @@ if (authForm) {
     if (isRegister) {
   const username = authUsername.value.trim();
   if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-    if (authError) authError.textContent = "Username must be 3–20 letters/numbers/underscores.";
+    if (authError) authError.textContent = "Username must be 3–20 Letters/Numbers/Underscores.";
     return;
   }
   if (await isUsernameTaken(username)) {
-    if (authError) authError.textContent = "Username already taken.";
+    if (authError) authError.textContent = "Username Already Taken.";
     return;
   }
   try {
