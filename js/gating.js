@@ -21,7 +21,22 @@ export function setupGating(maxFreeClicks = 3) {
     // Optionally: call updateIndexBarAuthButtons() or reload bar
   }
 
-  export function setupGatingModalClose() {
+  document.querySelectorAll(".subunit-header").forEach(link => {
+    link.addEventListener("click", (e) => {
+      if (isGated()) {
+        e.preventDefault();
+        showModal();
+        return;
+      }
+      updateClickCount();
+    });
+  });
+
+  window.unlockContent = unlockContent;
+}
+
+// Gating modal close/setup logic
+export function setupGatingModalClose() {
   const gatingModal = document.getElementById('signupModal');
   const closeBtn = document.getElementById('closeSignupModal');
   const signUpBtn = document.getElementById('signupModalSignInBtn');
@@ -57,18 +72,4 @@ export function setupGating(maxFreeClicks = 3) {
       gatingModal.style.display = 'none';
     }
   });
-}
-
-  document.querySelectorAll(".subunit-header").forEach(link => {
-    link.addEventListener("click", (e) => {
-      if (isGated()) {
-        e.preventDefault();
-        showModal();
-        return;
-      }
-      updateClickCount();
-    });
-  });
-
-  window.unlockContent = unlockContent;
 }
