@@ -53,3 +53,10 @@ document.addEventListener('keydown', function (event) {
     if (sidebar) sidebar.classList.remove('visible');
   }
 });
+
+// Load Sidebar
+export async function loadSidebar() {
+  const resp = await fetch('sidebar.html');
+  const html = await resp.text();
+  document.getElementById('sidebar-container').innerHTML = html;
+}
