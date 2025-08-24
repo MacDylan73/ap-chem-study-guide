@@ -603,27 +603,6 @@
 <!-- Swap IDs to use the new bottom bar -->
 <script type="module">
 
-
-
-
-// --- Quiz checkmarks logic ---
-function updateSubunitCheckmarks() {
-  document.querySelectorAll('.subunit').forEach(subunitDiv => {
-    let subunitHeader = subunitDiv.querySelector('.subunit-header');
-    if (!subunitHeader) return;
-    let subunitKey = subunitHeader.textContent.trim();
-    let isComplete = localStorage.getItem('quizComplete_' + subunitKey) === 'true';
-    if (isComplete) {
-      subunitHeader.classList.add('completed');
-    } else {
-      subunitHeader.classList.remove('completed');
-    }
-  });
-}
-document.addEventListener('DOMContentLoaded', () => {
-  updateSubunitCheckmarks();
-  window.updateSubunitCheckmarks = updateSubunitCheckmarks;
-});
 </script>
   
 </body>
