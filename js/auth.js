@@ -164,7 +164,7 @@ export async function ensureUsernameOnLogin() {
 }
 
 //INDEX PAGE ONLY: SETUP BOTTOM BAR
-function updateIndexBarAuthButtons() {
+export function updateIndexBarAuthButtons() {
   const leftDiv = document.getElementById("bottomBarLeft");
   leftDiv.innerHTML = "";
   if (window.isSignedIn) {
@@ -194,7 +194,7 @@ function updateIndexBarAuthButtons() {
         .then(result => {
           window.isSignedIn = true;
           updateIndexBarAuthButtons();
-          checkUsername(result.user);
+          ensureUsernameOnLogin();
         })
         .catch(error => {
           alert("Sign-in failed!");
@@ -203,9 +203,10 @@ function updateIndexBarAuthButtons() {
     leftDiv.appendChild(signUpBtn);
   }
 }
+
 document.addEventListener('DOMContentLoaded', () => {
   updateIndexBarAuthButtons();
-
+});
 // ---- Example Usage (in your HTML page) ----
 /*
 <script type="module">
