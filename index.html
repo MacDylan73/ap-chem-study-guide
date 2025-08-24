@@ -116,11 +116,19 @@
 
     // Render topbar and sidebar
     document.addEventListener('DOMContentLoaded', async () => {
+    await loadAuthModal();  
     await loadTopbar("AP Chemistry Course Guide and Practice Tests");
     applySavedTheme();
     loadSidebar();
     });
 
+    // Auth
+    async function loadAuthModal() {
+      const resp = await fetch('auth-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+    updateIndexBarAuthButtons();
     // Setup username modal logic (wires up events)
     setupUsernameModal();
 
