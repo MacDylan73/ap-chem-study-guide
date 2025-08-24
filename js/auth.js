@@ -153,6 +153,48 @@ export function setupUsernameModal() {
   }
 }
 
+// Auth
+    async function loadAuthModal() {
+      const resp = await fetch('auth-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+
+export function setupAuthModalEvents() {
+  // Tab switching
+  const tabSignIn = document.getElementById('tabSignIn');
+  const tabRegister = document.getElementById('tabRegister');
+  const emailAuthForm = document.getElementById('emailAuthForm');
+  const googleSignInBtn = document.getElementById('googleSignInBtn');
+  const signInModal = document.getElementById('signInModal');
+  const closeSignInModal = document.getElementById('closeSignInModal');
+
+  if (tabSignIn && tabRegister && emailAuthForm && googleSignInBtn && signInModal) {
+    tabSignIn.onclick = () => {
+      tabSignIn.classList.add('active');
+      tabRegister.classList.remove('active');
+      emailAuthForm.style.display = 'block';
+      // Hide register form if present
+    };
+    tabRegister.onclick = () => {
+      tabRegister.classList.add('active');
+      tabSignIn.classList.remove('active');
+      emailAuthForm.style.display = 'none';
+      // Show register form if present
+    };
+    closeSignInModal.onclick = () => { signInModal.style.display = 'none'; };
+    // Wire up Google sign-in as needed
+    googleSignInBtn.onclick = () => {
+      // Your Google auth logic here
+    };
+    // Wire up email form submission as needed
+    emailAuthForm.onsubmit = (e) => {
+      e.preventDefault();
+      // Your email/password auth logic here
+    };
+  }
+}
+
 // ---- Utility: Ensure Username on Login ----
 // Call ensureUsernameOnLogin() after sign-in or auth state change.
 // Shows modal if username missing.
