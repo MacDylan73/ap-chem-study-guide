@@ -188,7 +188,7 @@ export function updateIndexBarAuthButtons() {
     leftDiv.appendChild(changeUsernameBtn);
   } else {
     const signUpBtn = document.createElement("button");
-    signUpBtn.textContent = "Sign Up";
+    signUpBtn.textContent = "Sign In";
     signUpBtn.onclick = () => {
       signInWithPopup(auth, provider)
         .then(result => {
