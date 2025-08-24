@@ -1,0 +1,264 @@
+/* auth.css -- Styles for Authentication and Username Modals with Light/Dark Mode Support */
+
+/* Mode variables */
+:root {
+  --modal-bg: #fff;
+  --modal-title: #222;
+  --modal-border: #e4e4e4;
+  --modal-close: #888;
+  --modal-close-hover: #d33;
+  --tab-bg: #f3f3f3;
+  --tab-active-bg: #3686f7;
+  --tab-active-text: #fff;
+  --tab-text: #555;
+  --input-bg: #fafafa;
+  --input-border: #d7d7d7;
+  --input-focus: #3686f7;
+  --button-bg: #3686f7;
+  --button-hover-bg: #2463b5;
+  --button-text: #fff;
+  --error-text: #d33;
+  --divider: #e4e4e4;
+  --divider-text: #aaa;
+  --google-btn-bg: #fff;
+  --google-btn-border: #d3d3d3;
+  --google-btn-hover-bg: #f3f8ff;
+  --google-btn-hover-text: #2463b5;
+  --shadow: 0 8px 32px rgba(0,0,0,0.13);
+  --google-shadow: 0 2px 12px rgba(68,138,255,0.07);
+  --google-shadow-hover: 0 4px 18px rgba(68,138,255,0.18);
+}
+
+[data-theme="dark"] {
+  --modal-bg: #21232b;
+  --modal-title: #e4e4e4;
+  --modal-border: #343647;
+  --modal-close: #aaa;
+  --modal-close-hover: #ff7e7e;
+  --tab-bg: #292b36;
+  --tab-active-bg: #3686f7;
+  --tab-active-text: #fff;
+  --tab-text: #bfc6d5;
+  --input-bg: #191a20;
+  --input-border: #343647;
+  --input-focus: #3686f7;
+  --button-bg: #3686f7;
+  --button-hover-bg: #245bb0;
+  --button-text: #fff;
+  --error-text: #ff7e7e;
+  --divider: #343647;
+  --divider-text: #8d95b3;
+  --google-btn-bg: #22232b;
+  --google-btn-border: #343647;
+  --google-btn-hover-bg: #273043;
+  --google-btn-hover-text: #90b7fc;
+  --shadow: 0 8px 32px rgba(0,0,0,0.42);
+  --google-shadow: 0 2px 12px rgba(68,138,255,0.11);
+  --google-shadow-hover: 0 4px 18px rgba(68,138,255,0.20);
+}
+
+/* Modal background overlay */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.45);
+  justify-content: center;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+/* Modal content container */
+.modal-content {
+  background: var(--modal-bg);
+  margin: auto;
+  padding: 2rem 2.5rem 1.5rem 2.5rem;
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  max-width: 370px;
+  min-width: 300px;
+  position: relative;
+  animation: fadeInModal 0.25s;
+  border: 1.5px solid var(--modal-border);
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; transform: translateY(24px);}
+  to { opacity: 1; transform: none;}
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  right: 1rem;
+  top: 1.2rem;
+  font-size: 1.35rem;
+  font-weight: bold;
+  color: var(--modal-close);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.close:hover { color: var(--modal-close-hover); }
+
+/* Modal title */
+#authModalTitle {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  color: var(--modal-title);
+}
+
+/* Tab buttons */
+.tab-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.1rem;
+}
+.tab-btn {
+  padding: 0.45rem 1.5rem;
+  border: none;
+  border-radius: 7px 7px 0 0;
+  background: var(--tab-bg);
+  color: var(--tab-text);
+  font-size: 1.05rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+.tab-btn.active {
+  background: var(--tab-active-bg);
+  color: var(--tab-active-text);
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(54,134,247,0.10);
+}
+
+/* Form inputs and layout */
+form#authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.form-group label {
+  font-size: 1rem;
+  color: var(--modal-title);
+  font-weight: 500;
+  margin-bottom: 0.1rem;
+}
+.form-group input {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--input-border);
+  border-radius: 6px;
+  font-size: 1rem;
+  background: var(--input-bg);
+  color: var(--modal-title);
+  transition: border 0.18s, background 0.18s, color 0.18s;
+}
+.form-group input:focus {
+  border-color: var(--input-focus);
+  outline: none;
+  background: var(--modal-bg);
+}
+
+/* Submit button */
+#submitAuthBtn {
+  margin-top: 0.2rem;
+  padding: 0.6rem 0;
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  border-radius: 7px;
+  font-size: 1.07rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+#submitAuthBtn:hover {
+  background: var(--button-hover-bg);
+}
+
+/* Error message styling */
+.error-message {
+  color: var(--error-text);
+  font-size: 0.97rem;
+  margin-top: -0.4rem;
+  margin-bottom: 0.3rem;
+  min-height: 20px;
+  text-align: center;
+}
+
+/* Divider line */
+.modal-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.2rem 0 0.8rem 0;
+}
+.modal-line {
+  flex: 1;
+  height: 1px;
+  background: var(--divider);
+}
+.modal-divider-text {
+  margin: 0 0.7rem;
+  font-size: 1rem;
+  color: var(--divider-text);
+}
+
+/* Google Sign-In Button */
+.google-signin-btn {
+  width: 100%;
+  padding: 0.7rem 0 0.7rem 0;
+  background: var(--google-btn-bg);
+  border: 1.4px solid var(--google-btn-border);
+  border-radius: 7px;
+  color: #444;
+  font-size: 1.08rem;
+  font-weight: 500;
+  box-shadow: var(--google-shadow);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: border 0.18s, box-shadow 0.2s, color 0.18s, background 0.18s;
+}
+.google-signin-btn:hover {
+  border-color: var(--input-focus);
+  box-shadow: var(--google-shadow-hover);
+  color: var(--google-btn-hover-text);
+  background: var(--google-btn-hover-bg);
+}
+
+/* Username Modal (reuse modal styles for consistency) */
+#usernameModal .modal-content {
+  max-width: 370px;
+  min-width: 300px;
+  background: var(--modal-bg);
+  color: var(--modal-title);
+  border: 1.5px solid var(--modal-border);
+}
+#usernameModal .form-group label {
+  font-size: 1.02rem;
+  color: var(--modal-title);
+}
+#usernameModal .error-message {
+  text-align: center;
+  color: var(--error-text);
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  .modal-content {
+    max-width: 95vw;
+    min-width: 0;
+    padding: 1.2rem 1rem 1rem 1rem;
+  }
+}
