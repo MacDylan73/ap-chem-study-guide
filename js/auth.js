@@ -53,6 +53,8 @@ export function onAuthChange(callback) {
   onAuthStateChanged(auth, user => {
     isSignedIn = !!user;
     currentUser = user || null;
+    window.isSignedIn = isSignedIn; // <-- ADD THIS LINE
+    window.currentUser = currentUser; // (optional, for debugging)
     if (callback) callback(user);
     document.dispatchEvent(new CustomEvent("authstatechanged", { detail: { user } }));
   });
@@ -60,11 +62,12 @@ export function onAuthChange(callback) {
 
 // ---- Google Sign In Handler ----
 export function signInHandler() {
-  // This is a Google sign-in handler
   return signInWithPopup(auth, provider)
     .then(result => {
       isSignedIn = true;
       currentUser = result.user;
+      window.isSignedIn = isSignedIn; // <-- ADD THIS LINE
+      window.currentUser = currentUser; // (optional)
       return result.user;
     })
     .catch(error => {
@@ -206,6 +209,8 @@ export function signOutHandler() {
     .then(() => {
       isSignedIn = false;
       currentUser = null;
+      window.isSignedIn = false; // <-- ADD THIS LINE
+      window.currentUser = null;
       document.dispatchEvent(new CustomEvent("authstatechanged", { detail: { user: null } }));
     })
     .catch(error => {
