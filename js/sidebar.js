@@ -9,14 +9,14 @@ window.toggleSidebar = toggleSidebar;
 
 // Highlight the active sidebar link for the current page
 function highlightActiveSidebarLink() {
-  // Get current path, normalize to always end with index.html for home
-  let pagePath = window.location.pathname;
-  if (pagePath.endsWith('/')) {
-    pagePath += 'index.html'; // treat / as /index.html
-  }
+  // Normalize pathname for root to index.html
+  let current = window.location.pathname;
+  if (current.endsWith('/')) current += 'index.html';
+
   document.querySelectorAll('.sidebar a').forEach(link => {
-    const linkPath = new URL(link.href).pathname;
-    if (linkPath === pagePath) {
+    let linkPath = new URL(link.href, window.location.origin).pathname;
+    if (linkPath.endsWith('/')) linkPath += 'index.html';
+    if (linkPath === current) {
       link.classList.add('active');
     } else {
       link.classList.remove('active');
