@@ -113,10 +113,14 @@
              applySavedTheme
     } from './js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
-    import { setupAuthModalEvents, 
-             loadAuthModal 
-    } from './js/auth.js';
+    import { setupAuthModalEvents } from './js/auth.js';
 
+    async function loadAuthModal() {
+      const resp = await fetch('auth-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+    
     // Render topbar and sidebar
     document.addEventListener('DOMContentLoaded', async () => {
     await loadAuthModal(); 
