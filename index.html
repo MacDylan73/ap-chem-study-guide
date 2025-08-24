@@ -109,12 +109,15 @@
       ensureUsernameOnLogin,
       updateIndexBarAuthButtons
     } from './js/auth.js';
-    import { toggleTheme } from './js/theme-toggle.js';
+    import { toggleTheme,
+             applySavedTheme
+    } from './js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
 
     // Render topbar and sidebar
     document.addEventListener('DOMContentLoaded', () => {
-    loadTopbar("AP Chemistry Course Guide and Practice Tests");
+    await loadTopbar("AP Chemistry Course Guide and Practice Tests");
+    applySavedTheme();
     loadSidebar();
     });
 
