@@ -99,8 +99,8 @@
   <!-- Modular JS imports for all UI and authentication logic -->
   <script type="module">
     // Import shared modules for UI, authentication, and modal logic
-    import { loadTopbar } from './topbar.js';
-    import { loadSidebar } from './sidebar.js';
+    import { loadTopbar } from './js/topbar.js';
+    import { loadSidebar } from './js/sidebar.js';
     import {
       onAuthChange,
       signInHandler,
@@ -108,7 +108,7 @@
       setupUsernameModal,
       ensureUsernameOnLogin,
       updateIndexBarAuthButtons
-    } from './auth.js';
+    } from './js/auth.js';
 
     // Render topbar and sidebar
     loadTopbar("AP Chemistry Study Guide and Practice Tests");
