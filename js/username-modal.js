@@ -1,4 +1,4 @@
-import { doc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 // Username Modal Builder
 export function setupUsernameModal(auth, db) {
@@ -11,6 +11,11 @@ export function setupUsernameModal(auth, db) {
 
   saveUsernameBtn.onclick = async () => {
     const newUsername = usernameInput.value.trim();
+    // Username uniqueness check (optional, if you have isUsernameTaken)
+    // if (await isUsernameTaken(newUsername)) {
+    //   alert("Username already taken.");
+    //   return;
+    // }
     if (newUsername && window.isSignedIn && auth.currentUser) {
       try {
         const userRef = doc(db, "users", auth.currentUser.uid);
