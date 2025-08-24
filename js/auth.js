@@ -94,6 +94,7 @@ export function hideUsernameModal() {
 export async function isUsernameTaken(username) {
   const usersRef = collection(db, "users");
   const q = query(usersRef, where("username", "==", username));
+  console.log("isSignedIn:", isSignedIn, "currentUser:", currentUser);
   const snapshot = await getDocs(q);
   return !snapshot.empty;
 }
