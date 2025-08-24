@@ -695,44 +695,6 @@ function setupBottomBarAuthSync() {
   setInterval(updateBottomBarAuthButtons, 1000);
 }
 
-// --- Soft Gating Logic ---
-function handleGating(maxFreeClicks = 3) {
-  let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
-
-  function isGated() {
-    return !window.isSignedIn && clickCount >= maxFreeClicks;
-  }
-  function showModal() {
-    signupModal.style.display = "block";
-  }
-  function updateClickCount() {
-    clickCount++;
-    localStorage.setItem("unitClicks", clickCount);
-    if (isGated()) showModal();
-  }
-  function unlockContent() {
-    window.isSignedIn = true;
-    localStorage.removeItem("unitClicks");
-    signupModal.style.display = "none";
-    updateBottomBarAuthButtons();
-  }
-
-  document.querySelectorAll(".subunit-header").forEach(link => {
-    link.addEventListener("click", (e) => {
-      if (isGated()) {
-        e.preventDefault();
-        showModal();
-        return;
-      }
-      updateClickCount();
-    });
-  });
-
-  return { unlockContent };
-}
-
-
-
 // --- Attach event handlers ---
 document.addEventListener("DOMContentLoaded", () => {
   setupBottomBarButtons();
