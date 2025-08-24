@@ -621,11 +621,10 @@ import { setupGating } from './js/gating.js';
 import { updateSubunitCheckmarks } from './js/questions.js';
 import { toggleTheme, applySavedTheme } from './js/theme-toggle.js'; // if theme logic is in here
 // If you have auth modals:
-import { loadAuthModal, setupAuthModalEvents } from './js/auth.js';
+import { setupAuthModalEvents } from './js/auth.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   // Load modals (if implemented)
-  if (typeof loadAuthModal === 'function') await loadAuthModal();
   if (typeof loadUsernameModal === 'function') await loadUsernameModal();
 
   // Setup modal event handlers (if implemented)
