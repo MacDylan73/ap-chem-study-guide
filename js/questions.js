@@ -68,3 +68,54 @@ document.addEventListener('DOMContentLoaded', () => {
   window.updateSubunitCheckmarks = updateSubunitCheckmarks;
 });
 window.checkAnswer = checkAnswer;
+
+
+
+// FINAL QUIZ LOGIC
+// Modular Quiz Timer logic for all units
+export function setupQuizTimers() {
+  document.querySelectorAll('.quiz-box').forEach(quizBox => {
+    const timerElem = quizBox.querySelector('.quizTimer');
+    const startBtn = quizBox.querySelector('.startQuizBtn');
+    const questionsElem = quizBox.querySelector('.quizQuestions');
+
+    let intervalId;
+    let secondsElapsed = 0;
+
+    function formatTime(seconds) {
+      const min = Math.floor(seconds / 60);
+      const sec = seconds % 60;
+      return `${min}:${sec.toString().padStart(2, "0")}`;
+    }
+
+    function startTimer() {
+      secondsElapsed = 0;
+      timerElem.textContent = `Time: 0:00`;
+      intervalId = setInterval(() => {
+        secondsElapsed++;
+        timerElem.textContent = `Time: ${formatTime(secondsElapsed)}`;
+      }, 1000);
+    }
+
+    function stopTimer() {
+      clearInterval(intervalId);
+    }
+
+    // Only setup if both start button and questions exist
+    if (startBtn && questionsElem && timerElem) {
+      startBtn.onclick = () => {
+        startBtn.style.display = "none";
+        questionsElem.style.display = "block";
+        startTimer();
+      };
+
+      // Optional: Add a "Finish Quiz" button in .quizQuestions to stop the timer
+      // Example:
+      // const finishBtn = quizBox.querySelector('.finishQuizBtn');
+      // if (finishBtn) finishBtn.onclick = stopTimer;
+    }
+  });
+}
+
+// Call setupQuizTimers() after DOM is loaded
+document.addEventListener("DOMContentLoaded", setupQuizTimers);
