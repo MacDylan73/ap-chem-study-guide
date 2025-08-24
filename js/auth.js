@@ -291,3 +291,55 @@ export function updateIndexBarAuthButtons() {
 document.addEventListener('DOMContentLoaded', () => {
   updateIndexBarAuthButtons();
 });
+
+// --- Dynamic Bottom Bar for Units Pages ---
+export function updateUnitBottomBarAuthButtons() {
+  const bottomBarLeft = document.getElementById("bottomBarLeft");
+  const usernameModal = document.getElementById("usernameModal");
+  const usernameInput = document.getElementById("usernameInput");
+  const signupModal = document.getElementById("signupModal");
+
+  bottomBarLeft.innerHTML = "";
+  if (window.isSignedIn) {
+    const signOutBtn = document.createElement("button");
+    signOutBtn.textContent = "Sign Out";
+    signOutBtn.onclick = () => {
+      signOut(auth).then(() => {
+        window.isSignedIn = false;
+        updateUnitBottomBarAuthButtons();
+        location.reload();
+      });
+    };
+    bottomBarLeft.appendChild(signOutBtn);
+
+    const changeUsernameBtn = document.createElement("button");
+    changeUsernameBtn.textContent = "Change Username";
+    changeUsernameBtn.onclick = () => {
+      if (usernameModal) {
+        usernameModal.style.display = "block";
+        if (usernameInput) usernameInput.focus();
+      }
+    };
+    bottomBarLeft.appendChild(changeUsernameBtn);
+  } else {
+    const signInBtn = document.createElement("button");
+    signInBtn.textContent = "Sign In";
+    signInBtn.onclick = () => {
+      if (signupModal) signupModal.style.display = "block";
+    };
+    bottomBarLeft.appendChild(signInBtn);
+  }
+}
+
+// Sets up navigation for bottom bar buttons on unit pages
+export function setupUnitBottomBarButtons() {
+  const returnHomeBtn = document.getElementById("returnHomeBtn");
+  if (returnHomeBtn) returnHomeBtn.onclick = () => window.location.href = "/ap-chem-study-guide/";
+  const nextUnitBtn = document.getElementById("nextUnitBtn");
+  if (nextUnitBtn) nextUnitBtn.onclick = () => window.location.href = "/unit-2-compound-structure-and-properties.html";
+}
+
+// Keeps bottom bar in sync with auth state on unit pages
+export function setupUnitBottomBarAuthSync() {
+  setInterval(updateUnitBottomBarAuthButtons, 1000);
+}
