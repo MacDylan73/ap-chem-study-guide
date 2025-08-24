@@ -745,7 +745,7 @@ body.dark-mode .close:focus {
 /* ===========================
    BOTTOM BAR
    =========================== */
-#unit1BottomBar.bottom-bar {
+#unitsBottomBar.bottom-bar {
   width: 100%;
   background: #1a237e;
   color: #fff;
@@ -788,7 +788,7 @@ body.dark-mode .close:focus {
   margin-left: auto; /* ensures alignment to the far right */
 }
 
-#unit1BottomBar button {
+#unitsBottomBar button {
   background: #3949ab;
   color: #fff;
   border: none;
@@ -798,7 +798,7 @@ body.dark-mode .close:focus {
   font-weight: 500;
   transition: background 0.2s;
 }
-#unit1BottomBar button:hover:not(:disabled) {
+#unitsBottomBar button:hover:not(:disabled) {
   background: #303f9f;
 }
 #futureFeatureBtn {
@@ -808,7 +808,7 @@ body.dark-mode .close:focus {
 
 /* mobile fix */
 @media (max-width: 600px) {
-  #unit1BottomBar.bottom-bar {
+  #unitsBottomBar.bottom-bar {
     flex-direction: column;
     align-items: stretch;
     padding: 0.5rem 0.5rem;
@@ -832,7 +832,7 @@ body.dark-mode .close:focus {
     top: unset !important;
     transform: unset !important;
   }
-  #unit1BottomBar button {
+  #unitsBottomBar button {
     width: 100%;
     min-width: unset;
     margin-bottom: 0.5rem;
@@ -840,17 +840,17 @@ body.dark-mode .close:focus {
 }
 
 /* === BOTTOM BAR DARK MODE ========== */
-body.dark-mode #unit1BottomBar.bottom-bar {
+body.dark-mode #unitsBottomBar.bottom-bar {
   background: var(--bar-bg);
   color: var(--bar-text);
   border-top: 1px solid var(--box-border);
 }
-body.dark-mode #unit1BottomBar button {
+body.dark-mode #unitsBottomBar button {
   background: #343456;
   color: #f0f0f0;
   border: 1px solid #44445a;
 }
-body.dark-mode #unit1BottomBar button:hover:not(:disabled) {
+body.dark-mode #unitsBottomBar button:hover:not(:disabled) {
   background: #44445a;
   color: #fff;
   border-color: #5d5d7a;
