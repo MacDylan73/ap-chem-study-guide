@@ -68,4 +68,13 @@ export async function loadSidebar() {
   const resp = await fetch('sidebar.html');
   const html = await resp.text();
   document.getElementById('sidebar-container').innerHTML = html;
+  // Attach overlay click handler NOW, after overlay exists
+  const overlay = document.getElementById('sidebar-overlay');
+  if (overlay) {
+    overlay.addEventListener('click', function () {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar) sidebar.classList.remove('visible');
+    });
+  }
+  highlightActiveSidebarLink(); // if you have this
 }
