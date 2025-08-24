@@ -204,6 +204,7 @@ if (authForm) {
     });
 
     await setDoc(doc(db, "users", cred.user.uid), { username }, { merge: true });
+    await ensureUsernameOnLogin();
     signInModal.style.display = "none";
   } catch (err) {
     if (authError) authError.textContent = err.message;
