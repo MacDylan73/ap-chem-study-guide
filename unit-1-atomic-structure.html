@@ -610,55 +610,57 @@
 import { loadTopbar } from './js/topbar.js';
 import { loadSidebar } from './js/sidebar.js';
 import {
+  onAuthChange,
+  signInHandler,
+  signOutHandler,
+  setupAuthModalEvents,
+  ensureUsernameOnLogin,
   updateUnitBottomBarAuthButtons,
   setupUnitBottomBarButtons,
-  setupUnitBottomBarAuthSync,
-  onAuthChange,
-  ensureUsernameOnLogin
+  setupUnitBottomBarAuthSync
 } from './js/auth.js';
+import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
+window.toggleTheme = toggleTheme;
 import { setupUsernameModal } from './js/username-modal.js';
 import { setupGating } from './js/gating.js';
 import { updateSubunitCheckmarks } from './js/questions.js';
-import { toggleTheme, applySavedTheme } from './js/theme-toggle.js'; // if theme logic is in here
-// If you have auth modals:
-import { setupAuthModalEvents } from './js/auth.js';
 
+// Modal loader functions (as in index page)
+async function loadAuthModal() {
+  const resp = await fetch('auth-modal.html');
+  const html = await resp.text();
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+async function loadUsernameModal() {
+  const resp = await fetch('username-modal.html');
+  const html = await resp.text();
+  document.body.insertAdjacentHTML('beforeend', html);
+}
+
+// Render all elements after DOM is ready
 document.addEventListener('DOMContentLoaded', async () => {
-  // Load modals (if implemented)
-  if (typeof loadUsernameModal === 'function') await loadUsernameModal();
+  await loadAuthModal();
+  await loadUsernameModal();
 
-  // Setup modal event handlers (if implemented)
-  if (typeof setupAuthModalEvents === 'function') setupAuthModalEvents();
+  setupAuthModalEvents();
   setupUsernameModal();
 
-  // Render Topbar (pass unit-specific title)
   await loadTopbar("Unit 1: Atomic Structure");
-
-  // Apply saved theme
-  if (typeof applySavedTheme === 'function') applySavedTheme();
-
-  // Render sidebar
+  applySavedTheme();
   loadSidebar();
 
-  // Setup unit bottom bar (auth buttons + navigation)
+  // Unit bottom bar logic
   setupUnitBottomBarButtons();
   updateUnitBottomBarAuthButtons();
   setupUnitBottomBarAuthSync();
 
-  // Setup soft gating for subunits
   setupGating();
-
-  // Initialize quiz checkmarks
   updateSubunitCheckmarks();
-
-  // Theme button event handler (if you want to use it)
-  const themeBtn = document.getElementById('toggleThemeBtn');
-  if (themeBtn) themeBtn.onclick = toggleTheme;
 });
 
-// Ensure username modal appears after login if needed
-onAuthChange(user => {
-  ensureUsernameOnLogin();
+// Listen for auth state changes, update UI, and ensure username modal is shown if needed
+onAuthChange(async user => {
+  await ensureUsernameOnLogin();
   updateUnitBottomBarAuthButtons();
 });
 </script>
