@@ -261,10 +261,16 @@ export function updateIndexBarAuthButtons() {
 
     const changeUsernameBtn = document.createElement("button");
     changeUsernameBtn.textContent = "Change Username";
-    changeUsernameBtn.onclick = () => {
-      document.getElementById("usernameModal").style.display = "block";
-      document.getElementById("usernameInput").focus();
-    };
+    changeUsernameBtn.onclick = async () => {
+  document.getElementById("usernameModal").style.display = "block";
+  const input = document.getElementById("usernameInput");
+  if (input) {
+    // Fetch and set the current username
+    const username = await getUsername();
+    input.value = username || "";
+    input.focus();
+  }
+};
     leftDiv.appendChild(changeUsernameBtn);
   } else {
     const signUpBtn = document.createElement("button");
