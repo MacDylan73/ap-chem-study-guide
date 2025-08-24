@@ -663,16 +663,6 @@ onAuthChange(async user => {
   await ensureUsernameOnLogin();
   updateUnitBottomBarAuthButtons();
 });
-
-// Gating Close
-  document.addEventListener('DOMContentLoaded', () => {
-  const closeBtn = document.getElementById('closeSignupModal');
-  if (closeBtn) {
-    closeBtn.onclick = () => {
-      document.getElementById('signupModal').style.display = 'none';
-    };
-  }
-});
 </script>
   
 </body>
