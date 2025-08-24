@@ -109,6 +109,8 @@
       ensureUsernameOnLogin,
       updateIndexBarAuthButtons
     } from './js/auth.js';
+    import { toggleTheme } from './js/theme.js';
+    window.toggleTheme = toggleTheme;
 
     // Render topbar and sidebar
     document.addEventListener('DOMContentLoaded', () => {
