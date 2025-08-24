@@ -620,31 +620,41 @@ import { setupGating } from './js/gating.js';
 import { updateSubunitCheckmarks } from './js/questions.js';
 import { toggleTheme } from './js/theme-toggle.js'
 
-// 1. Render topbar and sidebar
-loadTopbar("Unit 1: Atomic Structure");
-loadSidebar();
+document.addEventListener('DOMContentLoaded', async () => {
+  // Load modals
+  await loadAuthModal();
+  await loadUsernameModal();
 
-// 2. Setup authentication modals and username modal logic
-setupUsernameModal();
+  // Setup modal event handlers
+  setupAuthModalEvents();
+  setupUsernameModal();
 
-// 3. Setup bottom bar for unit page (auth buttons and navigation)
-setupUnitBottomBarButtons();
-updateUnitBottomBarAuthButtons();
-setupUnitBottomBarAuthSync();
+  // Render Topbar (pass unit-specific title)
+  await loadTopbar("Unit 1: Atomic Structure");
 
-// 4. Setup soft gating (content restriction based on clicks/sign-in)
-setupGating();
+  // Apply saved theme
+  applySavedTheme();
+
+  // Render sidebar
+  loadSidebar();
+
+  // Setup unit bottom bar (auth buttons and navigation)
+  setupUnitBottomBarButtons();
+  updateUnitBottomBarAuthButtons();
+  setupUnitBottomBarAuthSync();
+
+  // Setup soft gating for subunits
+  setupGating();
+
+  // Initialize quiz checkmarks
+  updateSubunitCheckmarks();
+});
+
 
 // 5. Ensure username modal appears after login if needed
 onAuthChange(user => {
   ensureUsernameOnLogin();
   updateUnitBottomBarAuthButtons();
-});
-
-// 6. Setup quiz checkmarks (shows completed status on subunits)
-document.addEventListener('DOMContentLoaded', () => {
-  updateSubunitCheckmarks();
-  window.updateSubunitCheckmarks = updateSubunitCheckmarks;
 });
 </script>
   
