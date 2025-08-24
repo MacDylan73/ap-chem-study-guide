@@ -7,12 +7,13 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Top Navigation Bar -->
+  <!-- Top Navigation Bar will be rendered here -->
   <div id="topbar-container"></div>
 
-  <!-- Sidebar -->
+  <!-- Sidebar will be rendered here -->
   <div id="sidebar-container"></div>
 
+  <!-- Page Content -->
   <div class="container">
     <!-- Intro Box -->
     <div class="box">
@@ -39,7 +40,7 @@
       </ul>
     </div>
 
-    <!-- Format Box (restored to your original content) -->
+    <!-- Format Box -->
     <div class="box">
       <h2>AP Chemistry Course Exam Format</h2>
       <ul>
@@ -82,32 +83,60 @@
     </div>
   </div>
 
+  <!-- Username Modal (can be dynamically loaded, but included here for reference) -->
+  <!--
+  <div id="usernameModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeUsernameModal">&times;</span>
+      <h2>Set Your Username</h2>
+      <input type="text" id="usernameInput" placeholder="Enter username" />
+      <button id="saveUsernameBtn">Save</button>
+    </div>
+  </div>
+  -->
+
   <!-- Utility scripts -->
-<script src="util.js" defer></script>
+  <script src="util.js" defer></script>
   <script>
     window.addEventListener('DOMContentLoaded', function() {
       renderCountdown("countdownText", "May 5, 2026");
     });
   </script>
-<script type="module">
-import { loadTopbar } from './topbar.js';
-  loadTopbar("AP Chemistry Study Guide and Practice Tests"); // Change per page
-  
-  import {
-    onAuthChange, signInHandler, signOutHandler, setupUsernameModal, ensureUsernameOnLogin
-  } from './auth.js';
 
-  setupUsernameModal();
+  <!-- Modular JS imports for all UI and authentication logic -->
+  <script type="module">
+    // Import shared modules for UI, authentication, and modal logic
+    import { loadTopbar } from './topbar.js';
+    import { loadSidebar } from './sidebar.js';
+    import {
+      onAuthChange,
+      signInHandler,
+      signOutHandler,
+      setupUsernameModal,
+      ensureUsernameOnLogin,
+      updateIndexBarAuthButtons
+    } from './auth.js';
 
-  onAuthChange(async user => {
-    await ensureUsernameOnLogin();
-    // Update UI, bottom bar, etc.
-  });
+    // Render topbar and sidebar
+    loadTopbar("AP Chemistry Study Guide and Practice Tests");
+    loadSidebar();
 
-  document.getElementById("sidebarSignInBtn").onclick = signInHandler;
-  // Add similar for signOutBtn in bottom bar if present
-</script>
+    // Setup username modal logic (wires up events)
+    setupUsernameModal();
 
- 
+    // Listen for auth state changes, update UI, and ensure username modal is shown if needed
+    onAuthChange(async user => {
+      await ensureUsernameOnLogin();
+      updateIndexBarAuthButtons();
+      // Any additional UI updates can go here
+    });
+
+    // Wire up sign-in/sign-out buttons (if present in sidebar or elsewhere)
+    const signInBtn = document.getElementById("sidebarSignInBtn");
+    if (signInBtn) signInBtn.onclick = signInHandler;
+
+    const signOutBtn = document.getElementById("sidebarSignOutBtn");
+    if (signOutBtn) signOutBtn.onclick = signOutHandler;
+  </script>
 </body>
 </html>
