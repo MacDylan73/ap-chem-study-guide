@@ -128,69 +128,57 @@ export async function getUsername() {
 
 // ---- Modal Event Setup ----
 // Call setupUsernameModal() on page load to wire up modal events.
-export function setupUsernameModal() {
-  const modal = document.getElementById('usernameModal');
-  if (!modal) return;
-
-  const closeBtn = modal.querySelector('.close') || document.getElementById('closeUsernameModal');
-  if (closeBtn) {
-    closeBtn.onclick = hideUsernameModal;
-  }
-
-  const saveBtn = modal.querySelector('button') || document.getElementById('saveUsernameBtn') || document.getElementById('submitUsernameBtn');
-  const input = modal.querySelector('input') || document.getElementById('usernameInput');
-  if (saveBtn && input) {
-    saveBtn.onclick = async () => {
-      const entered = input.value.trim();
-      try {
-        await saveUsername(entered);
-        hideUsernameModal();
-      } catch (e) {
-        alert(e.message);
-        input.focus();
-      }
-    };
-  }
-}
-
-// Auth
-    async function loadAuthModal() {
-      const resp = await fetch('auth-modal.html');
-      const html = await resp.text();
-      document.body.insertAdjacentHTML('beforeend', html);
-    }
-
 export function setupAuthModalEvents() {
-  // Tab switching
   const tabSignIn = document.getElementById('tabSignIn');
   const tabRegister = document.getElementById('tabRegister');
   const emailAuthForm = document.getElementById('emailAuthForm');
   const googleSignInBtn = document.getElementById('googleSignInBtn');
   const signInModal = document.getElementById('signInModal');
   const closeSignInModal = document.getElementById('closeSignInModal');
+  // Add registerForm if you have one
+  const registerForm = document.getElementById('registerForm');
 
-  if (tabSignIn && tabRegister && emailAuthForm && googleSignInBtn && signInModal) {
-    tabSignIn.onclick = () => {
-      tabSignIn.classList.add('active');
-      tabRegister.classList.remove('active');
-      emailAuthForm.style.display = 'block';
-      // Hide register form if present
-    };
-    tabRegister.onclick = () => {
-      tabRegister.classList.add('active');
-      tabSignIn.classList.remove('active');
-      emailAuthForm.style.display = 'none';
-      // Show register form if present
-    };
-    closeSignInModal.onclick = () => { signInModal.style.display = 'none'; };
-    // Wire up Google sign-in as needed
+  if (!tabSignIn || !tabRegister || !signInModal) return;
+
+  tabSignIn.onclick = () => {
+    tabSignIn.classList.add('active');
+    tabRegister.classList.remove('active');
+    if (emailAuthForm) emailAuthForm.style.display = 'block';
+    if (registerForm) registerForm.style.display = 'none';
+  };
+
+  tabRegister.onclick = () => {
+    tabRegister.classList.add('active');
+    tabSignIn.classList.remove('active');
+    if (emailAuthForm) emailAuthForm.style.display = 'none';
+    if (registerForm) registerForm.style.display = 'block';
+  };
+
+  closeSignInModal.onclick = () => { signInModal.style.display = 'none'; };
+
+  // Google sign-in
+  if (googleSignInBtn) {
     googleSignInBtn.onclick = () => {
-      // Your Google auth logic here
+      // Call your Google sign-in handler
+      signInHandler();
     };
-    // Wire up email form submission as needed
+  }
+
+  // Email sign-in
+  if (emailAuthForm) {
     emailAuthForm.onsubmit = (e) => {
       e.preventDefault();
-      // Your email/password auth logic here
+      // Implement your email/password sign-in logic here
+      // e.g. signInWithEmailAndPassword(auth, email, password)
+    };
+  }
+
+  // Register (if you have a registerForm)
+  if (registerForm) {
+    registerForm.onsubmit = (e) => {
+      e.preventDefault();
+      // Implement your registration logic here
+      // e.g. createUserWithEmailAndPassword(auth, email, password)
     };
   }
 }
