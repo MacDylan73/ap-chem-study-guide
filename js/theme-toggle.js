@@ -1,18 +1,22 @@
-function toggleTheme() {
+export function toggleTheme() {
   const body = document.body;
   const themeIcon = document.getElementById('theme-icon');
   const isDark = body.classList.toggle('dark-theme');
-  // Save Preferences to Local Storage
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
   if (themeIcon) themeIcon.textContent = isDark ? '🌙' : '🌞';
 }
 
 // Apply Saved Preferences on Page Load
-document.addEventListener('DOMContentLoaded', () => {
+export function applySavedTheme() {
   const savedTheme = localStorage.getItem('theme');
   if (savedTheme === 'dark') {
     document.body.classList.add('dark-theme');
-    const themeIcon = document.getElementById('theme-icon');
-    if (themeIcon) themeIcon.textContent = '🌙';
+  } else {
+    document.body.classList.remove('dark-theme');
   }
-});
+  // Always update icon
+  const themeIcon = document.getElementById('theme-icon');
+  if (themeIcon) {
+    themeIcon.textContent = document.body.classList.contains('dark-theme') ? '🌙' : '🌞';
+  }
+}
