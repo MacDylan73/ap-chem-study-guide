@@ -598,11 +598,51 @@
 
   
 
-<script src="questions.js" defer></script>
-<script src="util.js" defer></script>
-<!-- Swap IDs to use the new bottom bar -->
+<script src="js/questions.js" defer></script>
+<script src="js/util.js" defer></script>
+<!-- Script -->
 <script type="module">
+import { 
+  loadTopbar, 
+  loadSidebar 
+} from './js/topbar.js';  // You may have separate sidebar.js, adjust import if needed
+import { 
+  updateUnitBottomBarAuthButtons, 
+  setupUnitBottomBarButtons, 
+  setupUnitBottomBarAuthSync, 
+  onAuthChange, 
+  ensureUsernameOnLogin 
+} from './js/auth.js';
+import { setupUsernameModal } from './js/username-modal.js';
+import { setupGating } from './js/gating.js';
+import { updateSubunitCheckmarks } from './js/questions.js';
 
+// 1. Render topbar and sidebar
+loadTopbar();
+loadSidebar();
+
+// 2. Setup authentication modals and username modal logic
+setupUsernameModal();
+
+// 3. Setup bottom bar for unit page (auth buttons and navigation)
+setupUnitBottomBarButtons();
+updateUnitBottomBarAuthButtons();
+setupUnitBottomBarAuthSync();
+
+// 4. Setup soft gating (content restriction based on clicks/sign-in)
+setupGating();
+
+// 5. Ensure username modal appears after login if needed
+onAuthChange(user => {
+  ensureUsernameOnLogin();
+  updateUnitBottomBarAuthButtons();
+});
+
+// 6. Setup quiz checkmarks (shows completed status on subunits)
+document.addEventListener('DOMContentLoaded', () => {
+  updateSubunitCheckmarks();
+  window.updateSubunitCheckmarks = updateSubunitCheckmarks;
+});
 </script>
   
 </body>
