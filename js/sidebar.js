@@ -9,17 +9,17 @@ window.toggleSidebar = toggleSidebar;
 
 // Highlight the active sidebar link for the current page
 function highlightActiveSidebarLink() {
-  const pageUrl = window.location.pathname;
+  // Get current path, normalize to always end with index.html for home
+  let pagePath = window.location.pathname;
+  if (pagePath.endsWith('/')) {
+    pagePath += 'index.html'; // treat / as /index.html
+  }
   document.querySelectorAll('.sidebar a').forEach(link => {
-    // Get the href as pathname (relative path, e.g. '/ap-chem-study-guide/index.html')
     const linkPath = new URL(link.href).pathname;
-
-    // If the link is to index.html, highlight both / and /index.html
-    if (
-      (linkPath.endsWith('index.html') && (pageUrl.endsWith('/') || pageUrl.endsWith('index.html'))) ||
-      linkPath === pageUrl // For other pages, match exactly
-    ) {
+    if (linkPath === pagePath) {
       link.classList.add('active');
+    } else {
+      link.classList.remove('active');
     }
   });
 }
