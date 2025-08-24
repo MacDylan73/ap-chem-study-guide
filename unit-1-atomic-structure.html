@@ -731,43 +731,7 @@ function handleGating(maxFreeClicks = 3) {
   return { unlockContent };
 }
 
-// --- Username Modal Logic ---
-async function checkUsername(user) {
-  if (!user || !user.uid) {
-    usernameModal.style.display = "none";
-    return;
-  }
-  const userRef = doc(db, "users", user.uid);
-  const snapshot = await getDoc(userRef);
-  if (!snapshot.exists() || !snapshot.data().username) {
-    usernameModal.style.display = "block";
-    usernameInput.focus();
-  } else {
-    usernameModal.style.display = "none";
-  }
-}
-async function isUsernameTaken(username) {
-  const usersRef = collection(db, "users");
-  const q = query(usersRef, where("username", "==", username));
-  const snapshot = await getDocs(q);
-  return !snapshot.empty;
-}
 
-// --- Sign In Handler ---
-function signInHandler() {
-  signupModal.style.display = "none"; // Hide gating modal immediately
-  signInWithPopup(auth, provider)
-    .then(result => {
-      window.isSignedIn = true;
-      checkUsername(result.user);
-      unlockContent(); // Remove gating and update UI
-      updateBottomBarAuthButtons();
-    })
-    .catch(error => {
-      alert("Sign-in failed!");
-      signupModal.style.display = "none";
-    });
-}
 
 // --- Attach event handlers ---
 document.addEventListener("DOMContentLoaded", () => {
@@ -800,37 +764,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Username submit
-  if (submitUsernameBtn) {
-    submitUsernameBtn.onclick = async () => {
-      const username = usernameInput.value.trim();
-      const user = auth.currentUser;
-      if (!username || !user || !user.uid) {
-        alert("You're not signed in. Please sign in first.");
-        return;
-      }
-      const isValid = /^[a-zA-Z0-9_]{3,20}$/.test(username);
-      if (!isValid) {
-        alert("Username must be 3–20 characters and contain only letters, numbers, or underscores.");
-        usernameInput.focus();
-        return;
-      }
-      const taken = await isUsernameTaken(username);
-      if (taken) {
-        alert("That username is already taken. Try another one.");
-        usernameInput.focus();
-        return;
-      }
-      try {
-        const userRef = doc(db, "users", user.uid);
-        await setDoc(userRef, { username }, { merge: true });
-        usernameModal.style.display = "none";
-      } catch (error) {
-        alert("Could not save username. Make sure you're signed in and try again.");
-      }
-    };
-  }
-});
+  
 
 // --- Firebase Auth State Listener ---
 onAuthStateChanged(auth, user => {
