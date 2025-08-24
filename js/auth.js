@@ -295,29 +295,36 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Dynamic Bottom Bar for Units Pages ---
 export function updateUnitBottomBarAuthButtons() {
   const bottomBarLeft = document.getElementById("bottomBarLeft");
+  const signInModal = document.getElementById("signInModal"); // use correct modal ID
   const usernameModal = document.getElementById("usernameModal");
   const usernameInput = document.getElementById("usernameInput");
-  const signupModal = document.getElementById("signupModal");
 
   bottomBarLeft.innerHTML = "";
+
   if (window.isSignedIn) {
     const signOutBtn = document.createElement("button");
     signOutBtn.textContent = "Sign Out";
-    signOutBtn.onclick = () => {
-      signOut(auth).then(() => {
-        window.isSignedIn = false;
-        updateUnitBottomBarAuthButtons();
-        location.reload();
-      });
+    signOutBtn.onclick = async () => {
+      await signOutHandler();
+      updateUnitBottomBarAuthButtons();
+      location.reload();
     };
     bottomBarLeft.appendChild(signOutBtn);
 
     const changeUsernameBtn = document.createElement("button");
     changeUsernameBtn.textContent = "Change Username";
-    changeUsernameBtn.onclick = () => {
+    changeUsernameBtn.onclick = async () => {
+      if (!window.isSignedIn || !window.currentUser) {
+        alert("Please sign in first.");
+        return;
+      }
       if (usernameModal) {
         usernameModal.style.display = "block";
-        if (usernameInput) usernameInput.focus();
+        if (usernameInput) {
+          const username = await getUsername();
+          usernameInput.value = username || "";
+          usernameInput.focus();
+        }
       }
     };
     bottomBarLeft.appendChild(changeUsernameBtn);
@@ -325,7 +332,8 @@ export function updateUnitBottomBarAuthButtons() {
     const signInBtn = document.createElement("button");
     signInBtn.textContent = "Sign In";
     signInBtn.onclick = () => {
-      if (signupModal) signupModal.style.display = "block";
+      if (signInModal) signInModal.style.display = "block";
+      else console.warn("Sign-in modal not found");
     };
     bottomBarLeft.appendChild(signInBtn);
   }
