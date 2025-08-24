@@ -163,6 +163,49 @@ export async function ensureUsernameOnLogin() {
   else hideUsernameModal();
 }
 
+//INDEX PAGE ONLY: SETUP BOTTOM BAR
+function updateIndexBarAuthButtons() {
+  const leftDiv = document.getElementById("bottomBarLeft");
+  leftDiv.innerHTML = "";
+  if (window.isSignedIn) {
+    const signOutBtn = document.createElement("button");
+    signOutBtn.textContent = "Sign Out";
+    signOutBtn.onclick = () => {
+      signOut(auth).then(() => {
+        window.isSignedIn = false;
+        updateIndexBarAuthButtons();
+        location.reload();
+      });
+    };
+    leftDiv.appendChild(signOutBtn);
+
+    const changeUsernameBtn = document.createElement("button");
+    changeUsernameBtn.textContent = "Change Username";
+    changeUsernameBtn.onclick = () => {
+      document.getElementById("usernameModal").style.display = "block";
+      document.getElementById("usernameInput").focus();
+    };
+    leftDiv.appendChild(changeUsernameBtn);
+  } else {
+    const signUpBtn = document.createElement("button");
+    signUpBtn.textContent = "Sign Up";
+    signUpBtn.onclick = () => {
+      signInWithPopup(auth, provider)
+        .then(result => {
+          window.isSignedIn = true;
+          updateIndexBarAuthButtons();
+          checkUsername(result.user);
+        })
+        .catch(error => {
+          alert("Sign-in failed!");
+        });
+    };
+    leftDiv.appendChild(signUpBtn);
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  updateIndexBarAuthButtons();
+
 // ---- Example Usage (in your HTML page) ----
 /*
 <script type="module">
