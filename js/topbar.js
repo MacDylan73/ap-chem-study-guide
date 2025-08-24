@@ -1,5 +1,4 @@
-// Load Topbar
-export async function loadTopbar() {
+export async function loadTopbar(title = null) {
   const container = document.getElementById("topbar-container");
   if (!container) return;
   try {
@@ -7,13 +6,12 @@ export async function loadTopbar() {
     if (!response.ok) throw new Error("Failed to fetch topbar.html");
     const html = await response.text();
     container.innerHTML = html;
+    if (title) {
+      const titleElem = container.querySelector('.topbar-title');
+      if (titleElem) titleElem.textContent = title;
+    }
   } catch (error) {
     container.innerHTML = "<div class='topbar-error'>Topbar failed to load.</div>";
     console.error(error);
   }
-}
-
-// Changes Top Bar Title Dynamically for each Page
-export function setTopbarTitle(title) {
-  document.querySelector('.topbar-title').textContent = title;
 }
