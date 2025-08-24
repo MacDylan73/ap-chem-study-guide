@@ -172,36 +172,40 @@ export function setupAuthModalEvents() {
   }
 
   // Email/Password form submit
-  if (authForm) {
-    authForm.onsubmit = async (e) => {
-      e.preventDefault();
-      if (authError) authError.textContent = '';
-      const email = document.getElementById('authEmail').value.trim();
-      const password = document.getElementById('authPassword').value;
-      if (isRegister) {
-        const username = authUsername.value.trim();
-        if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-          if (authError) authError.textContent = "Username must be 3–20 letters/numbers/underscores.";
-          return;
-        }
-        try {
-          const cred = await createUserWithEmailAndPassword(auth, email, password);
-          await updateProfile(cred.user, { displayName: username });
-          await setDoc(doc(db, "users", cred.user.uid), { username }, { merge: true });
-          signInModal.style.display = "none";
-        } catch (err) {
-          if (authError) authError.textContent = err.message;
-        }
-      } else {
-        try {
-          await signInWithEmailAndPassword(auth, email, password);
-          signInModal.style.display = "none";
-        } catch (err) {
-          if (authError) authError.textContent = err.message;
-        }
+if (authForm) {
+  authForm.onsubmit = async (e) => {
+    e.preventDefault();
+    if (authError) authError.textContent = '';
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value;
+    if (isRegister) {
+      const username = authUsername.value.trim();
+      if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+        if (authError) authError.textContent = "Username must be 3–20 letters/numbers/underscores.";
+        return;
       }
-    };
-  }
+      // Check if username is taken BEFORE registering
+      if (await isUsernameTaken(username)) {
+        if (authError) authError.textContent = "Username already taken.";
+        return;
+      }
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(cred.user, { displayName: username });
+        await setDoc(doc(db, "users", cred.user.uid), { username }, { merge: true });
+        signInModal.style.display = "none";
+      } catch (err) {
+        if (authError) authError.textContent = err.message;
+      }
+    } else {
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        signInModal.style.display = "none";
+      } catch (err) {
+        if (authError) authError.textContent = err.message;
+      }
+    }
+  };
 }
 
 export function signOutHandler() {
