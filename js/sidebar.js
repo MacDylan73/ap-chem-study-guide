@@ -5,6 +5,7 @@ function toggleSidebar() {
     sidebar.classList.toggle('visible');
   }
 }
+window.toggleSidebar = toggleSidebar;
 
 // Highlight the active sidebar link for the current page
 function highlightActiveSidebarLink() {
