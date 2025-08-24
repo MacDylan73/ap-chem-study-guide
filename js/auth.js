@@ -58,6 +58,21 @@ export function onAuthChange(callback) {
   });
 }
 
+// ---- Google Sign In Handler ----
+export function signInHandler() {
+  // This is a Google sign-in handler
+  return signInWithPopup(auth, provider)
+    .then(result => {
+      isSignedIn = true;
+      currentUser = result.user;
+      return result.user;
+    })
+    .catch(error => {
+      alert("Sign-in failed: " + error.message);
+      throw error;
+    });
+}
+
 // ---- Username Modal Logic ----
 export function showUsernameModal() {
   const modal = document.getElementById("usernameModal");
