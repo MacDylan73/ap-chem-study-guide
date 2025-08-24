@@ -207,6 +207,7 @@ if (authForm) {
     }
   };
 }
+}
 
 export function signOutHandler() {
   return signOut(auth)
