@@ -9,8 +9,16 @@ window.toggleSidebar = toggleSidebar;
 
 // Highlight the active sidebar link for the current page
 function highlightActiveSidebarLink() {
+  const pageUrl = window.location.pathname;
   document.querySelectorAll('.sidebar a').forEach(link => {
-    if (link.href === window.location.href) {
+    // Get the href as pathname (relative path, e.g. '/ap-chem-study-guide/index.html')
+    const linkPath = new URL(link.href).pathname;
+
+    // If the link is to index.html, highlight both / and /index.html
+    if (
+      (linkPath.endsWith('index.html') && (pageUrl.endsWith('/') || pageUrl.endsWith('index.html'))) ||
+      linkPath === pageUrl // For other pages, match exactly
+    ) {
       link.classList.add('active');
     }
   });
