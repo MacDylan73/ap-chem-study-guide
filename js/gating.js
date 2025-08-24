@@ -21,6 +21,44 @@ export function setupGating(maxFreeClicks = 3) {
     // Optionally: call updateIndexBarAuthButtons() or reload bar
   }
 
+  export function setupGatingModalClose() {
+  const gatingModal = document.getElementById('signupModal');
+  const closeBtn = document.getElementById('closeSignupModal');
+  const signUpBtn = document.getElementById('signupModalSignInBtn');
+  const signInModal = document.getElementById('signInModal');
+
+  // Close modal when clicking X
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      gatingModal.style.display = 'none';
+    };
+  }
+
+  // Sign Up button logic: open sign-in modal
+  if (signUpBtn) {
+    signUpBtn.onclick = () => {
+      gatingModal.style.display = 'none';
+      if (signInModal) {
+        signInModal.style.display = 'block';
+      }
+    };
+  }
+
+  // Close modal when clicking outside modal content
+  window.addEventListener('click', function(e) {
+    if (gatingModal && e.target === gatingModal) {
+      gatingModal.style.display = 'none';
+    }
+  });
+
+  // Close modal with ESC key
+  window.addEventListener('keydown', function(e) {
+    if (gatingModal && gatingModal.style.display === 'block' && e.key === 'Escape') {
+      gatingModal.style.display = 'none';
+    }
+  });
+}
+
   document.querySelectorAll(".subunit-header").forEach(link => {
     link.addEventListener("click", (e) => {
       if (isGated()) {
