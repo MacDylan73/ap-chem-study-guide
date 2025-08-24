@@ -622,7 +622,7 @@ import {
 import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
 window.toggleTheme = toggleTheme;
 import { setupUsernameModal } from './js/username-modal.js';
-import { setupGating } from './js/gating.js';
+import { setupGating, setupGatingModalClose } from './js/gating.js';
 import { updateSubunitCheckmarks } from './js/questions.js';
 import './js/util.js';     
 import './js/questions.js';
@@ -663,6 +663,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupUnitBottomBarAuthSync();
 
   setupGating();
+  setupGatingModalClose();
   updateSubunitCheckmarks();
 });
 
