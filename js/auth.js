@@ -201,6 +201,19 @@ export function setupAuthModalEvents() {
   }
 }
 
+export function signOutHandler() {
+  return signOut(auth)
+    .then(() => {
+      isSignedIn = false;
+      currentUser = null;
+      document.dispatchEvent(new CustomEvent("authstatechanged", { detail: { user: null } }));
+    })
+    .catch(error => {
+      alert("Sign-out failed: " + error.message);
+      throw error;
+    });
+}
+
 // ---- Utility: Ensure Username on Login ----
 export async function ensureUsernameOnLogin() {
   if (!isSignedIn || !currentUser) return;
