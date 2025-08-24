@@ -120,20 +120,26 @@
       const html = await resp.text();
       document.body.insertAdjacentHTML('beforeend', html);
     }
+    async function loadUsernameModal() {
+      const resp = await fetch('username-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
     
-    // Render topbar and sidebar
+    // Render all elements
     document.addEventListener('DOMContentLoaded', async () => {
-    await loadAuthModal(); 
-    setupAuthModalEvents();
+      await loadAuthModal(); 
+      await loadUsernameModal();
       
-    await loadTopbar("AP Chemistry Course Guide and Practice Tests");
-    applySavedTheme();
-    loadSidebar();
+      setupAuthModalEvents();
+      setupUsernameModal();
+      
+      await loadTopbar("AP Chemistry Course Guide and Practice Tests");
+      applySavedTheme();
+      loadSidebar();
+      updateIndexBarAuthButtons();
     });
-    updateIndexBarAuthButtons();
-    // Setup username modal logic (wires up events)
-    setupUsernameModal();
-
+    
     // Listen for auth state changes, update UI, and ensure username modal is shown if needed
     onAuthChange(async user => {
       await ensureUsernameOnLogin();
