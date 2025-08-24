@@ -190,16 +190,18 @@ export function updateIndexBarAuthButtons() {
     const signUpBtn = document.createElement("button");
     signUpBtn.textContent = "Sign In";
     signUpBtn.onclick = () => {
-      signInWithPopup(auth, provider)
-        .then(result => {
-          window.isSignedIn = true;
-          updateIndexBarAuthButtons();
-          ensureUsernameOnLogin();
-        })
-        .catch(error => {
-          alert("Sign-in failed!");
-        });
-    };
+    const modal = document.getElementById("signInModal");
+    if (modal) {
+      modal.style.display = "block";
+      // Optionally switch to Register tab:
+      const tabRegister = document.getElementById('tabRegister');
+      const tabSignIn = document.getElementById('tabSignIn');
+      if (tabRegister && tabSignIn) {
+        tabRegister.classList.add('active');
+        tabSignIn.classList.remove('active');
+      }
+    }
+  };
     leftDiv.appendChild(signUpBtn);
   }
 }
