@@ -115,7 +115,7 @@
     window.toggleTheme = toggleTheme;
 
     // Render topbar and sidebar
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
     await loadTopbar("AP Chemistry Course Guide and Practice Tests");
     applySavedTheme();
     loadSidebar();
