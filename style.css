@@ -469,6 +469,7 @@ body.dark-mode .subunit-header.active {
   background-color: var(--sidebar-bg);
   color: var(--link-color); /* text */
   padding: 20px;
+  overflow-y: auto;
   box-shadow: 2px 0 8px rgba(0, 0, 0, 0.2);
 }
 .sidebar.visible {
