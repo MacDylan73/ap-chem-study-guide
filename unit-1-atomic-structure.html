@@ -628,6 +628,11 @@ import './js/util.js';
 import './js/questions.js';
 
 // Modal loader functions (as in index page)
+async function loadGatingModal() {
+  const resp = await fetch('gating-modal.html');
+  const html = await resp.text();
+  document.body.insertAdjacentHTML('beforeend', html);
+}
 async function loadAuthModal() {
   const resp = await fetch('auth-modal.html');
   const html = await resp.text();
@@ -643,6 +648,7 @@ async function loadUsernameModal() {
 document.addEventListener('DOMContentLoaded', async () => {
   await loadAuthModal();
   await loadUsernameModal();
+  await loadGatingModal();
 
   setupAuthModalEvents();
   setupUsernameModal();
@@ -664,6 +670,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 onAuthChange(async user => {
   await ensureUsernameOnLogin();
   updateUnitBottomBarAuthButtons();
+});
+
+// Gating Close
+  document.addEventListener('DOMContentLoaded', () => {
+  const closeBtn = document.getElementById('closeSignupModal');
+  if (closeBtn) {
+    closeBtn.onclick = () => {
+      document.getElementById('signupModal').style.display = 'none';
+    };
+  }
 });
 </script>
   
