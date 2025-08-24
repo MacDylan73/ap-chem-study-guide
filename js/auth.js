@@ -4,12 +4,14 @@
 // It handles Firebase initialization, sign-in/out, username modal, and user state management.
 
 // ---- Firebase Imports ----
-// If you use <script type="module"> in your HTML, these imports will work directly.
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
 import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  updateProfile,
   signOut,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
@@ -25,8 +27,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 // ---- Firebase Config ----
-// !! Replace with your actual config values !!
-// You can keep this block as-is for all pages.
 const firebaseConfig = {
   apiKey: "AIzaSyAErba8GYZi2DeP0i0aE-39ZCwZQvlskQw",
   authDomain: "ap-chem-course-guide.firebaseapp.com",
@@ -49,42 +49,16 @@ export let isSignedIn = false;
 export let currentUser = null;
 
 // ---- Auth State Listener ----
-// Call this on page load to update UI and state everywhere.
 export function onAuthChange(callback) {
   onAuthStateChanged(auth, user => {
     isSignedIn = !!user;
     currentUser = user || null;
     if (callback) callback(user);
-    // You can also dispatch a custom event for other scripts
     document.dispatchEvent(new CustomEvent("authstatechanged", { detail: { user } }));
   });
 }
 
-// ---- Sign In Handler ----
-export function signInHandler() {
-  return signInWithPopup(auth, provider)
-    .then(result => {
-      isSignedIn = true;
-      currentUser = result.user;
-      return result.user;
-    })
-    .catch(error => {
-      alert("Sign-in failed: " + error.message);
-      throw error;
-    });
-}
-
-// ---- Sign Out Handler ----
-export function signOutHandler() {
-  return signOut(auth).then(() => {
-    isSignedIn = false;
-    currentUser = null;
-    location.reload();
-  });
-}
-
 // ---- Username Modal Logic ----
-// Call showUsernameModal() to display, and saveUsername(newName) to save.
 export function showUsernameModal() {
   const modal = document.getElementById("usernameModal");
   if (modal) {
@@ -99,7 +73,6 @@ export function hideUsernameModal() {
 }
 
 // ---- Firestore Username Utilities ----
-// Checks if username is taken
 export async function isUsernameTaken(username) {
   const usersRef = collection(db, "users");
   const q = query(usersRef, where("username", "==", username));
@@ -107,7 +80,6 @@ export async function isUsernameTaken(username) {
   return !snapshot.empty;
 }
 
-// Saves username to Firestore for the current user
 export async function saveUsername(newUsername) {
   if (!isSignedIn || !currentUser || !newUsername) throw new Error("Not signed in or invalid username");
   const valid = /^[a-zA-Z0-9_]{3,20}$/.test(newUsername);
@@ -118,7 +90,6 @@ export async function saveUsername(newUsername) {
   hideUsernameModal();
 }
 
-// Get username for current user
 export async function getUsername() {
   if (!isSignedIn || !currentUser) return null;
   const userRef = doc(db, "users", currentUser.uid);
@@ -127,65 +98,95 @@ export async function getUsername() {
 }
 
 // ---- Modal Event Setup ----
-// Call setupUsernameModal() on page load to wire up modal events.
 export function setupAuthModalEvents() {
   const tabSignIn = document.getElementById('tabSignIn');
   const tabRegister = document.getElementById('tabRegister');
-  const emailAuthForm = document.getElementById('emailAuthForm');
+  const authForm = document.getElementById('authForm');
+  const usernameGroup = document.getElementById('usernameGroup');
+  const authUsername = document.getElementById('authUsername');
+  const submitAuthBtn = document.getElementById('submitAuthBtn');
+  const authModalTitle = document.getElementById('authModalTitle');
+  const authError = document.getElementById('authError');
   const googleSignInBtn = document.getElementById('googleSignInBtn');
   const signInModal = document.getElementById('signInModal');
   const closeSignInModal = document.getElementById('closeSignInModal');
-  // Add registerForm if you have one
-  const registerForm = document.getElementById('registerForm');
 
-  if (!tabSignIn || !tabRegister || !signInModal) return;
+  let isRegister = false;
 
+  // Tab switching logic
   tabSignIn.onclick = () => {
+    isRegister = false;
     tabSignIn.classList.add('active');
     tabRegister.classList.remove('active');
-    if (emailAuthForm) emailAuthForm.style.display = 'block';
-    if (registerForm) registerForm.style.display = 'none';
+    if (usernameGroup) usernameGroup.style.display = 'none';
+    submitAuthBtn.textContent = 'Sign In';
+    authModalTitle.textContent = 'Sign In to Your Account';
+    if (authError) authError.textContent = '';
   };
-
   tabRegister.onclick = () => {
+    isRegister = true;
     tabRegister.classList.add('active');
     tabSignIn.classList.remove('active');
-    if (emailAuthForm) emailAuthForm.style.display = 'none';
-    if (registerForm) registerForm.style.display = 'block';
+    if (usernameGroup) usernameGroup.style.display = 'block';
+    submitAuthBtn.textContent = 'Register';
+    authModalTitle.textContent = 'Register a New Account';
+    if (authError) authError.textContent = '';
   };
 
-  closeSignInModal.onclick = () => { signInModal.style.display = 'none'; };
+  closeSignInModal.onclick = () => {
+    signInModal.style.display = 'none';
+    if (authError) authError.textContent = '';
+    if (authForm) authForm.reset();
+    tabSignIn.onclick(); // Reset to sign-in tab
+  };
 
   // Google sign-in
   if (googleSignInBtn) {
-    googleSignInBtn.onclick = () => {
-      // Call your Google sign-in handler
-      signInHandler();
+    googleSignInBtn.onclick = async () => {
+      if (authError) authError.textContent = '';
+      try {
+        await signInWithPopup(auth, provider);
+        signInModal.style.display = "none";
+      } catch (err) {
+        if (authError) authError.textContent = err.message;
+      }
     };
   }
 
-  // Email sign-in
-  if (emailAuthForm) {
-    emailAuthForm.onsubmit = (e) => {
+  // Email/Password form submit
+  if (authForm) {
+    authForm.onsubmit = async (e) => {
       e.preventDefault();
-      // Implement your email/password sign-in logic here
-      // e.g. signInWithEmailAndPassword(auth, email, password)
-    };
-  }
-
-  // Register (if you have a registerForm)
-  if (registerForm) {
-    registerForm.onsubmit = (e) => {
-      e.preventDefault();
-      // Implement your registration logic here
-      // e.g. createUserWithEmailAndPassword(auth, email, password)
+      if (authError) authError.textContent = '';
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+      if (isRegister) {
+        const username = authUsername.value.trim();
+        if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+          if (authError) authError.textContent = "Username must be 3–20 letters/numbers/underscores.";
+          return;
+        }
+        try {
+          const cred = await createUserWithEmailAndPassword(auth, email, password);
+          await updateProfile(cred.user, { displayName: username });
+          await setDoc(doc(db, "users", cred.user.uid), { username }, { merge: true });
+          signInModal.style.display = "none";
+        } catch (err) {
+          if (authError) authError.textContent = err.message;
+        }
+      } else {
+        try {
+          await signInWithEmailAndPassword(auth, email, password);
+          signInModal.style.display = "none";
+        } catch (err) {
+          if (authError) authError.textContent = err.message;
+        }
+      }
     };
   }
 }
 
 // ---- Utility: Ensure Username on Login ----
-// Call ensureUsernameOnLogin() after sign-in or auth state change.
-// Shows modal if username missing.
 export async function ensureUsernameOnLogin() {
   if (!isSignedIn || !currentUser) return;
   const username = await getUsername();
@@ -220,18 +221,13 @@ export function updateIndexBarAuthButtons() {
     const signUpBtn = document.createElement("button");
     signUpBtn.textContent = "Sign In";
     signUpBtn.onclick = () => {
-    const modal = document.getElementById("signInModal");
-    if (modal) {
-      modal.style.display = "block";
-      // Optionally switch to Register tab:
-      const tabRegister = document.getElementById('tabRegister');
-      const tabSignIn = document.getElementById('tabSignIn');
-      if (tabRegister && tabSignIn) {
-        tabRegister.classList.add('active');
-        tabSignIn.classList.remove('active');
+      const modal = document.getElementById("signInModal");
+      if (modal) {
+        modal.style.display = "block";
+        const tabSignIn = document.getElementById('tabSignIn');
+        if (tabSignIn) tabSignIn.onclick(); // Always launch modal on sign-in tab
       }
-    }
-  };
+    };
     leftDiv.appendChild(signUpBtn);
   }
 }
@@ -239,26 +235,3 @@ export function updateIndexBarAuthButtons() {
 document.addEventListener('DOMContentLoaded', () => {
   updateIndexBarAuthButtons();
 });
-// ---- Example Usage (in your HTML page) ----
-/*
-<script type="module">
-  import {
-    onAuthChange, signInHandler, signOutHandler, setupUsernameModal, ensureUsernameOnLogin
-  } from './auth.js';
-
-  // Set up modal events on page load
-  setupUsernameModal();
-
-  // Listen for auth state changes (update UI, etc)
-  onAuthChange(async user => {
-    await ensureUsernameOnLogin();
-    // Update UI, bottom bar, etc.
-  });
-
-  // Attach sign-in/out handlers to buttons
-  document.getElementById("sidebarSignInBtn").onclick = signInHandler;
-  document.getElementById("signOutBtn").onclick = signOutHandler;
-</script>
-*/
-
-// ---- End of auth.js ----
