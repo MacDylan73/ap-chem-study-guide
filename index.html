@@ -105,7 +105,7 @@
       onAuthChange,
       signInHandler,
       signOutHandler,
-      setupUsernameModal,
+      setupAuthModalEvents,
       ensureUsernameOnLogin,
       updateIndexBarAuthButtons
     } from './js/auth.js';
@@ -113,7 +113,7 @@
              applySavedTheme
     } from './js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
-    import { setupAuthModalEvents } from './js/auth.js';
+    import { setupUsernameModal } from './js/username-modal.js';
 
     async function loadAuthModal() {
       const resp = await fetch('auth-modal.html');
