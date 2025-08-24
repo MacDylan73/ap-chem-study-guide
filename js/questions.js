@@ -46,6 +46,7 @@ function checkAnswer(button, isCorrect, explanation) {
   }
 }
 
+
 // Quiz checkmarks logic (now in questions.js)
 export function updateSubunitCheckmarks() {
   document.querySelectorAll('.subunit').forEach(subunitDiv => {
@@ -66,3 +67,4 @@ document.addEventListener('DOMContentLoaded', () => {
   updateSubunitCheckmarks();
   window.updateSubunitCheckmarks = updateSubunitCheckmarks;
 });
+window.checkAnswer = checkAnswer;
