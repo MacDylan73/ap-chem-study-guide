@@ -119,3 +119,46 @@ export function setupQuizTimers() {
 
 // Call setupQuizTimers() after DOM is loaded
 document.addEventListener("DOMContentLoaded", setupQuizTimers);
+
+//Final Quiz Choices+Feedback
+// Deferred feedback logic for final quiz boxes only
+export function setupFinalQuizLogic() {
+  document.querySelectorAll('.final-quiz-box .question-box').forEach(qbox => {
+    const buttons = qbox.querySelectorAll('.answer-options button');
+    const submitBtn = qbox.querySelector('.submit-answer-btn');
+    const feedbackDiv = qbox.querySelector('.feedback-text');
+    let selectedBtn = null;
+    let submitted = false;
+
+    // Highlight selected answer, but don't show feedback yet
+    buttons.forEach(btn => {
+      btn.onclick = () => {
+        if (submitted) return;
+        buttons.forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        selectedBtn = btn;
+        feedbackDiv.textContent = "";
+      };
+    });
+
+    // On submit: show feedback and red/green highlight
+    if (submitBtn) {
+      submitBtn.onclick = () => {
+        if (submitted || !selectedBtn) return;
+        submitted = true;
+
+        buttons.forEach(b => b.classList.remove('selected', 'correct', 'incorrect'));
+
+        const isCorrect = selectedBtn.dataset.correct === "true";
+        feedbackDiv.textContent = selectedBtn.dataset.explanation ?? "";
+
+        if (isCorrect) {
+          selectedBtn.classList.add('correct');
+        } else {
+          selectedBtn.classList.add('incorrect');
+        }
+      };
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded', setupFinalQuizLogic);
