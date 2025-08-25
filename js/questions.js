@@ -101,18 +101,15 @@ export function setupQuizTimers() {
       clearInterval(intervalId);
     }
 
-    // Only setup if both start button and questions exist
+    // Attach stopTimer to quizBox so other logic can call it
+    quizBox.stopTimer = stopTimer;
+
     if (startBtn && questionsElem && timerElem) {
       startBtn.onclick = () => {
         startBtn.style.display = "none";
         questionsElem.style.display = "block";
         startTimer();
       };
-
-      // Optional: Add a "Finish Quiz" button in .quizQuestions to stop the timer
-      // Example:
-      // const finishBtn = quizBox.querySelector('.finishQuizBtn');
-      // if (finishBtn) finishBtn.onclick = stopTimer;
     }
   });
 }
@@ -152,6 +149,11 @@ export function setupFinalQuizLogic() {
         // Disable submit button after click
         submitBtn.disabled = true;
 
+        // STOP THE TIMER for this quiz box!
+        if (typeof quizBox.stopTimer === 'function') {
+          quizBox.stopTimer();
+        }
+
         questionBoxes.forEach(qbox => {
           const buttons = qbox.querySelectorAll('.answer-options button');
           const feedbackDiv = qbox.querySelector('.feedback-text');
@@ -175,4 +177,5 @@ export function setupFinalQuizLogic() {
     }
   });
 }
+document.addEventListener('DOMContentLoaded', setupFinalQuizLogic);
 document.addEventListener('DOMContentLoaded', setupFinalQuizLogic);
