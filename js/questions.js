@@ -123,30 +123,27 @@ export function setupFinalQuizLogic() {
   document.querySelectorAll('.final-quiz-box').forEach(quizBox => {
     const questionBoxes = quizBox.querySelectorAll('.question-box');
     const submitBtn = quizBox.querySelector('.final-quiz-submit-btn');
+    const scoreElem = quizBox.querySelector('.quizScore');
 
     // For each question, handle answer selection (save selection but don't show feedback yet)
     questionBoxes.forEach(qbox => {
       const buttons = qbox.querySelectorAll('.answer-options button');
       const feedbackDiv = qbox.querySelector('.feedback-text');
-      // Save selected button reference
       qbox.selectedBtn = null;
 
       buttons.forEach(btn => {
         btn.onclick = () => {
-          // Prevent answer changes after submit
-          if (submitBtn.disabled) return;
+          if (submitBtn.disabled) return; // Prevent selection after submit
           buttons.forEach(b => b.classList.remove('selected'));
-          btn.classList.add('selected');
-          qbox.selectedBtn = btn; // Save selection on question box
-          feedbackDiv.textContent = ""; // Clear feedback on change
+          btn.classList.add('selected');  // Neutral highlight
+          qbox.selectedBtn = btn;
+          feedbackDiv.textContent = "";
         };
       });
     });
 
-    // Submit: show feedback and highlight all selected answers
     if (submitBtn) {
       submitBtn.onclick = () => {
-        // Disable submit button after click
         submitBtn.disabled = true;
 
         // STOP THE TIMER for this quiz box!
@@ -154,10 +151,12 @@ export function setupFinalQuizLogic() {
           quizBox.stopTimer();
         }
 
+        let correctCount = 0;
+        let totalQuestions = questionBoxes.length;
+
         questionBoxes.forEach(qbox => {
           const buttons = qbox.querySelectorAll('.answer-options button');
           const feedbackDiv = qbox.querySelector('.feedback-text');
-          // Remove all highlights
           buttons.forEach(b => b.classList.remove('selected', 'correct', 'incorrect'));
 
           const selectedBtn = qbox.selectedBtn;
@@ -169,13 +168,19 @@ export function setupFinalQuizLogic() {
           feedbackDiv.textContent = selectedBtn.dataset.explanation ?? "";
           if (isCorrect) {
             selectedBtn.classList.add('correct');
+            correctCount++;
           } else {
             selectedBtn.classList.add('incorrect');
           }
         });
+
+        // Show score below timer
+        if (scoreElem) {
+          scoreElem.textContent = `Score: ${correctCount} out of ${totalQuestions} correct`;
+          scoreElem.style.display = "block";
+        }
       };
     }
   });
 }
-document.addEventListener('DOMContentLoaded', setupFinalQuizLogic);
 document.addEventListener('DOMContentLoaded', setupFinalQuizLogic);
