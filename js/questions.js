@@ -120,43 +120,57 @@ export function setupQuizTimers() {
 // Call setupQuizTimers() after DOM is loaded
 document.addEventListener("DOMContentLoaded", setupQuizTimers);
 
-//Final Quiz Choices+Feedback
+// Final Quiz Choices+Feedback
 // Deferred feedback logic for final quiz boxes only
 export function setupFinalQuizLogic() {
-  document.querySelectorAll('.final-quiz-box .question-box').forEach(qbox => {
-    const buttons = qbox.querySelectorAll('.answer-options button');
-    const submitBtn = qbox.querySelector('.submit-answer-btn');
-    const feedbackDiv = qbox.querySelector('.feedback-text');
-    let selectedBtn = null;
-    let submitted = false;
+  document.querySelectorAll('.final-quiz-box').forEach(quizBox => {
+    const questionBoxes = quizBox.querySelectorAll('.question-box');
+    const submitBtn = quizBox.querySelector('.final-quiz-submit-btn');
 
-    // Highlight selected answer, but don't show feedback yet
-    buttons.forEach(btn => {
-      btn.onclick = () => {
-        if (submitted) return;
-        buttons.forEach(b => b.classList.remove('selected'));
-        btn.classList.add('selected');
-        selectedBtn = btn;
-        feedbackDiv.textContent = "";
-      };
+    // For each question, handle answer selection (save selection but don't show feedback yet)
+    questionBoxes.forEach(qbox => {
+      const buttons = qbox.querySelectorAll('.answer-options button');
+      const feedbackDiv = qbox.querySelector('.feedback-text');
+      // Save selected button reference
+      qbox.selectedBtn = null;
+
+      buttons.forEach(btn => {
+        btn.onclick = () => {
+          // Prevent answer changes after submit
+          if (submitBtn.disabled) return;
+          buttons.forEach(b => b.classList.remove('selected'));
+          btn.classList.add('selected');
+          qbox.selectedBtn = btn; // Save selection on question box
+          feedbackDiv.textContent = ""; // Clear feedback on change
+        };
+      });
     });
 
-    // On submit: show feedback and red/green highlight
+    // Submit: show feedback and highlight all selected answers
     if (submitBtn) {
       submitBtn.onclick = () => {
-        if (submitted || !selectedBtn) return;
-        submitted = true;
+        // Disable submit button after click
+        submitBtn.disabled = true;
 
-        buttons.forEach(b => b.classList.remove('selected', 'correct', 'incorrect'));
+        questionBoxes.forEach(qbox => {
+          const buttons = qbox.querySelectorAll('.answer-options button');
+          const feedbackDiv = qbox.querySelector('.feedback-text');
+          // Remove all highlights
+          buttons.forEach(b => b.classList.remove('selected', 'correct', 'incorrect'));
 
-        const isCorrect = selectedBtn.dataset.correct === "true";
-        feedbackDiv.textContent = selectedBtn.dataset.explanation ?? "";
-
-        if (isCorrect) {
-          selectedBtn.classList.add('correct');
-        } else {
-          selectedBtn.classList.add('incorrect');
-        }
+          const selectedBtn = qbox.selectedBtn;
+          if (!selectedBtn) {
+            feedbackDiv.textContent = "No answer selected.";
+            return;
+          }
+          const isCorrect = selectedBtn.dataset.correct === "true";
+          feedbackDiv.textContent = selectedBtn.dataset.explanation ?? "";
+          if (isCorrect) {
+            selectedBtn.classList.add('correct');
+          } else {
+            selectedBtn.classList.add('incorrect');
+          }
+        });
       };
     }
   });
