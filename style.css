@@ -1218,3 +1218,34 @@ body.dark-mode .tabRegister:hover:not(.active) {
   color: #a21a1a !important;
   border-color: #a21a1a !important;
 }
+
+.quiz-box.final-quiz-box {
+  text-align: center;
+}
+
+.quiz-box.final-quiz-box .quizTimer,
+.quiz-box.final-quiz-box .quizScore {
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+.quiz-box.final-quiz-box .startQuizBtn {
+  display: inline-block;
+  margin: 16px auto 16px auto;
+  font-size: 17px;
+  font-weight: bold;
+  background: var(--box-bg);
+  color: var(--text-color);
+  border: 2px solid var(--box-border);
+  border-radius: 8px;
+  padding: 12px 26px;
+  cursor: pointer;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.07);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.quiz-box.final-quiz-box .startQuizBtn:disabled {
+  background: var(--box-border);
+  color: #eee;
+  cursor: not-allowed;
+  border-color: var(--box-border);
+}
