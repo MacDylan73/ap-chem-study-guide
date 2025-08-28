@@ -1174,3 +1174,47 @@ body.dark-mode .tabRegister:hover:not(.active) {
   color: #eee;
   cursor: not-allowed;
 }
+
+.quiz-container, .quiz-box {
+  text-align: center;
+}
+
+.final-quiz-box .answer-options button,
+.quiz-box .startQuizBtn,
+.final-quiz-box .final-quiz-submit-btn {
+  display: inline-block;
+  margin: 12px auto;
+}
+
+.final-quiz-box .final-quiz-submit-btn {
+  margin-top: 18px;
+  font-size: 17px;
+  font-weight: bold;
+  background: var(--box-bg);
+  color: var(--text-color);
+  border: 2px solid var(--box-border);
+  border-radius: 8px;
+  padding: 12px 26px;
+  cursor: pointer;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.07);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.final-quiz-box .final-quiz-submit-btn:disabled {
+  background: var(--box-border);
+  color: #eee;
+  cursor: not-allowed;
+  border-color: var(--box-border);
+}
+
+/* Ensure correct/incorrect show up -- add !important for reliability */
+.final-quiz-box .answer-options button.correct {
+  background-color: #d4edda !important;
+  color: #176317 !important;
+  border-color: #176317 !important;
+}
+.final-quiz-box .answer-options button.incorrect {
+  background-color: #f8d7da !important;
+  color: #a21a1a !important;
+  border-color: #a21a1a !important;
+}
