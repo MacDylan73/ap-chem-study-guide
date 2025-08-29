@@ -52,5 +52,3 @@ document.getElementById('qotdSignInBtn').onclick = function() {
   // Trigger your sign-in logic here (show modal, etc)
   alert('Sign-in modal goes here!');
 };
-
-document.addEventListener('DOMContentLoaded', loadQOTD);
