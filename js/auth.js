@@ -66,8 +66,9 @@ export function signInHandler() {
     .then(result => {
       isSignedIn = true;
       currentUser = result.user;
-      window.isSignedIn = isSignedIn; // <-- ADD THIS LINE
+      window.isSignedIn = isSignedIn; // <-- Already here
       window.currentUser = currentUser; // (optional)
+      window.dispatchEvent(new CustomEvent('user-signed-in')); // <-- ADD THIS LINE
       return result.user;
     })
     .catch(error => {
