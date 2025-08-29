@@ -1276,3 +1276,174 @@ body.dark-mode .tabRegister:hover:not(.active) {
   filter: blur(6px);
   pointer-events: none;
 }
+
+Copilot said: ```css /* --- QOTD Box and Layout ---
+CSS
+/* --- QOTD Box and Layout --- */
+.box {
+  border-radius: 16px;
+  background: var(--box-bg);
+  padding: 2.2em 2em 1.3em 2em;
+  box-shadow: 0 2px 18px rgba(0,0,0,0.11);
+  margin-bottom: 2em;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1.5px solid var(--box-border);
+}
+
+/* --- Blur Overlay --- */
+.qotd-blur-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(255,255,255,0.43);
+  backdrop-filter: blur(5px);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+.qotd-blur-overlay button {
+  font-size: 1.08em;
+  font-weight: 600;
+  padding: 0.7em 1.7em;
+  border-radius: 8px;
+  border: none;
+  background: var(--choice-bg);
+  color: var(--bar-text);
+  box-shadow: 0 1px 5px rgba(0,0,0,0.09);
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.qotd-blur-overlay button:hover { background: var(--hover-bg); }
+
+.qotd-question-area {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 1.1em;
+}
+
+.qotd-question-content {
+  border-radius: 14px;
+  background: var(--box-bg);
+  padding: 1.1em 0.7em;
+  min-height: 90px;
+}
+
+.qotd-question-content.blurred {
+  filter: blur(3.5px);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* --- Actions Row --- */
+.qotd-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 1.3em;
+  justify-content: flex-start;
+  position: relative;
+}
+
+/* --- Streak Icon --- */
+.qotd-streak {
+  font-size: 1.4em;
+  background: #ffe1a6;
+  color: #ff8800;
+  padding: 0.45em 0.82em;
+  border-radius: 50%;
+  box-shadow: 0 1px 6px rgba(255,140,0,0.08);
+  margin-right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 42px;
+}
+
+#qotdLeaderboardBtn,
+#qotdStatsBtn {
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1em;
+  background: var(--choice-bg);
+  color: var(--bar-text);
+  padding: 0.7em 1.2em;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+#qotdLeaderboardBtn:hover,
+#qotdStatsBtn:hover {
+  background: var(--hover-bg);
+}
+
+#qotdStatsBtn {
+  flex: 0 0 130px;
+  min-width: 130px;
+  text-align: center;
+}
+
+#qotdLeaderboardBtn {
+  flex: 1 1 auto;
+  min-width: 90px;
+  text-align: center;
+}
+
+@media (max-width: 500px) {
+  .box {
+    padding: 1.2em 0.2em 0.8em 0.2em;
+  }
+  .qotd-actions {
+    gap: 8px;
+  }
+  #qotdStatsBtn {
+    min-width: 92px;
+    font-size: 0.97em;
+  }
+  #qotdLeaderboardBtn {
+    min-width: 60px;
+    font-size: 0.97em;
+  }
+  .qotd-streak {
+    min-width: 32px;
+    min-height: 32px;
+    font-size: 1.15em;
+  }
+}
+
+#qotdSignInBtn,
+#qotdSubmitBtn {
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1em;
+  background: var(--choice-bg);
+  color: var(--bar-text);
+  padding: 0.7em 1.7em;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.09);
+  cursor: pointer;
+  margin-top: 0.3em;
+  transition: background 0.18s;
+  display: inline-block;
+}
+
+#qotdSignInBtn:hover,
+#qotdSubmitBtn:hover {
+  background: var(--hover-bg);
+}
+
+.qotd-feedback {
+  font-size: 1.11em;
+  margin-top: 1em;
+  font-weight: 600;
+  text-align: center;
+}
+.qotd-feedback.correct { color: #3fad32; }
+.qotd-feedback.incorrect { color: #d12e2e; }
