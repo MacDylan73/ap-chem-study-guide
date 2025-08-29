@@ -8,16 +8,10 @@ function getQOTDIndex(numQuestions) {
 
 // Load questions.json and show today's QOTD
 async function loadQOTD() {
-  // Debugging
   console.log('Loading QOTD...');
   const res = await fetch('questions.json');
   const questions = await res.json();
   console.log('Questions loaded:', questions);
-  //End debugging
-
-  
-  const res = await fetch('questions.json');
-  const questions = await res.json();
 
   const idx = getQOTDIndex(questions.length);
   const q = questions[idx];
@@ -33,8 +27,6 @@ async function loadQOTD() {
     </div>
     <div class="qotd-feedback" style="display:none"></div>
   `;
-
-  // Setup submit/feedback (to be expanded in next steps)
 }
 
 function updateQOTDGating() {
@@ -50,13 +42,13 @@ function updateQOTDGating() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // After loading QOTD, update gating
   loadQOTD().then(updateQOTDGating);
-  // If sign-in state changes, call updateQOTDGating again!
-});
 
-// Example sign in button click handler (stub)
-document.getElementById('qotdSignInBtn').onclick = function() {
-  // Trigger your sign-in logic here (show modal, etc)
-  alert('Sign-in modal goes here!');
-};
+  // Example sign in button click handler (stub)
+  const signInBtn = document.getElementById('qotdSignInBtn');
+  if (signInBtn) {
+    signInBtn.onclick = function() {
+      alert('Sign-in modal goes here!');
+    };
+  }
+});
