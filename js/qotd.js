@@ -88,19 +88,14 @@ function updateQOTDGating() {
 
 // Use the shared sign-in modal logic from auth-modal.html
 function showAppSignInModal() {
-  // This assumes your main modal is triggered by a function or a button, e.g. "signInBtn" in the top bar.
-  // You may want to replace this with the exact function call or event dispatch your app uses.
-  const mainSignInBtn = document.getElementById('signInBtn');
-  if (mainSignInBtn) {
-    mainSignInBtn.click();
+  // Show the main sign-in modal and activate the sign-in tab
+  const signInModal = document.getElementById("signInModal");
+  const tabSignIn = document.getElementById("tabSignIn");
+  if (signInModal) {
+    signInModal.style.display = "block";
+    if (tabSignIn) tabSignIn.onclick();
     return true;
   }
-  // If your modal has a global function like window.showAuthModal, call it:
-  if (typeof window.showAuthModal === "function") {
-    window.showAuthModal();
-    return true;
-  }
-  // Otherwise, you may need to trigger the modal programmatically (custom to your app)
   alert("Sign-in modal could not be triggered. Please check your modal integration.");
   return false;
 }
@@ -117,8 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Listen for global sign-in event (if your app emits one after sign-in)
-  // For example, your sign-in modal might dispatch a CustomEvent:
-  // window.dispatchEvent(new CustomEvent('user-signed-in'));
   window.addEventListener('user-signed-in', function() {
     window.isSignedIn = true;
     updateQOTDGating();
