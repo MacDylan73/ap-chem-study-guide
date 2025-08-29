@@ -6,7 +6,7 @@ function getQOTDIndex(numQuestions) {
   return daysSinceEpoch % numQuestions;
 }
 
-// Load questions.json and show today's QOTD with full submit/feedback logic
+// Load questions.json and show today's QOTD with submit/feedback functionality
 async function loadQOTD() {
   console.log('Loading QOTD...');
   const res = await fetch('questions.json');
@@ -34,7 +34,7 @@ async function loadQOTD() {
   setupQOTDHandlers(q);
 }
 
-// Setup submit/feedback logic similar to final quiz
+// Setup submit/feedback logic
 function setupQOTDHandlers(q) {
   const container = document.getElementById('qotdQuestionContent');
   let selectedIdx = null;
@@ -86,55 +86,43 @@ function updateQOTDGating() {
   }
 }
 
-// Simulate a sign-in modal for demo mode
-function showSignInModal(callback) {
-  // Simple modal simulation
-  const modal = document.createElement('div');
-  modal.style.position = 'fixed';
-  modal.style.top = '0';
-  modal.style.left = '0';
-  modal.style.width = '100vw';
-  modal.style.height = '100vh';
-  modal.style.background = 'rgba(40,40,60,0.3)';
-  modal.style.display = 'flex';
-  modal.style.alignItems = 'center';
-  modal.style.justifyContent = 'center';
-  modal.style.zIndex = '5000';
-
-  modal.innerHTML = `
-    <div style="background:#fff;padding:2em 2.3em;border-radius:13px;box-shadow:0 4px 18px rgba(0,0,0,0.13);text-align:center;max-width:340px;">
-      <h3>Sign In</h3>
-      <p>This is a demo modal.<br>Click below to simulate sign-in:</p>
-      <button id="modalSignInConfirm" style="margin-top:14px;padding:9px 22px;border-radius:7px;background:#0077cc;color:#fff;font-weight:bold;border:none;cursor:pointer;">Sign In</button>
-      <br>
-      <button id="modalSignInCancel" style="margin-top:14px;padding:7px 20px;border-radius:7px;background:#eee;color:#333;border:none;cursor:pointer;">Cancel</button>
-    </div>
-  `;
-  document.body.appendChild(modal);
-
-  modal.querySelector('#modalSignInCancel').onclick = () => {
-    document.body.removeChild(modal);
-    if (callback) callback(false);
-  };
-  modal.querySelector('#modalSignInConfirm').onclick = () => {
-    document.body.removeChild(modal);
-    if (callback) callback(true);
-  };
+// Use the shared sign-in modal logic from auth-modal.html
+function showAppSignInModal() {
+  // This assumes your main modal is triggered by a function or a button, e.g. "signInBtn" in the top bar.
+  // You may want to replace this with the exact function call or event dispatch your app uses.
+  const mainSignInBtn = document.getElementById('signInBtn');
+  if (mainSignInBtn) {
+    mainSignInBtn.click();
+    return true;
+  }
+  // If your modal has a global function like window.showAuthModal, call it:
+  if (typeof window.showAuthModal === "function") {
+    window.showAuthModal();
+    return true;
+  }
+  // Otherwise, you may need to trigger the modal programmatically (custom to your app)
+  alert("Sign-in modal could not be triggered. Please check your modal integration.");
+  return false;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   loadQOTD().then(updateQOTDGating);
 
-  // Sign in button logic
-  const signInBtn = document.getElementById('qotdSignInBtn');
-  if (signInBtn) {
-    signInBtn.onclick = function() {
-      showSignInModal(function(signedIn) {
-        if (signedIn) {
-          window.isSignedIn = true;
-          updateQOTDGating();
-        }
-      });
+  // QOTD sign-in button triggers main sign-in modal logic
+  const qotdSignInBtn = document.getElementById('qotdSignInBtn');
+  if (qotdSignInBtn) {
+    qotdSignInBtn.onclick = function() {
+      showAppSignInModal();
     };
   }
+
+  // Listen for global sign-in event (if your app emits one after sign-in)
+  // For example, your sign-in modal might dispatch a CustomEvent:
+  // window.dispatchEvent(new CustomEvent('user-signed-in'));
+  window.addEventListener('user-signed-in', function() {
+    window.isSignedIn = true;
+    updateQOTDGating();
+  });
+
+  // If you set window.isSignedIn elsewhere, call updateQOTDGating() after sign-in in your main auth flow.
 });
