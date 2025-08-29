@@ -1,4 +1,4 @@
-import { setupGating } from './util.js';
+import { setupGating } from './gating.js';
 
 // Progress tracking for quiz questions per subunit
 function checkAnswer(button, isCorrect, explanation) {
