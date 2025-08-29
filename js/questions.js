@@ -1,3 +1,5 @@
+import { setupGating } from './util.js';
+
 // Progress tracking for quiz questions per subunit
 function checkAnswer(button, isCorrect, explanation) {
   const buttons = button.parentElement.querySelectorAll('button');
@@ -79,7 +81,6 @@ export function setupQuizTimers() {
     const startBtn = quizBox.querySelector('.startQuizBtn');
     const questionsElem = quizBox.querySelector('.quizQuestions');
 
-    // Scope intervalId and secondsElapsed to the quizBox instance
     quizBox._intervalId = null;
     quizBox._secondsElapsed = 0;
 
@@ -90,7 +91,6 @@ export function setupQuizTimers() {
     }
 
     function startTimer() {
-      // Always stop any running timer first!
       stopTimer();
       quizBox._secondsElapsed = 0;
       timerElem.textContent = `Time: 0:00`;
@@ -112,6 +112,21 @@ export function setupQuizTimers() {
 
     if (startBtn && questionsElem && timerElem) {
       startBtn.onclick = () => {
+        // Check gating before starting
+        const maxFreeClicks = 3; // or your preferred value!
+        let clickCount = parseInt(localStorage.getItem("unitClicks")) || 0;
+        const isGated = !window.isSignedIn && clickCount >= maxFreeClicks;
+
+        if (isGated) {
+          // Show gating modal instead
+          const signupModal = document.getElementById("signupModal");
+          if (signupModal) signupModal.style.display = "block";
+          return;
+        }
+        // Otherwise, update click count and start quiz
+        clickCount++;
+        localStorage.setItem("unitClicks", clickCount);
+
         startBtn.style.display = "none";
         questionsElem.style.display = "block";
         startTimer();
