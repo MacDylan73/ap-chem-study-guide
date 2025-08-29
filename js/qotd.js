@@ -76,6 +76,9 @@ function setupQOTDHandlers(q) {
 function updateQOTDGating() {
   const blurOverlay = document.getElementById('qotdBlurOverlay');
   const questionContent = document.getElementById('qotdQuestionContent');
+  // Debug log to help trace gating state
+  console.log("[QOTD] updateQOTDGating, window.isSignedIn:", window.isSignedIn);
+
   if (!blurOverlay || !questionContent) return;
   if (!window.isSignedIn) {
     blurOverlay.style.display = 'flex';
@@ -111,11 +114,17 @@ document.addEventListener('DOMContentLoaded', () => {
     };
   }
 
-  // Listen for global sign-in event (if your app emits one after sign-in)
-  window.addEventListener('user-signed-in', function() {
-    window.isSignedIn = true;
+  // Listen for auth state changes - covers sign-in on page load and after sign-in
+  window.addEventListener('authstatechanged', function(e) {
+    window.isSignedIn = !!(e.detail && e.detail.user);
+    console.log("[QOTD] authstatechanged event, isSignedIn:", window.isSignedIn);
     updateQOTDGating();
   });
 
-  // If you set window.isSignedIn elsewhere, call updateQOTDGating() after sign-in in your main auth flow.
+  // Also listen for global sign-in event for extra compatibility
+  window.addEventListener('user-signed-in', function() {
+    window.isSignedIn = true;
+    console.log("[QOTD] user-signed-in event");
+    updateQOTDGating();
+  });
 });
