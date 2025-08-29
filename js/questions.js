@@ -124,62 +124,108 @@ export function setupFinalQuizLogic() {
     const questionBoxes = quizBox.querySelectorAll('.question-box');
     const submitBtn = quizBox.querySelector('.final-quiz-submit-btn');
     const scoreElem = quizBox.querySelector('.quizScore');
+    const timerElem = quizBox.querySelector('.quizTimer');
+
+    // Save timer start/stop functions if provided
+    let startTimer = quizBox.startTimer || (() => {});
+    let stopTimer = quizBox.stopTimer || (() => {});
 
     // For each question, handle answer selection (save selection but don't show feedback yet)
-    questionBoxes.forEach(qbox => {
-      const buttons = qbox.querySelectorAll('.answer-options button');
-      const feedbackDiv = qbox.querySelector('.feedback-text');
-      qbox.selectedBtn = null;
-
-      buttons.forEach(btn => {
-        btn.onclick = () => {
-          if (submitBtn.disabled) return; // Prevent selection after submit
-          buttons.forEach(b => b.classList.remove('selected'));
-          btn.classList.add('selected');  // Neutral highlight
-          qbox.selectedBtn = btn;
-          feedbackDiv.textContent = "";
-        };
+    function enableSelection() {
+      questionBoxes.forEach(qbox => {
+        const buttons = qbox.querySelectorAll('.answer-options button');
+        const feedbackDiv = qbox.querySelector('.feedback-text');
+        qbox.selectedBtn = null;
+        buttons.forEach(btn => {
+          btn.disabled = false;
+          btn.classList.remove('selected', 'correct', 'incorrect');
+          btn.onclick = () => {
+            if (submitBtn.disabled) return;
+            buttons.forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            qbox.selectedBtn = btn;
+            feedbackDiv.textContent = "";
+          };
+        });
+        feedbackDiv.textContent = "";
       });
-    });
+    }
+    enableSelection();
+
+    function resetQuiz() {
+      // Clear selection, highlighting, feedback
+      questionBoxes.forEach(qbox => {
+        const buttons = qbox.querySelectorAll('.answer-options button');
+        buttons.forEach(btn => {
+          btn.disabled = false;
+          btn.classList.remove('selected', 'correct', 'incorrect');
+        });
+        qbox.selectedBtn = null;
+        const feedbackDiv = qbox.querySelector('.feedback-text');
+        feedbackDiv.textContent = "";
+      });
+      // Hide score
+      if (scoreElem) {
+        scoreElem.textContent = "";
+        scoreElem.style.display = "none";
+      }
+      // Reset timer
+      if (timerElem) timerElem.textContent = "Time: 0:00";
+      if (typeof startTimer === "function") startTimer();
+      // Re-enable submit
+      submitBtn.textContent = "Submit Quiz";
+      submitBtn.disabled = false;
+      submitBtn.onclick = submitHandler;
+      enableSelection();
+    }
+
+    // Define submit logic so we can re-attach it after retry
+    function submitHandler() {
+      submitBtn.disabled = true;
+      stopTimer();
+
+      let correctCount = 0;
+      let totalQuestions = questionBoxes.length;
+
+      questionBoxes.forEach(qbox => {
+        const buttons = qbox.querySelectorAll('.answer-options button');
+        const feedbackDiv = qbox.querySelector('.feedback-text');
+        buttons.forEach(b => b.classList.remove('selected', 'correct', 'incorrect'));
+
+        const selectedBtn = qbox.selectedBtn;
+        if (!selectedBtn) {
+          feedbackDiv.textContent = "No answer selected.";
+          return;
+        }
+        const isCorrect = selectedBtn.dataset.correct === "true";
+        feedbackDiv.textContent = selectedBtn.dataset.explanation ?? "";
+        if (isCorrect) {
+          selectedBtn.classList.add('correct');
+          correctCount++;
+        } else {
+          selectedBtn.classList.add('incorrect');
+        }
+      });
+
+      // Show score below timer
+      if (scoreElem) {
+        scoreElem.textContent = `Score: ${correctCount} out of ${totalQuestions} correct`;
+        scoreElem.style.display = "block";
+      }
+
+      // Change button to "Try Again"
+      submitBtn.textContent = "Try Again";
+      submitBtn.disabled = false;
+      submitBtn.onclick = resetQuiz;
+
+      // Disable answer selection until retry
+      questionBoxes.forEach(qbox => {
+        qbox.querySelectorAll('.answer-options button').forEach(btn => btn.disabled = true);
+      });
+    }
 
     if (submitBtn) {
-      submitBtn.onclick = () => {
-        submitBtn.disabled = true;
-
-        // STOP THE TIMER for this quiz box!
-        if (typeof quizBox.stopTimer === 'function') {
-          quizBox.stopTimer();
-        }
-
-        let correctCount = 0;
-        let totalQuestions = questionBoxes.length;
-
-        questionBoxes.forEach(qbox => {
-          const buttons = qbox.querySelectorAll('.answer-options button');
-          const feedbackDiv = qbox.querySelector('.feedback-text');
-          buttons.forEach(b => b.classList.remove('selected', 'correct', 'incorrect'));
-
-          const selectedBtn = qbox.selectedBtn;
-          if (!selectedBtn) {
-            feedbackDiv.textContent = "No answer selected.";
-            return;
-          }
-          const isCorrect = selectedBtn.dataset.correct === "true";
-          feedbackDiv.textContent = selectedBtn.dataset.explanation ?? "";
-          if (isCorrect) {
-            selectedBtn.classList.add('correct');
-            correctCount++;
-          } else {
-            selectedBtn.classList.add('incorrect');
-          }
-        });
-
-        // Show score below timer
-        if (scoreElem) {
-          scoreElem.textContent = `Score: ${correctCount} out of ${totalQuestions} correct`;
-          scoreElem.style.display = "block";
-        }
-      };
+      submitBtn.onclick = submitHandler;
     }
   });
 }
