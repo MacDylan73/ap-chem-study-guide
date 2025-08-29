@@ -8,10 +8,12 @@ function getQOTDIndex(numQuestions) {
 
 // Load questions.json and show today's QOTD
 async function loadQOTD() {
+  // Debugging
   console.log('Loading QOTD...');
   const res = await fetch('questions.json');
   const questions = await res.json();
   console.log('Questions loaded:', questions);
+  //End debugging
 
   
   const res = await fetch('questions.json');
