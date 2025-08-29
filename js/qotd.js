@@ -29,4 +29,28 @@ async function loadQOTD() {
   // Setup submit/feedback (to be expanded in next steps)
 }
 
+function updateQOTDGating() {
+  const blurOverlay = document.getElementById('qotdBlurOverlay');
+  const questionContent = document.getElementById('qotdQuestionContent');
+  if (!window.isSignedIn) {
+    blurOverlay.style.display = 'flex';
+    questionContent.classList.add('blurred');
+  } else {
+    blurOverlay.style.display = 'none';
+    questionContent.classList.remove('blurred');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // After loading QOTD, update gating
+  loadQOTD().then(updateQOTDGating);
+  // If sign-in state changes, call updateQOTDGating again!
+});
+
+// Example sign in button click handler (stub)
+document.getElementById('qotdSignInBtn').onclick = function() {
+  // Trigger your sign-in logic here (show modal, etc)
+  alert('Sign-in modal goes here!');
+};
+
 document.addEventListener('DOMContentLoaded', loadQOTD);
