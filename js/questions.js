@@ -101,7 +101,7 @@ export function setupQuizTimers() {
       clearInterval(intervalId);
     }
 
-    // Attach stopTimer to quizBox so other logic can call it
+    quizBox.startTimer = startTimer; // <--- ADD THIS
     quizBox.stopTimer = stopTimer;
 
     if (startBtn && questionsElem && timerElem) {
@@ -126,11 +126,10 @@ export function setupFinalQuizLogic() {
     const scoreElem = quizBox.querySelector('.quizScore');
     const timerElem = quizBox.querySelector('.quizTimer');
 
-    // Save timer start/stop functions if provided
-    let startTimer = quizBox.startTimer || (() => {});
-    let stopTimer = quizBox.stopTimer || (() => {});
+    // Timer functions from setupQuizTimers
+    const startTimer = quizBox.startTimer || (() => {});
+    const stopTimer = quizBox.stopTimer || (() => {});
 
-    // For each question, handle answer selection (save selection but don't show feedback yet)
     function enableSelection() {
       questionBoxes.forEach(qbox => {
         const buttons = qbox.querySelectorAll('.answer-options button');
@@ -153,6 +152,9 @@ export function setupFinalQuizLogic() {
     enableSelection();
 
     function resetQuiz() {
+      // Stop timer and reset text
+      stopTimer();
+      if (timerElem) timerElem.textContent = "Time: 0:00";
       // Clear selection, highlighting, feedback
       questionBoxes.forEach(qbox => {
         const buttons = qbox.querySelectorAll('.answer-options button');
@@ -169,20 +171,18 @@ export function setupFinalQuizLogic() {
         scoreElem.textContent = "";
         scoreElem.style.display = "none";
       }
-      // Reset timer
-      if (timerElem) timerElem.textContent = "Time: 0:00";
-      if (typeof startTimer === "function") startTimer();
       // Re-enable submit
       submitBtn.textContent = "Submit Quiz";
       submitBtn.disabled = false;
       submitBtn.onclick = submitHandler;
       enableSelection();
+      // Start timer again
+      startTimer();
     }
 
-    // Define submit logic so we can re-attach it after retry
     function submitHandler() {
       submitBtn.disabled = true;
-      stopTimer();
+      stopTimer(); // Stop when submitting
 
       let correctCount = 0;
       let totalQuestions = questionBoxes.length;
