@@ -22,12 +22,14 @@ async function loadQOTD() {
   if (!container) return;
 
   container.innerHTML = `
-    <div class="qotd-question">${q.question}</div>
-    <div class="qotd-answers">
+  <div class="question-box">
+    <div class="question-text">${q.question}</div>
+    <div class="answer-options">
       ${q.answers.map((ans, i) => `<button class="qotd-answer-btn" data-idx="${i}">${ans}</button>`).join('')}
     </div>
     <div class="qotd-feedback" style="display:none"></div>
-  `;
+  </div>
+`;
   // Setup submit/feedback (to be expanded in next steps)
 }
 
