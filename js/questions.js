@@ -79,8 +79,9 @@ export function setupQuizTimers() {
     const startBtn = quizBox.querySelector('.startQuizBtn');
     const questionsElem = quizBox.querySelector('.quizQuestions');
 
-    let intervalId;
-    let secondsElapsed = 0;
+    // Scope intervalId and secondsElapsed to the quizBox instance
+    quizBox._intervalId = null;
+    quizBox._secondsElapsed = 0;
 
     function formatTime(seconds) {
       const min = Math.floor(seconds / 60);
@@ -89,19 +90,24 @@ export function setupQuizTimers() {
     }
 
     function startTimer() {
-      secondsElapsed = 0;
+      // Always stop any running timer first!
+      stopTimer();
+      quizBox._secondsElapsed = 0;
       timerElem.textContent = `Time: 0:00`;
-      intervalId = setInterval(() => {
-        secondsElapsed++;
-        timerElem.textContent = `Time: ${formatTime(secondsElapsed)}`;
+      quizBox._intervalId = setInterval(() => {
+        quizBox._secondsElapsed++;
+        timerElem.textContent = `Time: ${formatTime(quizBox._secondsElapsed)}`;
       }, 1000);
     }
 
     function stopTimer() {
-      clearInterval(intervalId);
+      if (quizBox._intervalId) {
+        clearInterval(quizBox._intervalId);
+        quizBox._intervalId = null;
+      }
     }
 
-    quizBox.startTimer = startTimer; // <--- ADD THIS
+    quizBox.startTimer = startTimer;
     quizBox.stopTimer = stopTimer;
 
     if (startBtn && questionsElem && timerElem) {
