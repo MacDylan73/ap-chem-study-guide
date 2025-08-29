@@ -18,6 +18,16 @@
     ],
     "correct": 0,
     "explanation": "HCl is a strong acid."
+  },
+  {
+    "question": "How many valence electrons are in a nitrogen atom?",
+    "answers": [
+      "3",
+      "5",
+      "7",
+      "8"
+    ],
+    "correct": 1,
+    "explanation": "Nitrogen is in Group 15 and has 5 valence electrons."
   }
-  // ... more questions ...
 ]
