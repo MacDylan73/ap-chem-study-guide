@@ -6,9 +6,8 @@ function getQOTDIndex(numQuestions) {
   return daysSinceEpoch % numQuestions;
 }
 
-// Load questions.json and show today's QOTD
+// Load questions.json and show today's QOTD with full submit/feedback logic
 async function loadQOTD() {
-  // Debugging
   console.log('Loading QOTD...');
   const res = await fetch('questions.json');
   const questions = await res.json();
@@ -22,20 +21,62 @@ async function loadQOTD() {
   if (!container) return;
 
   container.innerHTML = `
-  <div class="question-box">
-    <div class="question-text">${q.question}</div>
-    <div class="answer-options">
-      ${q.answers.map((ans, i) => `<button class="qotd-answer-btn" data-idx="${i}">${ans}</button>`).join('')}
+    <div class="question-box">
+      <div class="question-text">${q.question}</div>
+      <div class="answer-options">
+        ${q.answers.map((ans, i) => `<button class="qotd-answer-btn" data-idx="${i}">${ans}</button>`).join('')}
+      </div>
+      <button id="qotdSubmitBtn" style="display:none;margin-top:12px;">Submit</button>
+      <div class="qotd-feedback" style="display:none;margin-top:14px;"></div>
     </div>
-    <div class="qotd-feedback" style="display:none"></div>
-  </div>
-`;
-  // Setup submit/feedback (to be expanded in next steps)
+  `;
+
+  setupQOTDHandlers(q);
 }
 
+// Setup submit/feedback logic similar to final quiz
+function setupQOTDHandlers(q) {
+  const container = document.getElementById('qotdQuestionContent');
+  let selectedIdx = null;
+  const answerBtns = container.querySelectorAll('.qotd-answer-btn');
+  const submitBtn = container.querySelector('#qotdSubmitBtn');
+  const feedbackDiv = container.querySelector('.qotd-feedback');
+
+  answerBtns.forEach(btn => {
+    btn.onclick = function() {
+      selectedIdx = parseInt(btn.dataset.idx, 10);
+      // Highlight selected
+      answerBtns.forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      submitBtn.style.display = 'inline-block';
+      submitBtn.disabled = false;
+      feedbackDiv.style.display = 'none';
+      feedbackDiv.textContent = '';
+      feedbackDiv.classList.remove('correct', 'incorrect');
+    };
+  });
+
+  submitBtn.onclick = function() {
+    if (selectedIdx === null) return;
+    submitBtn.disabled = true;
+    answerBtns.forEach(b => b.disabled = true);
+
+    feedbackDiv.style.display = 'block';
+    if (selectedIdx === q.correct) {
+      feedbackDiv.textContent = "Correct!";
+      feedbackDiv.classList.add('correct');
+    } else {
+      feedbackDiv.textContent = "Incorrect! The correct answer was: " + q.answers[q.correct];
+      feedbackDiv.classList.add('incorrect');
+    }
+  };
+}
+
+// Gating logic for blur/overlay
 function updateQOTDGating() {
   const blurOverlay = document.getElementById('qotdBlurOverlay');
   const questionContent = document.getElementById('qotdQuestionContent');
+  if (!blurOverlay || !questionContent) return;
   if (!window.isSignedIn) {
     blurOverlay.style.display = 'flex';
     questionContent.classList.add('blurred');
@@ -45,17 +86,55 @@ function updateQOTDGating() {
   }
 }
 
+// Simulate a sign-in modal for demo mode
+function showSignInModal(callback) {
+  // Simple modal simulation
+  const modal = document.createElement('div');
+  modal.style.position = 'fixed';
+  modal.style.top = '0';
+  modal.style.left = '0';
+  modal.style.width = '100vw';
+  modal.style.height = '100vh';
+  modal.style.background = 'rgba(40,40,60,0.3)';
+  modal.style.display = 'flex';
+  modal.style.alignItems = 'center';
+  modal.style.justifyContent = 'center';
+  modal.style.zIndex = '5000';
+
+  modal.innerHTML = `
+    <div style="background:#fff;padding:2em 2.3em;border-radius:13px;box-shadow:0 4px 18px rgba(0,0,0,0.13);text-align:center;max-width:340px;">
+      <h3>Sign In</h3>
+      <p>This is a demo modal.<br>Click below to simulate sign-in:</p>
+      <button id="modalSignInConfirm" style="margin-top:14px;padding:9px 22px;border-radius:7px;background:#0077cc;color:#fff;font-weight:bold;border:none;cursor:pointer;">Sign In</button>
+      <br>
+      <button id="modalSignInCancel" style="margin-top:14px;padding:7px 20px;border-radius:7px;background:#eee;color:#333;border:none;cursor:pointer;">Cancel</button>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  modal.querySelector('#modalSignInCancel').onclick = () => {
+    document.body.removeChild(modal);
+    if (callback) callback(false);
+  };
+  modal.querySelector('#modalSignInConfirm').onclick = () => {
+    document.body.removeChild(modal);
+    if (callback) callback(true);
+  };
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-  // After loading QOTD, update gating
   loadQOTD().then(updateQOTDGating);
 
-  // Example sign in button click handler (stub)
+  // Sign in button logic
   const signInBtn = document.getElementById('qotdSignInBtn');
   if (signInBtn) {
     signInBtn.onclick = function() {
-      // Trigger your sign-in logic here (show modal, etc)
-      updateQOTDGating();
-      alert('Sign-in modal goes here!');
+      showSignInModal(function(signedIn) {
+        if (signedIn) {
+          window.isSignedIn = true;
+          updateQOTDGating();
+        }
+      });
     };
   }
 });
