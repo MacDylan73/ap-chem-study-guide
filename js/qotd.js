@@ -537,7 +537,7 @@ async function loadLeaderboardModal() {
   } catch (err) {
     leaderboardLoadingMsg.style.display = "none";
     leaderboardErrorMsg.style.display = "block";
-    leaderboardErrorMsg.textContent = "Error loading leaderboard: " + err.message;
+    leaderboardErrorMsg.textContent = "Please sign in to view the leaderboard";
   }
 }
 
