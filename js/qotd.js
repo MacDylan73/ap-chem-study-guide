@@ -42,11 +42,6 @@ function getQOTDIndexEastern(numQuestions) {
   return daysSinceEpoch % numQuestions;
 }
 
-function getTodayStrEastern() {
-  const easternNow = getEasternTimeDate();
-  return easternNow.toISOString().slice(0, 10); // "YYYY-MM-DD"
-}
-
 // ------------------ QOTD Display Logic (index page) -------------------
 
 async function loadQOTD() {
