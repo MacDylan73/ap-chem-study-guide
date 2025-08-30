@@ -104,15 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateQOTDGating();
   });
 
-  // Listen for explicit sign-in
   window.addEventListener('user-signed-in', function() {
     window.isSignedIn = true;
-    updateQOTDGating();
-  });
-
-  // Listen for explicit sign-out (if you dispatch this event in your auth flow)
-  window.addEventListener('user-signed-out', function() {
-    window.isSignedIn = false;
     updateQOTDGating();
   });
 
