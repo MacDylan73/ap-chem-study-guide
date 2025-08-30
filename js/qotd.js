@@ -207,9 +207,141 @@ function showAppSignInModal() {
   return false;
 }
 
-// ------------------ QOTD Stats & Leaderboard Logic (qotd-stats.html) -------------------
+// ---- Always-on streak display and tooltip logic ----
+async function renderUserStreakAlways() {
+  const qotdStreak = document.getElementById('qotdStreak');
+  const streakTooltip = document.getElementById('streakTooltip');
+  if (!qotdStreak || !streakTooltip) return;
 
-// Robust tooltip logic for streak fire icon
+  const user = getUser();
+  if (!user) {
+    qotdStreak.innerHTML = `<span class="streak-number">0</span> <span class="fire-icon">🔥</span>`;
+    return;
+  }
+
+  // Fetch all attempts for this user
+  const attemptsRef = collection(db, "qotd_attempts");
+  const q = query(attemptsRef, where("uid", "==", user.uid));
+  try {
+    const snap = await getDocs(q);
+    const attempts = [];
+    snap.forEach(doc => attempts.push(doc.data()));
+    attempts.sort((a, b) => a.date.localeCompare(b.date));
+
+    // Streak calculations
+    let currentStreak = 0, prevDate = null, streak = 0;
+    for (let i = 0; i < attempts.length; ++i) {
+      if (!attempts[i].correct) {
+        streak = 0;
+        continue;
+      }
+      const thisDate = attempts[i].date;
+      if (prevDate) {
+        const prev = new Date(prevDate);
+        const curr = new Date(thisDate);
+        const daysDiff = (curr - prev) / (1000*60*60*24);
+        if (daysDiff === 1) streak++;
+        else streak = 1;
+      } else {
+        streak = 1;
+      }
+      prevDate = thisDate;
+    }
+
+    if (attempts.length && attempts[attempts.length-1].date === getTodayStr() && attempts[attempts.length-1].correct) {
+      currentStreak = streak;
+    } else {
+      currentStreak = 0;
+    }
+
+    qotdStreak.innerHTML = `<span class="streak-number">${currentStreak}</span> <span class="fire-icon" tabindex="0" style="cursor:pointer;">🔥</span>`;
+    const fireIcon = qotdStreak.querySelector('.fire-icon');
+    if (fireIcon) {
+      // Tooltip logic
+      function showStreakTooltip(e) {
+        streakTooltip.textContent = `Current Streak: ${currentStreak}`;
+        streakTooltip.style.display = 'block';
+        streakTooltip.style.opacity = '1';
+        setTimeout(() => {
+          const rect = fireIcon.getBoundingClientRect();
+          let parent = fireIcon.closest('.qotd-actions');
+          if (!parent) parent = qotdStreak.parentElement;
+          const parentRect = parent.getBoundingClientRect();
+          streakTooltip.style.left = `${rect.left - parentRect.left + rect.width/2 - streakTooltip.offsetWidth/2}px`;
+          streakTooltip.style.top = `${rect.top - parentRect.top - streakTooltip.offsetHeight - 10}px`;
+        }, 1);
+      }
+      function hideStreakTooltip() {
+        streakTooltip.style.display = 'none';
+        streakTooltip.style.opacity = '0';
+      }
+      fireIcon.addEventListener('mouseenter', showStreakTooltip);
+      fireIcon.addEventListener('mouseleave', hideStreakTooltip);
+      fireIcon.addEventListener('focus', showStreakTooltip);
+      fireIcon.addEventListener('blur', hideStreakTooltip);
+      fireIcon.addEventListener('click', function(e) {
+        showStreakTooltip(e);
+        setTimeout(hideStreakTooltip, 1200);
+      });
+      fireIcon.addEventListener('touchstart', function(e) {
+        showStreakTooltip(e);
+        setTimeout(hideStreakTooltip, 1200);
+      });
+    }
+  } catch (err) {
+    qotdStreak.innerHTML = `<span class="streak-number">0</span> <span class="fire-icon">🔥</span>`;
+  }
+}
+
+// ---- DOM and Auth listeners ----
+document.addEventListener('DOMContentLoaded', () => {
+  domReady = true;
+  console.log("[QOTD] DOMContentLoaded");
+
+  // Setup sign-in button
+  const qotdSignInBtn = document.getElementById('qotdSignInBtn');
+  if (qotdSignInBtn) {
+    qotdSignInBtn.onclick = function() {
+      showAppSignInModal();
+    };
+  }
+
+  // Import modals if modal container exists
+  if (document.getElementById('qotdModalContainer')) {
+    importQOTDModals();
+  }
+
+  // If auth is already ready, run gating, load QOTD, and show streak
+  if (authReady) {
+    updateQOTDGating();
+    loadQOTD();
+    renderUserStreakAlways();
+  }
+});
+
+document.addEventListener('authstatechanged', function(e) {
+  window.isSignedIn = !!(e.detail && e.detail.user);
+  authReady = true;
+  console.log("[QOTD] authstatechanged event, isSignedIn:", window.isSignedIn);
+
+  // Only run gating, load QOTD, and show streak when DOM is ready
+  if (domReady) {
+    updateQOTDGating();
+    loadQOTD();
+    renderUserStreakAlways();
+  }
+});
+
+document.addEventListener('user-signed-in', function() {
+  window.isSignedIn = true;
+  authReady = true;
+  if (domReady) {
+    updateQOTDGating();
+    renderUserStreakAlways();
+  }
+});
+
+// Robust tooltip logic for streak fire icon (used in modals)
 function attachStreakTooltip(qotdStreak, streakTooltip, currentStreak) {
   if (!qotdStreak || !streakTooltip) return;
 
@@ -456,48 +588,5 @@ async function importQOTDModals() {
     }
   });
 }
-
-// ---- DOM and Auth listeners ----
-document.addEventListener('DOMContentLoaded', () => {
-  domReady = true;
-  console.log("[QOTD] DOMContentLoaded");
-
-  // Setup sign-in button
-  const qotdSignInBtn = document.getElementById('qotdSignInBtn');
-  if (qotdSignInBtn) {
-    qotdSignInBtn.onclick = function() {
-      showAppSignInModal();
-    };
-  }
-
-  // Import modals if modal container exists
-  if (document.getElementById('qotdModalContainer')) {
-    importQOTDModals();
-  }
-
-  // If auth is already ready, run gating and load QOTD
-  if (authReady) {
-    updateQOTDGating();
-    loadQOTD();
-  }
-});
-
-document.addEventListener('authstatechanged', function(e) {
-  window.isSignedIn = !!(e.detail && e.detail.user);
-  authReady = true;
-  console.log("[QOTD] authstatechanged event, isSignedIn:", window.isSignedIn);
-
-  // Only run gating and load QOTD when DOM is ready
-  if (domReady) {
-    updateQOTDGating();
-    loadQOTD();
-  }
-});
-
-document.addEventListener('user-signed-in', function() {
-  window.isSignedIn = true;
-  authReady = true;
-  if (domReady) updateQOTDGating();
-});
 
 // ---- End of AP Chem QOTD logic ----
