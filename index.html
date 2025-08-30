@@ -108,7 +108,6 @@
   <!-- JavaScript -->
   <!-- Utility scripts -->
   <script src="js/util.js" defer></script>
-  <script type="module" src="js/qotd.js"></script>
   <script>
     window.addEventListener('DOMContentLoaded', function() {
       renderCountdown("countdownText", "May 5, 2026");
@@ -133,6 +132,7 @@
     } from './js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
     import { setupUsernameModal } from './js/username-modal.js';
+    import './js/qotd.js';
 
     async function loadAuthModal() {
       const resp = await fetch('auth-modal.html');
