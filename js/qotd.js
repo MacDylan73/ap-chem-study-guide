@@ -215,6 +215,7 @@ function showQOTDFeedback(correct, q, selectedIdx) {
     feedbackDiv.textContent = "Correct!";
     feedbackDiv.classList.add('correct');
     feedbackDiv.classList.remove('incorrect');
+    showConfetti();
   } else {
     feedbackDiv.textContent = "Incorrect! The correct answer was: " + q.answers[q.correct];
     feedbackDiv.classList.add('incorrect');
