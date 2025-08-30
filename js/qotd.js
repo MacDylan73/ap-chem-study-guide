@@ -64,19 +64,22 @@ function setupQOTDHandlers(q) {
   };
 }
 
+// Gating logic for blur/overlay
 function updateQOTDGating() {
   const blurOverlay = document.getElementById('qotdBlurOverlay');
   const questionContent = document.getElementById('qotdQuestionContent');
-  console.log("[QOTD] updateQOTDGating, window.isSignedIn:", window.isSignedIn);
+  // Default to NOT signed in until we know
+  let signedIn = window.isSignedIn;
+  console.log("[QOTD] updateQOTDGating, window.isSignedIn:", signedIn);
 
   if (!blurOverlay || !questionContent) return;
-  if (window.isSignedIn === undefined) {
-    // Don't show anything until auth state is known
+  if (signedIn === undefined) {
+    // If auth status is not known, show blur and sign-in button
     blurOverlay.style.display = 'flex';
     questionContent.classList.add('blurred');
     return;
   }
-  if (!window.isSignedIn) {
+  if (signedIn === false) {
     blurOverlay.style.display = 'flex';
     questionContent.classList.add('blurred');
   } else {
