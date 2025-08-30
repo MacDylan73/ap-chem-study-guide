@@ -396,8 +396,9 @@ async function loadUserStatsModal() {
   const statsCurrentStreak = document.getElementById('statsCurrentStreak');
   const statsLongestStreak = document.getElementById('statsLongestStreak');
   const statsErrorMsg = document.getElementById('statsErrorMsg');
-  const qotdStreak = document.getElementById('qotdStreak');
-  const streakTooltip = document.getElementById('streakTooltip');
+  // *** USE MODAL IDs HERE ***
+  const qotdStreak = document.getElementById('modalQotdStreak');
+  const streakTooltip = document.getElementById('modalStreakTooltip');
 
   // Clear previous
   statsErrorMsg.style.display = "none";
