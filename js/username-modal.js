@@ -7,29 +7,46 @@ export function setupUsernameModal() {
   const saveUsernameBtn = document.getElementById('saveUsernameBtn');
   const usernameInput = document.getElementById('usernameInput');
 
-  closeUsernameModal.onclick = () => { usernameModal.style.display = 'none'; };
+  // Create (or select) error message element below the input
+  let errorMsg = document.getElementById('usernameErrorMsg');
+  if (!errorMsg) {
+    errorMsg = document.createElement('div');
+    errorMsg.id = 'usernameErrorMsg';
+    errorMsg.style.color = '#c00';
+    errorMsg.style.fontSize = '0.97em';
+    errorMsg.style.marginTop = '6px';
+    errorMsg.style.minHeight = '1.2em';
+    // Insert just after input
+    usernameInput.parentNode.insertBefore(errorMsg, saveUsernameBtn);
+  }
+
+  closeUsernameModal.onclick = () => { 
+    usernameModal.style.display = 'none'; 
+    errorMsg.textContent = '';
+  };
 
   saveUsernameBtn.onclick = async () => {
+    errorMsg.textContent = ''; // Clear previous errors
     const newUsername = usernameInput.value.trim();
     if (!isSignedIn || !currentUser) {
-      alert("Please sign in first!");
+      errorMsg.textContent = "Please sign in first!";
       return;
     }
     if (!/^[a-zA-Z0-9_]{3,20}$/.test(newUsername)) {
-      alert("Username must be 3–20 characters, letters/numbers/underscores only.");
+      errorMsg.textContent = "Username must be 3–20 characters, letters/numbers/underscores only.";
       return;
     }
-    // Check if taken
     try {
       if (await isUsernameTaken(newUsername)) {
-        alert("Username already taken. Please choose another.");
+        errorMsg.textContent = "Username already taken. Please choose another.";
         return;
       }
       const userRef = doc(db, "users", currentUser.uid);
       await setDoc(userRef, { username: newUsername }, { merge: true });
       usernameModal.style.display = 'none';
+      errorMsg.textContent = '';
     } catch (e) {
-      alert("Could not save username.");
+      errorMsg.textContent = "Could not save username.";
     }
   };
 }
