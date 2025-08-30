@@ -9,6 +9,7 @@ let domReady = false;
 let authReady = false;
 
 // ---- Firebase Firestore setup ----
+// (Assumes you have exported 'db' and 'getUser' from auth.js for Firestore and current user info)
 import { db, getUser } from './auth.js';
 import {
   doc, setDoc, getDoc, collection, query, where, getDocs
@@ -352,18 +353,53 @@ async function loadLeaderboardModal() {
   }
 }
 
-// --------- Modal open event hooks for qotd-stats.html ---------
-if (document.getElementById('openStatsModalBtn')) {
-  document.getElementById('openStatsModalBtn').onclick = () => {
-    document.getElementById('userStatsModal').style.display = 'flex';
-    loadUserStatsModal();
-  };
-}
-if (document.getElementById('openLeaderboardModalBtn')) {
-  document.getElementById('openLeaderboardModalBtn').onclick = () => {
-    document.getElementById('leaderboardModal').style.display = 'flex';
-    loadLeaderboardModal();
-  };
+// ---- Modular modal import logic for QOTD Stats & Leaderboard ----
+// This allows you to keep modal HTML in qotd-stats.html and inject it into index.html dynamically.
+
+async function importQOTDModals() {
+  // Fetch modal HTML from qotd-stats.html
+  const res = await fetch('qotd-stats.html');
+  const text = await res.text();
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(text, 'text/html');
+  const modalContainer = document.getElementById('qotdModalContainer');
+  if (!modalContainer) return;
+
+  // Extract modals by their IDs
+  const statsModal = doc.getElementById('userStatsModal');
+  const leaderboardModal = doc.getElementById('leaderboardModal');
+  if (statsModal) modalContainer.appendChild(statsModal);
+  if (leaderboardModal) modalContainer.appendChild(leaderboardModal);
+
+  // Attach event handlers to buttons
+  const statsBtn = document.getElementById('qotdStatsBtn');
+  const leaderboardBtn = document.getElementById('qotdLeaderboardBtn');
+  if (statsBtn && statsModal) {
+    statsBtn.onclick = () => {
+      statsModal.style.display = 'flex';
+      loadUserStatsModal();
+    };
+  }
+  if (leaderboardBtn && leaderboardModal) {
+    leaderboardBtn.onclick = () => {
+      leaderboardModal.style.display = 'flex';
+      loadLeaderboardModal();
+    };
+  }
+
+  // Attach modal close & ESC logic
+  const closeStatsBtn = document.getElementById('closeStatsModalBtn');
+  const closeLeaderboardBtn = document.getElementById('closeLeaderboardModalBtn');
+  if (closeStatsBtn && statsModal) closeStatsBtn.onclick = () => statsModal.style.display = 'none';
+  if (closeLeaderboardBtn && leaderboardModal) closeLeaderboardBtn.onclick = () => leaderboardModal.style.display = 'none';
+  if (statsModal) statsModal.onclick = (e) => { if (e.target === statsModal) statsModal.style.display = 'none'; };
+  if (leaderboardModal) leaderboardModal.onclick = (e) => { if (e.target === leaderboardModal) leaderboardModal.style.display = 'none'; };
+  document.addEventListener('keydown', (e) => {
+    if (e.key === "Escape") {
+      if (statsModal && statsModal.style.display === 'flex') statsModal.style.display = 'none';
+      if (leaderboardModal && leaderboardModal.style.display === 'flex') leaderboardModal.style.display = 'none';
+    }
+  });
 }
 
 // ---- DOM and Auth listeners ----
@@ -377,6 +413,11 @@ document.addEventListener('DOMContentLoaded', () => {
     qotdSignInBtn.onclick = function() {
       showAppSignInModal();
     };
+  }
+
+  // Import modals if modal container exists
+  if (document.getElementById('qotdModalContainer')) {
+    importQOTDModals();
   }
 
   // If auth is already ready, run gating and load QOTD
