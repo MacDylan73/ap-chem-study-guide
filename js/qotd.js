@@ -42,6 +42,40 @@ function getQOTDIndexEastern(numQuestions) {
   return daysSinceEpoch % numQuestions;
 }
 
+// Countdown for new QOTD
+function startEasternCountdown() {
+  const countdownDiv = document.getElementById('qotdCountdown');
+  if (!countdownDiv) return;
+
+  function updateCountdown() {
+    // Get current Eastern Time
+    const now = new Date();
+    const easternTimeString = now.toLocaleString('en-US', { timeZone: 'America/New_York' });
+    const easternNow = new Date(easternTimeString);
+
+    // Get next midnight in Eastern Time
+    let nextMidnight = new Date(easternNow);
+    nextMidnight.setHours(24, 0, 0, 0); // midnight next day
+
+    // Calculate time difference in seconds
+    const diffMs = nextMidnight - easternNow;
+    const diffSec = Math.floor(diffMs / 1000);
+
+    const hours = Math.floor(diffSec / 3600);
+    const mins = Math.floor((diffSec % 3600) / 60);
+    const secs = diffSec % 60;
+
+    countdownDiv.textContent = `New Question of the Day in ${hours.toString().padStart(2,'0')}:${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+  }
+
+  updateCountdown();
+  // Update every second
+  let intervalId = setInterval(updateCountdown, 1000);
+
+  // Optionally: return a function to stop the interval when needed
+  return () => clearInterval(intervalId);
+}
+
 // ------------------ QOTD Display Logic (index page) -------------------
 
 async function loadQOTD() {
@@ -62,6 +96,7 @@ async function loadQOTD() {
       </div>
       <button id="qotdSubmitBtn" style="display:none;margin-top:12px;">Submit</button>
       <div class="qotd-feedback" style="display:none;margin-top:14px;"></div>
+      <div id="qotdCountdown" style="margin-top:16px; font-size:1rem; color:gray;"></div>
     </div>
   `;
 
@@ -185,6 +220,9 @@ function showQOTDFeedback(correct, q, selectedIdx) {
     feedbackDiv.classList.add('incorrect');
     feedbackDiv.classList.remove('correct');
   }
+
+  // Show countdown for next QOTD
+  startEasternCountdown();
 }
 
 function disableQOTDButtons(answerBtns, submitBtn) {
