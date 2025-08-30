@@ -319,9 +319,15 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+function clearLocalQOTDAttempt() {
+  const today = getTodayStr();
+  localStorage.removeItem("qotd_attempt_" + today);
+}
+
 document.addEventListener('authstatechanged', function(e) {
   window.isSignedIn = !!(e.detail && e.detail.user);
   authReady = true;
+  clearLocalQOTDAttempt();
   console.log("[QOTD] authstatechanged event, isSignedIn:", window.isSignedIn);
 
   // Only run gating, load QOTD, and show streak when DOM is ready
@@ -335,6 +341,7 @@ document.addEventListener('authstatechanged', function(e) {
 document.addEventListener('user-signed-in', function() {
   window.isSignedIn = true;
   authReady = true;
+  clearLocalQOTDAttempt();
   if (domReady) {
     updateQOTDGating();
     renderUserStreakAlways();
