@@ -1,7 +1,6 @@
 import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-import { db, isSignedIn, currentUser } from './auth.js';
+import { db, isSignedIn, currentUser, isUsernameTaken } from './auth.js'; 
 
-// Username Modal Builder
 export function setupUsernameModal() {
   const usernameModal = document.getElementById('usernameModal');
   const closeUsernameModal = document.getElementById('closeUsernameModal');
@@ -12,16 +11,25 @@ export function setupUsernameModal() {
 
   saveUsernameBtn.onclick = async () => {
     const newUsername = usernameInput.value.trim();
-    if (newUsername && isSignedIn && currentUser) {
-      try {
-        const userRef = doc(db, "users", currentUser.uid);
-        await setDoc(userRef, { username: newUsername }, { merge: true });
-        usernameModal.style.display = 'none';
-      } catch (e) {
-        alert("Could not save username.");
-      }
-    } else {
+    if (!isSignedIn || !currentUser) {
       alert("Please sign in first!");
+      return;
+    }
+    if (!/^[a-zA-Z0-9_]{3,20}$/.test(newUsername)) {
+      alert("Username must be 3–20 characters, letters/numbers/underscores only.");
+      return;
+    }
+    // Check if taken
+    try {
+      if (await isUsernameTaken(newUsername)) {
+        alert("Username already taken. Please choose another.");
+        return;
+      }
+      const userRef = doc(db, "users", currentUser.uid);
+      await setDoc(userRef, { username: newUsername }, { merge: true });
+      usernameModal.style.display = 'none';
+    } catch (e) {
+      alert("Could not save username.");
     }
   };
 }
