@@ -1,1 +1,134 @@
+<!--
+  qotd-stats.html -- AP Chem QOTD User Stats & Leaderboard Modals
+  ---------------------------------------------------------------
+  This file contains two modals:
+    1. User Stats Modal (shows the signed-in user's QOTD performance)
+    2. Leaderboard Modal (shows top QOTD performers by correct answers)
+  Includes buttons for opening each modal.
+  Each modal is clearly commented and organized for easy JS integration.
+  ESC key closes modals!
+-->
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QOTD Stats & Leaderboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Optional: Add your CSS or link to styles.css -->
+  <style>
+    /* Basic modal styling for demo purposes */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.7);
+      justify-content: center; align-items: center;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 32px 24px;
+      border-radius: 10px;
+      width: 90vw;
+      max-width: 430px;
+      box-shadow: 0 2px 24px #888;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 14px; right: 18px;
+      font-size: 22px; cursor: pointer;
+      border: none; background: none;
+    }
+    .stats-list, .leaderboard-list {
+      list-style: none; padding: 0; margin: 0;
+    }
+    .leaderboard-list li {
+      margin: 8px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid #e2e2e2;
+      padding-bottom: 5px;
+    }
+    .modal-title { font-weight: bold; font-size: 1.3rem; margin-bottom: 15px; }
+    .modal-btn { margin: 16px 8px 0 0; padding: 10px 18px; font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <h2>QOTD Stats & Leaderboard</h2>
+
+  <!-- -------- Buttons to open modals -------- -->
+  <button id="openStatsModalBtn" class="modal-btn">View My QOTD Stats</button>
+  <button id="openLeaderboardModalBtn" class="modal-btn">View Leaderboard</button>
+
+  <!-- -------- User Stats Modal -------- -->
+  <div id="userStatsModal" class="modal" tabindex="-1">
+    <div class="modal-content">
+      <button class="modal-close" id="closeStatsModalBtn" aria-label="Close">&times;</button>
+      <div class="modal-title">My QOTD Stats</div>
+      <!-- User info section, populated dynamically -->
+      <div id="statsUserInfo"></div>
+      <!-- Stats list -->
+      <ul class="stats-list">
+        <li><b>Total Attempted:</b> <span id="statsTotalAttempted">...</span></li>
+        <li><b>Total Correct:</b> <span id="statsTotalCorrect">...</span></li>
+        <li><b>Current Streak:</b> <span id="statsCurrentStreak">...</span></li>
+        <li><b>Longest Streak:</b> <span id="statsLongestStreak">...</span></li>
+      </ul>
+      <!-- Error message if not signed in -->
+      <div id="statsErrorMsg" style="color:#c00; margin-top:10px; display:none;"></div>
+    </div>
+  </div>
+
+  <!-- -------- Leaderboard Modal -------- -->
+  <div id="leaderboardModal" class="modal" tabindex="-1">
+    <div class="modal-content">
+      <button class="modal-close" id="closeLeaderboardModalBtn" aria-label="Close">&times;</button>
+      <div class="modal-title">QOTD Leaderboard</div>
+      <!-- Leaderboard list -->
+      <ol class="leaderboard-list" id="leaderboardList">
+        <!-- Leaderboard entries injected here by JS -->
+      </ol>
+      <!-- Error/loading message -->
+      <div id="leaderboardErrorMsg" style="color:#c00; margin-top:10px; display:none;"></div>
+      <div id="leaderboardLoadingMsg" style="color:#444; margin-top:10px; display:none;">Loading...</div>
+    </div>
+  </div>
+
+  <!-- -------- Optional: Link to JS -------- -->
+  <!-- <script type="module" src="js/qotd-stats.js"></script> -->
+
+  <!-- -------- Inline Demo JS for Modal Handling -------- -->
+  <script>
+    // Basic modal open/close logic (replace with your own JS if desired)
+    document.getElementById('openStatsModalBtn').onclick = () => {
+      document.getElementById('userStatsModal').style.display = 'flex';
+    };
+    document.getElementById('closeStatsModalBtn').onclick = () => {
+      document.getElementById('userStatsModal').style.display = 'none';
+    };
+    document.getElementById('openLeaderboardModalBtn').onclick = () => {
+      document.getElementById('leaderboardModal').style.display = 'flex';
+    };
+    document.getElementById('closeLeaderboardModalBtn').onclick = () => {
+      document.getElementById('leaderboardModal').style.display = 'none';
+    };
+    // Optional: Close modal on background click
+    document.getElementById('userStatsModal').onclick = function(e) {
+      if (e.target === this) this.style.display = 'none';
+    };
+    document.getElementById('leaderboardModal').onclick = function(e) {
+      if (e.target === this) this.style.display = 'none';
+    };
+
+    // ---- ESC key closes either modal if open ----
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "Escape") {
+        const statsModal = document.getElementById('userStatsModal');
+        const leaderboardModal = document.getElementById('leaderboardModal');
+        if (statsModal.style.display === 'flex') statsModal.style.display = 'none';
+        if (leaderboardModal.style.display === 'flex') leaderboardModal.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
