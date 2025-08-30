@@ -675,12 +675,14 @@ function showConfetti() {
   const overlay = document.getElementById('confettiOverlay');
   if (!overlay) return;
   overlay.style.display = 'block';
-
   overlay.innerHTML = '';
   for (let i = 0; i < 80; i++) {
     const particle = document.createElement('div');
+    const startLeft = Math.random() * 100; // Start position in vw
+    const endLeft = startLeft + (Math.random() * 20 - 10); // Move left or right up to ±10vw
+
     particle.style.position = 'absolute';
-    particle.style.left = Math.random() * 100 + 'vw';
+    particle.style.left = startLeft + 'vw';
     particle.style.top = '-20px';
     particle.style.width = '10px';
     particle.style.height = '18px';
@@ -688,13 +690,14 @@ function showConfetti() {
     particle.style.opacity = 0.7;
     particle.style.borderRadius = '3px';
     particle.style.transform = `rotate(${Math.random()*360}deg)`;
-    // Randomize fall duration for each particle
     const duration = 1.7 + Math.random() * (3.5 - 1.7);
-    particle.style.transition = `top ${duration}s cubic-bezier(.2,.7,.3,1)`;
+    // Animate both top and left
+    particle.style.transition = `top ${duration}s cubic-bezier(.2,.7,.3,1), left ${duration}s cubic-bezier(.2,.7,.3,1)`;
     overlay.appendChild(particle);
 
     setTimeout(() => {
-      particle.style.top = '105vh'; // triggers the transition
+      particle.style.top = '105vh';
+      particle.style.left = endLeft + 'vw';
     }, 30);
   }
 
