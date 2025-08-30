@@ -1420,7 +1420,7 @@ CSS
 
 #qotdSignInBtn,
 #qotdSubmitBtn {
-  border: none;
+  border: var(--box-border);
   border-radius: 8px;
   font-weight: 600;
   font-size: 1em;
