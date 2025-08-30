@@ -676,7 +676,6 @@ function showConfetti() {
   if (!overlay) return;
   overlay.style.display = 'block';
 
-  // Simple confetti particles
   overlay.innerHTML = '';
   for (let i = 0; i < 80; i++) {
     const particle = document.createElement('div');
@@ -689,19 +688,20 @@ function showConfetti() {
     particle.style.opacity = 0.7;
     particle.style.borderRadius = '3px';
     particle.style.transform = `rotate(${Math.random()*360}deg)`;
-    particle.style.transition = 'top 1.7s cubic-bezier(.2,.7,.3,1)';
+    // Randomize fall duration for each particle
+    const duration = 1.7 + Math.random() * (3.5 - 1.7);
+    particle.style.transition = `top ${duration}s cubic-bezier(.2,.7,.3,1)`;
     overlay.appendChild(particle);
 
     setTimeout(() => {
-      particle.style.top = '105vh';
+      particle.style.top = '105vh'; // triggers the transition
     }, 30);
   }
 
-  // Hide after 2 seconds
   setTimeout(() => {
     overlay.style.display = 'none';
     overlay.innerHTML = '';
-  }, 2000);
+  }, 3500);
 }
 
 // ---- End of AP Chem QOTD logic ----
