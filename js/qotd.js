@@ -68,23 +68,17 @@ function setupQOTDHandlers(q) {
 function updateQOTDGating() {
   const blurOverlay = document.getElementById('qotdBlurOverlay');
   const questionContent = document.getElementById('qotdQuestionContent');
-  // Default to NOT signed in until we know
-  let signedIn = window.isSignedIn;
+  const signedIn = window.isSignedIn;
   console.log("[QOTD] updateQOTDGating, window.isSignedIn:", signedIn);
 
   if (!blurOverlay || !questionContent) return;
-  if (signedIn === undefined) {
-    // If auth status is not known, show blur and sign-in button
-    blurOverlay.style.display = 'flex';
-    questionContent.classList.add('blurred');
-    return;
-  }
-  if (signedIn === false) {
-    blurOverlay.style.display = 'flex';
-    questionContent.classList.add('blurred');
-  } else {
+
+  if (signedIn) {
     blurOverlay.style.display = 'none';
     questionContent.classList.remove('blurred');
+  } else {
+    blurOverlay.style.display = 'flex';
+    questionContent.classList.add('blurred');
   }
 }
 
@@ -103,17 +97,22 @@ function showAppSignInModal() {
 document.addEventListener('DOMContentLoaded', () => {
   loadQOTD();
 
-  // Listen for auth state changes - covers sign-in on page load and after sign-in
+  // Listen for auth state changes (sign-in AND sign-out)
   window.addEventListener('authstatechanged', function(e) {
     window.isSignedIn = !!(e.detail && e.detail.user);
     console.log("[QOTD] authstatechanged event, isSignedIn:", window.isSignedIn);
     updateQOTDGating();
   });
 
-  // Also listen for global sign-in event for extra compatibility
+  // Listen for explicit sign-in
   window.addEventListener('user-signed-in', function() {
     window.isSignedIn = true;
-    console.log("[QOTD] user-signed-in event");
+    updateQOTDGating();
+  });
+
+  // Listen for explicit sign-out (if you dispatch this event in your auth flow)
+  window.addEventListener('user-signed-out', function() {
+    window.isSignedIn = false;
     updateQOTDGating();
   });
 
