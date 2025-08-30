@@ -590,4 +590,21 @@ async function importQOTDModals() {
   });
 }
 
+// --- Automatically refresh QOTD at midnight (local time) ---
+function scheduleMidnightQOTDRefresh() {
+  const now = new Date();
+  // Calculate milliseconds until next midnight + 1 second
+  const msUntilMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 1) - now;
+  setTimeout(() => {
+    loadQOTD();           // refresh the question
+    renderUserStreakAlways(); // update streak display
+    scheduleMidnightQOTDRefresh(); // schedule for next midnight
+  }, msUntilMidnight);
+}
+
+// Start midnight refresh when DOM and auth are ready
+if (domReady && authReady) {
+  scheduleMidnightQOTDRefresh();
+}
+
 // ---- End of AP Chem QOTD logic ----
