@@ -22,8 +22,29 @@ function getQOTDIndex(numQuestions) {
 }
 
 // Utility: today's date string for attempt records
-function getTodayStr() {
+function getTodayStrEastern() {
   return new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+}
+
+// Utility: today's date/time
+function getEasternTimeDate() {
+  // Get current UTC time
+  const now = new Date();
+  // Get Eastern Time as a string
+  const easternTimeString = now.toLocaleString('en-US', { timeZone: 'America/New_York' });
+  // Parse back into a Date object
+  return new Date(easternTimeString);
+}
+
+function getQOTDIndexEastern(numQuestions) {
+  const easternNow = getEasternTimeDate();
+  const daysSinceEpoch = Math.floor(easternNow.getTime() / (1000 * 60 * 60 * 24));
+  return daysSinceEpoch % numQuestions;
+}
+
+function getTodayStrEastern() {
+  const easternNow = getEasternTimeDate();
+  return easternNow.toISOString().slice(0, 10); // "YYYY-MM-DD"
 }
 
 // ------------------ QOTD Display Logic (index page) -------------------
@@ -31,7 +52,7 @@ function getTodayStr() {
 async function loadQOTD() {
   const res = await fetch('questions.json');
   const questions = await res.json();
-  const idx = getQOTDIndex(questions.length);
+  const idx = getQOTDIndexEastern(questions.length);
   const q = questions[idx];
 
   const container = document.getElementById('qotdQuestionContent');
@@ -54,7 +75,7 @@ async function loadQOTD() {
 }
 
 async function checkQOTDAttempt(q) {
-  const today = getTodayStr();
+  const today = getTodayStrEastern();
   const container = document.getElementById('qotdQuestionContent');
   const feedbackDiv = container.querySelector('.qotd-feedback');
   const submitBtn = container.querySelector('#qotdSubmitBtn');
@@ -122,7 +143,7 @@ function setupQOTDHandlers(q) {
 
     showQOTDFeedback(correct, q, selectedIdx);
 
-    const today = getTodayStr();
+    const today = getTodayStrEastern();
     const lsKey = "qotd_attempt_" + today;
     localStorage.setItem(lsKey, JSON.stringify({ answerIndex: selectedIdx, correct }));
 
@@ -248,7 +269,7 @@ async function renderUserStreakAlways() {
       prevDate = thisDate;
     }
 
-    if (attempts.length && attempts[attempts.length-1].date === getTodayStr() && attempts[attempts.length-1].correct) {
+    if (attempts.length && attempts[attempts.length-1].date === getTodayStrEastern() && attempts[attempts.length-1].correct) {
       currentStreak = streak;
     } else {
       currentStreak = 0;
@@ -320,7 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function clearLocalQOTDAttempt() {
-  const today = getTodayStr();
+  const today = getTodayStrEastern();
   localStorage.removeItem("qotd_attempt_" + today);
 }
 
@@ -467,7 +488,7 @@ async function loadUserStatsModal() {
       if (streak > longestStreak) longestStreak = streak;
     }
     // Compute current streak (last attempt date = today and correct)
-    if (attempts.length && attempts[attempts.length-1].date === getTodayStr() && attempts[attempts.length-1].correct) {
+    if (attempts.length && attempts[attempts.length-1].date === getTodayStrEastern() && attempts[attempts.length-1].correct) {
       currentStreak = streak;
     } else {
       currentStreak = 0;
