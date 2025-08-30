@@ -1470,3 +1470,26 @@ CSS
 }
 
 .modal-content { position: relative; }
+
+@media (max-width: 500px) {
+  .modal-content {
+    padding: 18px 6px;
+    max-width: 98vw;
+    font-size: 0.93rem;
+  }
+  .modal-title {
+    font-size: 1.08rem;
+    margin-bottom: 11px;
+  }
+  .modal-btn {
+    padding: 7px 12px;
+    font-size: 0.93rem;
+    margin: 10px 5px 0 0;
+  }
+  .stats-list li, .leaderboard-list li {
+    font-size: 0.93rem;
+  }
+  .streak-number, .fire-icon {
+    font-size: 1.1em !important;
+  }
+}
