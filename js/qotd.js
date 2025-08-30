@@ -1,16 +1,35 @@
+// ---- AP Chem QOTD Logic with Firestore Attempt Tracking ----
+// This file handles displaying the QOTD, gating based on sign-in, and saving/limiting attempts per user per day.
+
 console.log("[QOTD] qotd.js loaded");
 
 // ---- Only run gating logic after DOM is ready and auth state is known ----
 let domReady = false;
 let authReady = false;
 
-// Utility to get today's index
+// ---- Firebase Firestore setup ----
+// (Assumes you have exported 'db' and 'getUser' from auth.js for Firestore and current user info)
+import { db, getUser } from './auth.js';
+import {
+  doc, setDoc, getDoc
+} from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+// Utility: get today's index for the question bank
 function getQOTDIndex(numQuestions) {
   const today = new Date();
   const daysSinceEpoch = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
   return daysSinceEpoch % numQuestions;
 }
 
+// Utility: today's date string for attempt records
+function getTodayStr() {
+  return new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+}
+
+/**
+ * Loads the QOTD from questions.json and sets up everything
+ * Adds code to check for previous attempts in localStorage and Firestore
+ */
 async function loadQOTD() {
   const res = await fetch('questions.json');
   const questions = await res.json();
@@ -20,6 +39,7 @@ async function loadQOTD() {
   const container = document.getElementById('qotdQuestionContent');
   if (!container) return;
 
+  // Render the question UI
   container.innerHTML = `
     <div class="question-box">
       <div class="question-text">${q.question}</div>
@@ -31,9 +51,69 @@ async function loadQOTD() {
     </div>
   `;
 
+  // ------- New: Check for previous attempt ------
+  await checkQOTDAttempt(q); // Will setup handlers, or show feedback if already answered
+}
+
+/**
+ * Checks if user has already attempted today's QOTD
+ * - Checks localStorage first (fast)
+ * - Then checks Firestore (secure, if localStorage missing)
+ * - If already answered, shows feedback and disables UI
+ * - Otherwise, sets up handlers for answering
+ */
+async function checkQOTDAttempt(q) {
+  const today = getTodayStr();
+  const container = document.getElementById('qotdQuestionContent');
+  const feedbackDiv = container.querySelector('.qotd-feedback');
+  const submitBtn = container.querySelector('#qotdSubmitBtn');
+  const answerBtns = container.querySelectorAll('.qotd-answer-btn');
+
+  // --- Try localStorage first ---
+  const lsKey = "qotd_attempt_" + today;
+  const local = localStorage.getItem(lsKey);
+  if (local) {
+    // User already answered today (locally)
+    const { answerIndex, correct } = JSON.parse(local);
+    showQOTDFeedback(correct, q, answerIndex);
+    disableQOTDButtons(answerBtns, submitBtn);
+    return;
+  }
+
+  // --- Check Firestore for an official record ---
+  const user = getUser();
+  if (!user) {
+    // Not signed in: just set up handlers (gating will block answers anyway)
+    setupQOTDHandlers(q);
+    return;
+  }
+  const uid = user.uid;
+  const docId = `${uid}_${today}`;
+  const attemptRef = doc(db, "qotd_attempts", docId);
+  try {
+    const attemptSnap = await getDoc(attemptRef);
+    if (attemptSnap.exists()) {
+      // Official attempt found
+      const { answerIndex, correct } = attemptSnap.data();
+      showQOTDFeedback(correct, q, answerIndex);
+      disableQOTDButtons(answerBtns, submitBtn);
+      // Save to localStorage for UI persistence
+      localStorage.setItem(lsKey, JSON.stringify({ answerIndex, correct }));
+      return;
+    }
+  } catch (err) {
+    console.error("[QOTD] Error fetching Firestore attempt doc:", err);
+  }
+
+  // --- No attempt: allow answering ---
   setupQOTDHandlers(q);
 }
 
+/**
+ * Sets up event handlers for answer buttons and submit button
+ * Saves answer to Firestore and localStorage on submit
+ * Ensures only one attempt per day per account
+ */
 function setupQOTDHandlers(q) {
   const container = document.getElementById('qotdQuestionContent');
   let selectedIdx = null;
@@ -41,6 +121,7 @@ function setupQOTDHandlers(q) {
   const submitBtn = container.querySelector('#qotdSubmitBtn');
   const feedbackDiv = container.querySelector('.qotd-feedback');
 
+  // --- Answer button click handler ---
   answerBtns.forEach(btn => {
     btn.onclick = function() {
       selectedIdx = parseInt(btn.dataset.idx, 10);
@@ -54,23 +135,86 @@ function setupQOTDHandlers(q) {
     };
   });
 
-  submitBtn.onclick = function() {
+  // --- Submit button handler ---
+  submitBtn.onclick = async function() {
     if (selectedIdx === null) return;
     submitBtn.disabled = true;
     answerBtns.forEach(b => b.disabled = true);
 
-    feedbackDiv.style.display = 'block';
-    if (selectedIdx === q.correct) {
-      feedbackDiv.textContent = "Correct!";
-      feedbackDiv.classList.add('correct');
-    } else {
-      feedbackDiv.textContent = "Incorrect! The correct answer was: " + q.answers[q.correct];
-      feedbackDiv.classList.add('incorrect');
+    const correct = (selectedIdx === q.correct);
+
+    // --- Show feedback in UI ---
+    showQOTDFeedback(correct, q, selectedIdx);
+
+    // --- Save to localStorage for UI persistence ---
+    const today = getTodayStr();
+    const lsKey = "qotd_attempt_" + today;
+    localStorage.setItem(lsKey, JSON.stringify({ answerIndex: selectedIdx, correct }));
+
+    // --- Save to Firestore for secure record ---
+    const user = getUser();
+    if (user) {
+      const uid = user.uid;
+      const docId = `${uid}_${today}`;
+      const attemptRef = doc(db, "qotd_attempts", docId);
+      try {
+        await setDoc(attemptRef, {
+          uid,
+          date: today,
+          questionIndex: getQOTDIndex(q.answers.length),
+          answerIndex: selectedIdx,
+          correct
+        });
+      } catch (err) {
+        console.error("[QOTD] Error saving Firestore attempt doc:", err);
+      }
     }
   };
 }
 
-// Gating logic for blur/overlay
+/**
+ * Shows feedback after answer (correct/incorrect), disables further attempts
+ * @param {boolean} correct - whether the answer was correct
+ * @param {object} q - question object
+ * @param {number} selectedIdx - which answer was chosen
+ */
+function showQOTDFeedback(correct, q, selectedIdx) {
+  const container = document.getElementById('qotdQuestionContent');
+  const feedbackDiv = container.querySelector('.qotd-feedback');
+  const answerBtns = container.querySelectorAll('.qotd-answer-btn');
+  const submitBtn = container.querySelector('#qotdSubmitBtn');
+
+  // Highlight selected button and disable all
+  answerBtns.forEach((b, i) => {
+    b.disabled = true;
+    b.classList.toggle('selected', i === selectedIdx);
+  });
+  submitBtn.disabled = true;
+  submitBtn.style.display = 'none';
+
+  // Show feedback
+  feedbackDiv.style.display = 'block';
+  if (correct) {
+    feedbackDiv.textContent = "Correct!";
+    feedbackDiv.classList.add('correct');
+    feedbackDiv.classList.remove('incorrect');
+  } else {
+    feedbackDiv.textContent = "Incorrect! The correct answer was: " + q.answers[q.correct];
+    feedbackDiv.classList.add('incorrect');
+    feedbackDiv.classList.remove('correct');
+  }
+}
+
+/**
+ * Disables answer buttons and submit button in the UI
+ */
+function disableQOTDButtons(answerBtns, submitBtn) {
+  answerBtns.forEach(b => b.disabled = true);
+  submitBtn.disabled = true;
+  submitBtn.style.display = 'none';
+}
+
+// ---- Gating logic for blur/overlay ----
 function updateQOTDGating() {
   const blurOverlay = document.getElementById('qotdBlurOverlay');
   const questionContent = document.getElementById('qotdQuestionContent');
@@ -100,7 +244,7 @@ function showAppSignInModal() {
   return false;
 }
 
-// ---- Listen for DOMContentLoaded ----
+// ---- DOM and Auth listeners ----
 document.addEventListener('DOMContentLoaded', () => {
   domReady = true;
   console.log("[QOTD] DOMContentLoaded");
@@ -120,7 +264,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// ---- Listen for authstatechanged ----
 document.addEventListener('authstatechanged', function(e) {
   window.isSignedIn = !!(e.detail && e.detail.user);
   authReady = true;
@@ -133,9 +276,10 @@ document.addEventListener('authstatechanged', function(e) {
   }
 });
 
-// ---- Listen for user-signed-in event (for popup sign-in) ----
 document.addEventListener('user-signed-in', function() {
   window.isSignedIn = true;
   authReady = true;
   if (domReady) updateQOTDGating();
 });
+
+// ---- End of AP Chem QOTD logic ----
