@@ -97,24 +97,10 @@ function showAppSignInModal() {
   return false;
 }
 
+// Don't call loadQOTD or updateQOTDGating immediately!
+// Wait for DOMContentLoaded, then wait for auth state event.
+
 document.addEventListener('DOMContentLoaded', () => {
-  loadQOTD();
-
-  // Run gating once on initial page load (in case sign-in state already exists)
-  updateQOTDGating();
-
-  // Listen for auth state changes (sign-in AND sign-out)
-  window.addEventListener('authstatechanged', function(e) {
-    window.isSignedIn = !!(e.detail && e.detail.user);
-    console.log("[QOTD] authstatechanged event, isSignedIn:", window.isSignedIn);
-    updateQOTDGating();
-  });
-
-  window.addEventListener('user-signed-in', function() {
-    window.isSignedIn = true;
-    updateQOTDGating();
-  });
-
   // QOTD sign-in button triggers main sign-in modal logic
   const qotdSignInBtn = document.getElementById('qotdSignInBtn');
   if (qotdSignInBtn) {
@@ -122,4 +108,18 @@ document.addEventListener('DOMContentLoaded', () => {
       showAppSignInModal();
     };
   }
+});
+
+// Only initialize QOTD UI when auth state is known
+window.addEventListener('authstatechanged', function(e) {
+  window.isSignedIn = !!(e.detail && e.detail.user);
+  console.log("[QOTD] authstatechanged event, isSignedIn:", window.isSignedIn);
+  updateQOTDGating();
+  loadQOTD(); // Only load QOTD once auth is ready
+});
+
+// If you want to handle immediate sign-in events (e.g. after a popup), keep this:
+window.addEventListener('user-signed-in', function() {
+  window.isSignedIn = true;
+  updateQOTDGating();
 });
