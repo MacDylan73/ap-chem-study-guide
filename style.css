@@ -1447,3 +1447,19 @@ CSS
 }
 .qotd-feedback.correct { color: #3fad32; }
 .qotd-feedback.incorrect { color: #d12e2e; }
+
+.streak-tooltip {
+  position: absolute;
+  background: var(--box-bg);
+  color: var(--bar-text);
+  border: 2px solid var(--box-border);
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 1em;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  z-index: 1200;
+  pointer-events: none;
+  white-space: nowrap;
+  transition: opacity 0.18s;
+}
