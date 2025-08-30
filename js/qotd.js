@@ -291,7 +291,7 @@ async function loadUserStatsModal() {
     statsCurrentStreak.textContent = currentStreak;
     statsLongestStreak.textContent = longestStreak;
 
-    // ---- Inject streak number and fire icon, with tooltip logic ----
+    // ---- Inject streak number and fire icon, with robust tooltip logic ----
     if (qotdStreak) {
       if (currentStreak > 0) {
         qotdStreak.innerHTML = `${currentStreak} <span class="fire-icon" tabindex="0" style="cursor:pointer;">🔥</span>`;
@@ -300,17 +300,25 @@ async function loadUserStatsModal() {
       }
       const fireIcon = qotdStreak.querySelector('.fire-icon');
       if (fireIcon && streakTooltip) {
-        // Helper functions for tooltip
+        // Make sure parent modal is position: relative for absolute tooltip calculation
+        const modal = fireIcon.closest('.modal-content');
+        if (modal && getComputedStyle(modal).position === 'static') {
+          modal.style.position = 'relative';
+        }
         function showStreakTooltip(e) {
           streakTooltip.textContent = `Current Streak: ${currentStreak}`;
-          const rect = fireIcon.getBoundingClientRect();
-          // Position above and centered horizontally
-          const scrollY = window.scrollY || document.documentElement.scrollTop;
-          const scrollX = window.scrollX || document.documentElement.scrollLeft;
-          streakTooltip.style.left = `${rect.left + scrollX + rect.width/2 - streakTooltip.offsetWidth/2}px`;
-          streakTooltip.style.top = `${rect.top + scrollY - 42}px`;
           streakTooltip.style.display = 'block';
           streakTooltip.style.opacity = '1';
+          // Give browser a moment to calculate width
+          setTimeout(() => {
+            const rect = fireIcon.getBoundingClientRect();
+            const modalRect = modal ? modal.getBoundingClientRect() : { left: 0, top: 0 };
+            const scrollY = window.scrollY || document.documentElement.scrollTop;
+            const scrollX = window.scrollX || document.documentElement.scrollLeft;
+            // Position absolutely within modal
+            streakTooltip.style.left = `${rect.left - modalRect.left + rect.width/2 - streakTooltip.offsetWidth/2}px`;
+            streakTooltip.style.top = `${rect.top - modalRect.top - streakTooltip.offsetHeight - 12}px`;
+          }, 1);
         }
         function hideStreakTooltip() {
           streakTooltip.style.display = 'none';
