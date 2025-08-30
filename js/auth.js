@@ -50,11 +50,13 @@ export let currentUser = null;
 
 // ---- Auth State Listener ----
 export function onAuthChange(callback) {
+  console.log("[AUTH] onAuthChange setup"); // Add this!
   onAuthStateChanged(auth, user => {
+    console.log("[AUTH] onAuthStateChanged", user); // Add this!
     isSignedIn = !!user;
     currentUser = user || null;
-    window.isSignedIn = isSignedIn; // <-- ADD THIS LINE
-    window.currentUser = currentUser; // (optional, for debugging)
+    window.isSignedIn = isSignedIn;
+    window.currentUser = currentUser;
     if (callback) callback(user);
     document.dispatchEvent(new CustomEvent("authstatechanged", { detail: { user } }));
   });
