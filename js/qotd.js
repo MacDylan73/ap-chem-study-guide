@@ -18,10 +18,7 @@ async function loadQOTD() {
   const q = questions[idx];
 
   const container = document.getElementById('qotdQuestionContent');
-  if (!container) {
-    console.log("[QOTD] loadQOTD: container not found");
-    return;
-  }
+  if (!container) return;
 
   container.innerHTML = `
     <div class="question-box">
@@ -80,19 +77,14 @@ function updateQOTDGating() {
   const signedIn = window.isSignedIn;
   console.log("[QOTD] updateQOTDGating, window.isSignedIn:", signedIn);
 
-  if (!blurOverlay || !questionContent) {
-    console.log("[QOTD] missing blurOverlay or questionContent!");
-    return;
-  }
+  if (!blurOverlay || !questionContent) return;
 
   if (signedIn) {
     blurOverlay.style.display = 'none';
     questionContent.classList.remove('blurred');
-    console.log("[QOTD] blurOverlay HIDDEN, signed in");
   } else {
     blurOverlay.style.display = 'flex';
     questionContent.classList.add('blurred');
-    console.log("[QOTD] blurOverlay SHOWN, not signed in");
   }
 }
 
@@ -129,8 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // ---- Listen for authstatechanged ----
-window.addEventListener('authstatechanged', function(e) {
-  console.log("[QOTD] authstatechanged event fired", e.detail && e.detail.user);
+document.addEventListener('authstatechanged', function(e) {
   window.isSignedIn = !!(e.detail && e.detail.user);
   authReady = true;
   console.log("[QOTD] authstatechanged event, isSignedIn:", window.isSignedIn);
@@ -143,8 +134,7 @@ window.addEventListener('authstatechanged', function(e) {
 });
 
 // ---- Listen for user-signed-in event (for popup sign-in) ----
-window.addEventListener('user-signed-in', function() {
-  console.log("[QOTD] user-signed-in event fired");
+document.addEventListener('user-signed-in', function() {
   window.isSignedIn = true;
   authReady = true;
   if (domReady) updateQOTDGating();
