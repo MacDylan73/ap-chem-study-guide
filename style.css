@@ -1463,3 +1463,5 @@ CSS
   white-space: nowrap;
   transition: opacity 0.18s;
 }
+
+.modal-content { position: relative; }
