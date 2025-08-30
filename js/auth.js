@@ -354,3 +354,7 @@ export function setupUnitBottomBarButtons() {
 export function setupUnitBottomBarAuthSync() {
   setInterval(updateUnitBottomBarAuthButtons, 1000);
 }
+
+export function getUser() {
+  return currentUser;
+}
