@@ -9,7 +9,6 @@ let domReady = false;
 let authReady = false;
 
 // ---- Firebase Firestore setup ----
-// (Assumes you have exported 'db' and 'getUser' from auth.js for Firestore and current user info)
 import { db, getUser } from './auth.js';
 import {
   doc, setDoc, getDoc, collection, query, where, getDocs
@@ -218,6 +217,8 @@ async function loadUserStatsModal() {
   const statsCurrentStreak = document.getElementById('statsCurrentStreak');
   const statsLongestStreak = document.getElementById('statsLongestStreak');
   const statsErrorMsg = document.getElementById('statsErrorMsg');
+  const qotdStreak = document.getElementById('qotdStreak');
+  const streakTooltip = document.getElementById('streakTooltip');
 
   // Clear previous
   statsErrorMsg.style.display = "none";
@@ -226,11 +227,13 @@ async function loadUserStatsModal() {
   statsTotalCorrect.textContent = "...";
   statsCurrentStreak.textContent = "...";
   statsLongestStreak.textContent = "...";
+  if (streakTooltip) streakTooltip.style.display = 'none';
 
   const user = getUser();
   if (!user) {
     statsErrorMsg.style.display = "block";
     statsErrorMsg.textContent = "You must be signed in to view your stats.";
+    if (qotdStreak) qotdStreak.textContent = "🔥";
     return;
   }
 
@@ -287,9 +290,51 @@ async function loadUserStatsModal() {
     statsTotalCorrect.textContent = totalCorrect;
     statsCurrentStreak.textContent = currentStreak;
     statsLongestStreak.textContent = longestStreak;
+
+    // ---- Inject streak number and fire icon, with tooltip logic ----
+    if (qotdStreak) {
+      if (currentStreak > 0) {
+        qotdStreak.innerHTML = `${currentStreak} <span class="fire-icon" tabindex="0" style="cursor:pointer;">🔥</span>`;
+      } else {
+        qotdStreak.innerHTML = `0 <span class="fire-icon">🔥</span>`;
+      }
+      const fireIcon = qotdStreak.querySelector('.fire-icon');
+      if (fireIcon && streakTooltip) {
+        // Helper functions for tooltip
+        function showStreakTooltip(e) {
+          streakTooltip.textContent = `Current Streak: ${currentStreak}`;
+          const rect = fireIcon.getBoundingClientRect();
+          // Position above and centered horizontally
+          const scrollY = window.scrollY || document.documentElement.scrollTop;
+          const scrollX = window.scrollX || document.documentElement.scrollLeft;
+          streakTooltip.style.left = `${rect.left + scrollX + rect.width/2 - streakTooltip.offsetWidth/2}px`;
+          streakTooltip.style.top = `${rect.top + scrollY - 42}px`;
+          streakTooltip.style.display = 'block';
+          streakTooltip.style.opacity = '1';
+        }
+        function hideStreakTooltip() {
+          streakTooltip.style.display = 'none';
+          streakTooltip.style.opacity = '0';
+        }
+        fireIcon.addEventListener('mouseenter', showStreakTooltip);
+        fireIcon.addEventListener('mouseleave', hideStreakTooltip);
+        fireIcon.addEventListener('focus', showStreakTooltip);
+        fireIcon.addEventListener('blur', hideStreakTooltip);
+        fireIcon.addEventListener('click', function(e) {
+          showStreakTooltip(e);
+          setTimeout(hideStreakTooltip, 1200);
+        });
+        fireIcon.addEventListener('touchstart', function(e) {
+          showStreakTooltip(e);
+          setTimeout(hideStreakTooltip, 1200);
+        });
+      }
+    }
+
   } catch (err) {
     statsErrorMsg.style.display = "block";
     statsErrorMsg.textContent = "Error loading stats: " + err.message;
+    if (qotdStreak) qotdStreak.innerHTML = "🔥";
   }
 }
 
