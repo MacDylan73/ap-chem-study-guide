@@ -1,5 +1,6 @@
 // ---- AP Chem QOTD Logic with Firestore Attempt Tracking ----
 // This file handles displaying the QOTD, gating based on sign-in, and saving/limiting attempts per user per day.
+// Also powers the QOTD stats and leaderboard modals (for qotd-stats.html).
 
 console.log("[QOTD] qotd.js loaded");
 
@@ -8,10 +9,9 @@ let domReady = false;
 let authReady = false;
 
 // ---- Firebase Firestore setup ----
-// (Assumes you have exported 'db' and 'getUser' from auth.js for Firestore and current user info)
 import { db, getUser } from './auth.js';
 import {
-  doc, setDoc, getDoc
+  doc, setDoc, getDoc, collection, query, where, getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 // Utility: get today's index for the question bank
@@ -26,10 +26,8 @@ function getTodayStr() {
   return new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
 }
 
-/**
- * Loads the QOTD from questions.json and sets up everything
- * Adds code to check for previous attempts in localStorage and Firestore
- */
+// ------------------ QOTD Display Logic (index page) -------------------
+
 async function loadQOTD() {
   const res = await fetch('questions.json');
   const questions = await res.json();
@@ -51,17 +49,10 @@ async function loadQOTD() {
     </div>
   `;
 
-  // ------- New: Check for previous attempt ------
+  // ------- Check for previous attempt ------
   await checkQOTDAttempt(q); // Will setup handlers, or show feedback if already answered
 }
 
-/**
- * Checks if user has already attempted today's QOTD
- * - Checks localStorage first (fast)
- * - Then checks Firestore (secure, if localStorage missing)
- * - If already answered, shows feedback and disables UI
- * - Otherwise, sets up handlers for answering
- */
 async function checkQOTDAttempt(q) {
   const today = getTodayStr();
   const container = document.getElementById('qotdQuestionContent');
@@ -69,21 +60,17 @@ async function checkQOTDAttempt(q) {
   const submitBtn = container.querySelector('#qotdSubmitBtn');
   const answerBtns = container.querySelectorAll('.qotd-answer-btn');
 
-  // --- Try localStorage first ---
   const lsKey = "qotd_attempt_" + today;
   const local = localStorage.getItem(lsKey);
   if (local) {
-    // User already answered today (locally)
     const { answerIndex, correct } = JSON.parse(local);
     showQOTDFeedback(correct, q, answerIndex);
     disableQOTDButtons(answerBtns, submitBtn);
     return;
   }
 
-  // --- Check Firestore for an official record ---
   const user = getUser();
   if (!user) {
-    // Not signed in: just set up handlers (gating will block answers anyway)
     setupQOTDHandlers(q);
     return;
   }
@@ -93,11 +80,9 @@ async function checkQOTDAttempt(q) {
   try {
     const attemptSnap = await getDoc(attemptRef);
     if (attemptSnap.exists()) {
-      // Official attempt found
       const { answerIndex, correct } = attemptSnap.data();
       showQOTDFeedback(correct, q, answerIndex);
       disableQOTDButtons(answerBtns, submitBtn);
-      // Save to localStorage for UI persistence
       localStorage.setItem(lsKey, JSON.stringify({ answerIndex, correct }));
       return;
     }
@@ -105,15 +90,9 @@ async function checkQOTDAttempt(q) {
     console.error("[QOTD] Error fetching Firestore attempt doc:", err);
   }
 
-  // --- No attempt: allow answering ---
   setupQOTDHandlers(q);
 }
 
-/**
- * Sets up event handlers for answer buttons and submit button
- * Saves answer to Firestore and localStorage on submit
- * Ensures only one attempt per day per account
- */
 function setupQOTDHandlers(q) {
   const container = document.getElementById('qotdQuestionContent');
   let selectedIdx = null;
@@ -121,7 +100,6 @@ function setupQOTDHandlers(q) {
   const submitBtn = container.querySelector('#qotdSubmitBtn');
   const feedbackDiv = container.querySelector('.qotd-feedback');
 
-  // --- Answer button click handler ---
   answerBtns.forEach(btn => {
     btn.onclick = function() {
       selectedIdx = parseInt(btn.dataset.idx, 10);
@@ -135,7 +113,6 @@ function setupQOTDHandlers(q) {
     };
   });
 
-  // --- Submit button handler ---
   submitBtn.onclick = async function() {
     if (selectedIdx === null) return;
     submitBtn.disabled = true;
@@ -143,15 +120,12 @@ function setupQOTDHandlers(q) {
 
     const correct = (selectedIdx === q.correct);
 
-    // --- Show feedback in UI ---
     showQOTDFeedback(correct, q, selectedIdx);
 
-    // --- Save to localStorage for UI persistence ---
     const today = getTodayStr();
     const lsKey = "qotd_attempt_" + today;
     localStorage.setItem(lsKey, JSON.stringify({ answerIndex: selectedIdx, correct }));
 
-    // --- Save to Firestore for secure record ---
     const user = getUser();
     if (user) {
       const uid = user.uid;
@@ -172,19 +146,12 @@ function setupQOTDHandlers(q) {
   };
 }
 
-/**
- * Shows feedback after answer (correct/incorrect), disables further attempts
- * @param {boolean} correct - whether the answer was correct
- * @param {object} q - question object
- * @param {number} selectedIdx - which answer was chosen
- */
 function showQOTDFeedback(correct, q, selectedIdx) {
   const container = document.getElementById('qotdQuestionContent');
   const feedbackDiv = container.querySelector('.qotd-feedback');
   const answerBtns = container.querySelectorAll('.qotd-answer-btn');
   const submitBtn = container.querySelector('#qotdSubmitBtn');
 
-  // Highlight selected button and disable all
   answerBtns.forEach((b, i) => {
     b.disabled = true;
     b.classList.toggle('selected', i === selectedIdx);
@@ -192,7 +159,6 @@ function showQOTDFeedback(correct, q, selectedIdx) {
   submitBtn.disabled = true;
   submitBtn.style.display = 'none';
 
-  // Show feedback
   feedbackDiv.style.display = 'block';
   if (correct) {
     feedbackDiv.textContent = "Correct!";
@@ -205,9 +171,6 @@ function showQOTDFeedback(correct, q, selectedIdx) {
   }
 }
 
-/**
- * Disables answer buttons and submit button in the UI
- */
 function disableQOTDButtons(answerBtns, submitBtn) {
   answerBtns.forEach(b => b.disabled = true);
   submitBtn.disabled = true;
@@ -242,6 +205,165 @@ function showAppSignInModal() {
   }
   alert("Sign-in modal could not be triggered. Please check your modal integration.");
   return false;
+}
+
+// ------------------ QOTD Stats & Leaderboard Logic (qotd-stats.html) -------------------
+
+// Loads and populates user stats modal
+async function loadUserStatsModal() {
+  const statsUserInfo = document.getElementById('statsUserInfo');
+  const statsTotalAttempted = document.getElementById('statsTotalAttempted');
+  const statsTotalCorrect = document.getElementById('statsTotalCorrect');
+  const statsCurrentStreak = document.getElementById('statsCurrentStreak');
+  const statsLongestStreak = document.getElementById('statsLongestStreak');
+  const statsErrorMsg = document.getElementById('statsErrorMsg');
+
+  // Clear previous
+  statsErrorMsg.style.display = "none";
+  statsUserInfo.textContent = "";
+  statsTotalAttempted.textContent = "...";
+  statsTotalCorrect.textContent = "...";
+  statsCurrentStreak.textContent = "...";
+  statsLongestStreak.textContent = "...";
+
+  const user = getUser();
+  if (!user) {
+    statsErrorMsg.style.display = "block";
+    statsErrorMsg.textContent = "You must be signed in to view your stats.";
+    return;
+  }
+
+  // Show username/email if available
+  statsUserInfo.textContent = user.displayName
+    ? `Username: ${user.displayName}`
+    : `User: ${user.email}`;
+
+  // Fetch all attempts for this user
+  const attemptsRef = collection(db, "qotd_attempts");
+  const q = query(attemptsRef, where("uid", "==", user.uid));
+  try {
+    const snap = await getDocs(q);
+    const attempts = [];
+    snap.forEach(doc => attempts.push(doc.data()));
+
+    // Compute stats
+    const totalAttempted = attempts.length;
+    const totalCorrect = attempts.filter(a => a.correct).length;
+
+    // Sort attempts by date ascending
+    attempts.sort((a, b) => a.date.localeCompare(b.date));
+
+    // Streak calculations
+    let currentStreak = 0, longestStreak = 0;
+    let prevDate = null;
+    let streak = 0;
+    for (let i = 0; i < attempts.length; ++i) {
+      if (!attempts[i].correct) {
+        streak = 0;
+        continue;
+      }
+      const thisDate = attempts[i].date;
+      if (prevDate) {
+        const prev = new Date(prevDate);
+        const curr = new Date(thisDate);
+        const daysDiff = (curr - prev) / (1000*60*60*24);
+        if (daysDiff === 1) streak++; // consecutive day
+        else streak = 1;
+      } else {
+        streak = 1;
+      }
+      prevDate = thisDate;
+      if (streak > longestStreak) longestStreak = streak;
+    }
+    // Compute current streak (last attempt date = today and correct)
+    if (attempts.length && attempts[attempts.length-1].date === getTodayStr() && attempts[attempts.length-1].correct) {
+      currentStreak = streak;
+    } else {
+      currentStreak = 0;
+    }
+
+    statsTotalAttempted.textContent = totalAttempted;
+    statsTotalCorrect.textContent = totalCorrect;
+    statsCurrentStreak.textContent = currentStreak;
+    statsLongestStreak.textContent = longestStreak;
+  } catch (err) {
+    statsErrorMsg.style.display = "block";
+    statsErrorMsg.textContent = "Error loading stats: " + err.message;
+  }
+}
+
+// Loads and populates leaderboard modal
+async function loadLeaderboardModal() {
+  const leaderboardList = document.getElementById('leaderboardList');
+  const leaderboardErrorMsg = document.getElementById('leaderboardErrorMsg');
+  const leaderboardLoadingMsg = document.getElementById('leaderboardLoadingMsg');
+
+  leaderboardErrorMsg.style.display = "none";
+  leaderboardLoadingMsg.style.display = "block";
+  leaderboardList.innerHTML = "";
+
+  try {
+    // Fetch all attempts
+    const attemptsRef = collection(db, "qotd_attempts");
+    const snap = await getDocs(attemptsRef);
+
+    // Aggregate correct counts by user
+    const userStats = {}; // uid -> { correct: int, attempted: int }
+    snap.forEach(doc => {
+      const d = doc.data();
+      if (!userStats[d.uid]) userStats[d.uid] = { correct: 0, attempted: 0, username: null };
+      userStats[d.uid].attempted++;
+      if (d.correct) userStats[d.uid].correct++;
+    });
+
+    // Fetch usernames for leaderboard display
+    const userEntries = Object.entries(userStats);
+    // Sort by correct desc, attempted desc
+    userEntries.sort((a, b) => b[1].correct - a[1].correct || b[1].attempted - a[1].attempted);
+
+    // Try to get usernames from "users" collection
+    for (let i = 0; i < userEntries.length; ++i) {
+      const uid = userEntries[i][0];
+      try {
+        const userDoc = await getDoc(doc(db, "users", uid));
+        if (userDoc.exists()) userEntries[i][1].username = userDoc.data().username || uid;
+        else userEntries[i][1].username = uid;
+      } catch {
+        userEntries[i][1].username = uid;
+      }
+    }
+
+    // Render top 10 leaderboard
+    leaderboardList.innerHTML = "";
+    userEntries.slice(0, 10).forEach(([uid, data], idx) => {
+      const li = document.createElement('li');
+      li.innerHTML = `
+        <span><b>#${idx+1}</b> ${data.username}</span>
+        <span>${data.correct} correct / ${data.attempted} attempted</span>
+      `;
+      leaderboardList.appendChild(li);
+    });
+
+    leaderboardLoadingMsg.style.display = "none";
+  } catch (err) {
+    leaderboardLoadingMsg.style.display = "none";
+    leaderboardErrorMsg.style.display = "block";
+    leaderboardErrorMsg.textContent = "Error loading leaderboard: " + err.message;
+  }
+}
+
+// --------- Modal open event hooks for qotd-stats.html ---------
+if (document.getElementById('openStatsModalBtn')) {
+  document.getElementById('openStatsModalBtn').onclick = () => {
+    document.getElementById('userStatsModal').style.display = 'flex';
+    loadUserStatsModal();
+  };
+}
+if (document.getElementById('openLeaderboardModalBtn')) {
+  document.getElementById('openLeaderboardModalBtn').onclick = () => {
+    document.getElementById('leaderboardModal').style.display = 'flex';
+    loadLeaderboardModal();
+  };
 }
 
 // ---- DOM and Auth listeners ----
