@@ -668,4 +668,38 @@ if (domReady && authReady) {
   scheduleMidnightQOTDRefresh();
 }
 
+// Confetti Overlay on Correct Answer
+function showConfetti() {
+  const overlay = document.getElementById('confettiOverlay');
+  if (!overlay) return;
+  overlay.style.display = 'block';
+
+  // Simple confetti particles
+  overlay.innerHTML = '';
+  for (let i = 0; i < 80; i++) {
+    const particle = document.createElement('div');
+    particle.style.position = 'absolute';
+    particle.style.left = Math.random() * 100 + 'vw';
+    particle.style.top = '-20px';
+    particle.style.width = '10px';
+    particle.style.height = '18px';
+    particle.style.background = `hsl(${Math.random()*360},80%,60%)`;
+    particle.style.opacity = 0.7;
+    particle.style.borderRadius = '3px';
+    particle.style.transform = `rotate(${Math.random()*360}deg)`;
+    particle.style.transition = 'top 1.7s cubic-bezier(.2,.7,.3,1)';
+    overlay.appendChild(particle);
+
+    setTimeout(() => {
+      particle.style.top = '105vh';
+    }, 30);
+  }
+
+  // Hide after 2 seconds
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    overlay.innerHTML = '';
+  }, 2000);
+}
+
 // ---- End of AP Chem QOTD logic ----
