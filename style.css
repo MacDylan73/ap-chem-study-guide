@@ -1448,6 +1448,11 @@ CSS
 .qotd-feedback.correct { color: #3fad32; }
 .qotd-feedback.incorrect { color: #d12e2e; }
 
+.streak-container {
+  position: relative;
+  display: inline-block;
+}
+
 .streak-tooltip {
   position: absolute;
   background: var(--box-bg);
