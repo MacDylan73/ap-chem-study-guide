@@ -97,6 +97,9 @@ function showAppSignInModal() {
 document.addEventListener('DOMContentLoaded', () => {
   loadQOTD();
 
+  // Run gating once on initial page load (in case sign-in state already exists)
+  updateQOTDGating();
+
   // Listen for auth state changes (sign-in AND sign-out)
   window.addEventListener('authstatechanged', function(e) {
     window.isSignedIn = !!(e.detail && e.detail.user);
