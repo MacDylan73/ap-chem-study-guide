@@ -1,4 +1,5 @@
 import { setupGating } from './gating.js';
+import { setSubunitComplete, setFinalQuizComplete } from './progress.js';
 
 // Progress tracking for quiz questions per subunit
 function checkAnswer(button, isCorrect, explanation) {
