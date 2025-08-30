@@ -346,8 +346,8 @@ export function updateUnitBottomBarAuthButtons() {
 export function setupUnitBottomBarButtons() {
   const returnHomeBtn = document.getElementById("returnHomeBtn");
   if (returnHomeBtn) returnHomeBtn.onclick = () => window.location.href = "/ap-chem-study-guide/";
-  const nextUnitBtn = document.getElementById("nextUnitBtn");
-  if (nextUnitBtn) nextUnitBtn.onclick = () => window.location.href = "/unit-2-compound-structure-and-properties.html";
+  // const nextUnitBtn = document.getElementById("nextUnitBtn");
+  // if (nextUnitBtn) nextUnitBtn.onclick = () => window.location.href = "/unit-2-compound-structure-and-properties.html";
 }
 
 // Keeps bottom bar in sync with auth state on unit pages
