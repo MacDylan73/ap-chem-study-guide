@@ -1,3 +1,6 @@
+import { onAuthChange } from './auth.js';
+onAuthChange();
+
 // Utility to get today's index
 function getQOTDIndex(numQuestions) {
   const today = new Date();
