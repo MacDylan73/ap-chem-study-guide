@@ -1,22 +1,16 @@
 // Utility to get today's index
 function getQOTDIndex(numQuestions) {
-  // Use UTC date so it's consistent worldwide
   const today = new Date();
   const daysSinceEpoch = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
   return daysSinceEpoch % numQuestions;
 }
 
-// Load questions.json and show today's QOTD with submit/feedback functionality
 async function loadQOTD() {
-  console.log('Loading QOTD...');
   const res = await fetch('questions.json');
   const questions = await res.json();
-  console.log('Questions loaded:', questions);
-
   const idx = getQOTDIndex(questions.length);
   const q = questions[idx];
 
-  // Render question and answer buttons
   const container = document.getElementById('qotdQuestionContent');
   if (!container) return;
 
@@ -34,7 +28,6 @@ async function loadQOTD() {
   setupQOTDHandlers(q);
 }
 
-// Setup submit/feedback logic
 function setupQOTDHandlers(q) {
   const container = document.getElementById('qotdQuestionContent');
   let selectedIdx = null;
@@ -45,7 +38,6 @@ function setupQOTDHandlers(q) {
   answerBtns.forEach(btn => {
     btn.onclick = function() {
       selectedIdx = parseInt(btn.dataset.idx, 10);
-      // Highlight selected
       answerBtns.forEach(b => b.classList.remove('selected'));
       btn.classList.add('selected');
       submitBtn.style.display = 'inline-block';
@@ -72,14 +64,18 @@ function setupQOTDHandlers(q) {
   };
 }
 
-// Gating logic for blur/overlay
 function updateQOTDGating() {
   const blurOverlay = document.getElementById('qotdBlurOverlay');
   const questionContent = document.getElementById('qotdQuestionContent');
-  // Debug log to help trace gating state
   console.log("[QOTD] updateQOTDGating, window.isSignedIn:", window.isSignedIn);
 
   if (!blurOverlay || !questionContent) return;
+  if (window.isSignedIn === undefined) {
+    // Don't show anything until auth state is known
+    blurOverlay.style.display = 'flex';
+    questionContent.classList.add('blurred');
+    return;
+  }
   if (!window.isSignedIn) {
     blurOverlay.style.display = 'flex';
     questionContent.classList.add('blurred');
@@ -89,9 +85,7 @@ function updateQOTDGating() {
   }
 }
 
-// Use the shared sign-in modal logic from auth-modal.html
 function showAppSignInModal() {
-  // Show the main sign-in modal and activate the sign-in tab
   const signInModal = document.getElementById("signInModal");
   const tabSignIn = document.getElementById("tabSignIn");
   if (signInModal) {
@@ -104,15 +98,7 @@ function showAppSignInModal() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadQOTD().then(updateQOTDGating);
-
-  // QOTD sign-in button triggers main sign-in modal logic
-  const qotdSignInBtn = document.getElementById('qotdSignInBtn');
-  if (qotdSignInBtn) {
-    qotdSignInBtn.onclick = function() {
-      showAppSignInModal();
-    };
-  }
+  loadQOTD();
 
   // Listen for auth state changes - covers sign-in on page load and after sign-in
   window.addEventListener('authstatechanged', function(e) {
@@ -127,4 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("[QOTD] user-signed-in event");
     updateQOTDGating();
   });
+
+  // QOTD sign-in button triggers main sign-in modal logic
+  const qotdSignInBtn = document.getElementById('qotdSignInBtn');
+  if (qotdSignInBtn) {
+    qotdSignInBtn.onclick = function() {
+      showAppSignInModal();
+    };
+  }
 });
