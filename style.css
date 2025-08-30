@@ -1473,23 +1473,34 @@ CSS
 
 @media (max-width: 500px) {
   .modal-content {
-    padding: 18px 6px;
-    max-width: 98vw;
-    font-size: 0.93rem;
+    padding: 14px 4px;
+    max-width: 99vw;
+    font-size: 0.88rem;
   }
   .modal-title {
-    font-size: 1.08rem;
-    margin-bottom: 11px;
+    font-size: 1rem;
+    margin-bottom: 9px;
   }
   .modal-btn {
-    padding: 7px 12px;
-    font-size: 0.93rem;
-    margin: 10px 5px 0 0;
+    padding: 5px 8px;
+    font-size: 0.88rem;
+    margin: 8px 3px 0 0;
+    min-width: 0;
+    min-height: 0;
+    line-height: 1.2;
+    border-radius: 6px;
+    /* If you want all buttons in one row, add: */
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .modal-btn .icon {
+    font-size: 1em !important; /* Standardize icon size */
+    margin-right: 2px;
   }
   .stats-list li, .leaderboard-list li {
-    font-size: 0.93rem;
+    font-size: 0.88rem;
   }
   .streak-number, .fire-icon {
-    font-size: 1.1em !important;
+    font-size: 1em !important;
   }
 }
