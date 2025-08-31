@@ -1643,3 +1643,136 @@ body.dark-mode .unit-progress-bar {
 .unit-btn .unit-title {
   color: var(--bar-text); /* fallback to blue if --bar-text not set */
 }
+
+
+
+/* SCORE CCALCULATOR */
+.exam-score-calculator-box {
+  background: var(--box-bg, #f6f8ff);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(60,80,200,0.08);
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  margin-top: 2rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: inherit;
+}
+.calc-title {
+  color: var(--bar-text, #3949ab);
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.2em;
+  text-align: center;
+}
+.calc-desc {
+  color: var(--bar-text, #3949ab);
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 1.2em;
+}
+.calc-section-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--bar-text, #3949ab);
+  margin-bottom: 0.7em;
+  margin-top: 0.6em;
+}
+.calc-slider {
+  width: 100%;
+  accent-color: var(--bar-text, #3949ab);
+  margin-bottom: 0.3em;
+  height: 1.3em;
+}
+.calc-score-label {
+  text-align: right;
+  font-size: 1.1em;
+  color: var(--bar-text, #3949ab);
+  margin-bottom: 0.7em;
+}
+.calc-divider {
+  border: none;
+  border-top: 2px solid var(--bar-text, #3949ab);
+  margin: 1.2em 0;
+}
+.calc-frq-group {
+  margin-bottom: 1.3em;
+}
+.calc-frq-subtitle {
+  color: var(--bar-text, #3949ab);
+  font-size: 1.05em;
+  margin-bottom: 0.5em;
+  margin-top: 0.2em;
+  font-weight: 500;
+}
+.calc-frq-row {
+  display: flex;
+  gap: 1.1em;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.calc-frq-score-box {
+  background: #fff;
+  border-radius: 7px;
+  border: 1.5px solid var(--bar-text, #3949ab);
+  min-width: 60px;
+  padding: 0.4em 0.7em 0.3em 0.7em;
+  text-align: center;
+  margin-bottom: 0.3em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  font-size: 1.07em;
+  box-shadow: 0 1px 3px rgba(60,80,200,0.03);
+}
+.calc-arrow {
+  background: var(--bar-text, #3949ab);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  width: 1.25em;
+  height: 1.25em;
+  font-size: 1.2em;
+  margin: 0.1em 0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.calc-arrow:active {
+  background: #283593;
+}
+.calc-frq-setall {
+  margin-left: auto;
+  min-width: 65px;
+  background: #e3eafc;
+  border-color: #b3c0fc;
+}
+.calc-frq-setall-label {
+  font-size: 0.95em;
+  color: var(--bar-text, #3949ab);
+  font-weight: 500;
+  margin-bottom: 0.17em;
+}
+.calc-score-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 1.2em;
+}
+.calc-score-title {
+  font-size: 1.27rem;
+  font-weight: bold;
+  color: var(--bar-text, #3949ab);
+  margin-bottom: 0.17em;
+  text-align: center;
+}
+.calc-score-predicted {
+  color: #fff;
+  background: var(--bar-text, #3949ab);
+  border-radius: 12px;
+  padding: 0.3em 1.1em;
+  font-size: 2.3rem;
+  font-weight: bold;
+  margin-top: 0.2em;
+  box-shadow: 0 2px 16px rgba(60,80,200,0.14);
+}
