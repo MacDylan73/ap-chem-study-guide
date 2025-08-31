@@ -130,3 +130,20 @@ function updatePredictedScore() {
 }
 
 updatePredictedScore();
+
+// Dynamically load the score calculator HTML into the container
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('score-calculator-container');
+  if (container) {
+    fetch('score-calculator.html')
+      .then(response => response.text())
+      .then(html => {
+        container.innerHTML = html;
+        // Optionally: Load the calculator JS if not already loaded
+        const script = document.createElement('script');
+        script.src = 'components/exam-score-calculator.js';
+        script.defer = true;
+        document.body.appendChild(script);
+      });
+  }
+});
