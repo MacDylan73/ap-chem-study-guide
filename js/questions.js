@@ -278,4 +278,22 @@ export function setupFinalQuizLogic() {
     }
   });
 }
+
+// Get Unit ID for saving
+function getCurrentUnitId() {
+  // Example: Use document title, a meta tag, or the URL to infer unit
+  // If you use a meta tag:
+  // const meta = document.querySelector('meta[name="unit-id"]');
+  // if (meta) return meta.content;
+
+  // Or infer from page title:
+  if (document.title && document.title.startsWith("Unit")) {
+    // e.g. "Unit 1: Atomic Structure" -> "unit-1"
+    const match = document.title.match(/Unit\s*(\d+)/i);
+    if (match) return `unit-${match[1]}`;
+  }
+
+  // Or fallback to a hardcoded value if needed
+  // return "unit-1";
+}
 document.addEventListener('DOMContentLoaded', setupFinalQuizLogic);
