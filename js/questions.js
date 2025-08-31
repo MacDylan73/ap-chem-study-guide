@@ -283,8 +283,8 @@ export function setupFinalQuizLogic() {
 function getCurrentUnitId() {
   // Example: Use document title, a meta tag, or the URL to infer unit
   // If you use a meta tag:
-  // const meta = document.querySelector('meta[name="unit-id"]');
-  // if (meta) return meta.content;
+  const meta = document.querySelector('meta[name="unit-id"]');
+  if (meta) return meta.content;
 
   // Or infer from page title:
   if (document.title && document.title.startsWith("Unit")) {
