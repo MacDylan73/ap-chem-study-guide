@@ -2,12 +2,13 @@
 // This file now waits for the calculator HTML to be present before initializing,
 // so it's safe to use with dynamic insertion via fetch.
 
-// Dynamically fetch and insert the score calculator HTML, then initialize logic
+// Main logic for AP Chem exam score calculator
+// This file fetches the calculator HTML, inserts it, and initializes all logic after load.
 
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('score-calculator-container');
   if (container) {
-    fetch('score-calculator.html') // fetch from root
+    fetch('score-calculator.html')
       .then(response => {
         if (!response.ok) throw new Error('Could not load score-calculator.html');
         return response.text();
@@ -58,6 +59,7 @@ function initScoreCalculator() {
     updatePredictedScore();
   });
 
+  // Update: score is always shown as "X/Y" in one line.
   document.querySelectorAll(".calc-arrow").forEach(btn => {
     btn.addEventListener("click", () => {
       const frqType = btn.getAttribute("data-frq");
@@ -70,14 +72,14 @@ function initScoreCalculator() {
           longSetAllBox.textContent = `${v}/10`;
           for (let i = 0; i < longScores.length; i++) {
             longScores[i] = v;
-            longBoxes[i].textContent = v;
+            longBoxes[i].textContent = `${v}/10`;
           }
         } else {
           let i = Number(idx);
           let v = longScores[i];
           v = clamp(v + (isUp ? 1 : -1), 0, 10);
           longScores[i] = v;
-          longBoxes[i].textContent = v;
+          longBoxes[i].textContent = `${v}/10`;
           if (longScores.every(x => x === v)) {
             longSetAllBox.textContent = `${v}/10`;
           }
@@ -90,14 +92,14 @@ function initScoreCalculator() {
           shortSetAllBox.textContent = `${v}/4`;
           for (let i = 0; i < shortScores.length; i++) {
             shortScores[i] = v;
-            shortBoxes[i].textContent = v;
+            shortBoxes[i].textContent = `${v}/4`;
           }
         } else {
           let i = Number(idx);
           let v = shortScores[i];
           v = clamp(v + (isUp ? 1 : -1), 0, 4);
           shortScores[i] = v;
-          shortBoxes[i].textContent = v;
+          shortBoxes[i].textContent = `${v}/4`;
           if (shortScores.every(x => x === v)) {
             shortSetAllBox.textContent = `${v}/4`;
           }
