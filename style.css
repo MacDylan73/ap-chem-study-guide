@@ -1700,8 +1700,11 @@ body.dark-mode .unit-progress-bar {
   align-items: center;
   flex-wrap: wrap;
 }
+
+/* Updated for dark mode and better contrast using existing variables */
 .calc-frq-score-box {
-  background: var(--calc-frq-score-bg, #fff);
+  background: var(--background-alt, #f7f9fe);
+  color: var(--box-text, #22283a);
   border-radius: 7px;
   border: 1.5px solid var(--bar-text, #3949ab);
   min-width: 60px;
@@ -1715,25 +1718,11 @@ body.dark-mode .unit-progress-bar {
   font-size: 1.07em;
   box-shadow: 0 1px 3px rgba(60,80,200,0.03);
 }
-.calc-arrow {
-  background: var(--bar-text, #3949ab);
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  width: 1.25em;
-  height: 1.25em;
-  font-size: 1.2em;
-  margin: 0.1em 0;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-.calc-arrow:active {
-  background: #283593;
-}
 .calc-frq-setall {
   margin-left: auto;
   min-width: 65px;
-  background: var(--calc-frq-setall-bg, #e3eafc);
+  background: var(--background, #e3eafc);
+  color: var(--box-text, #22283a);
   border-color: #b3c0fc;
 }
 .calc-frq-setall-label {
@@ -1755,9 +1744,10 @@ body.dark-mode .unit-progress-bar {
   margin-bottom: 0.17em;
   text-align: center;
 }
+/* Updated for dark mode and better contrast using existing variables */
 .calc-score-predicted {
-  color: var(--calc-score-predicted-text, #fff);
-  background: var(--calc-score-predicted-bg, var(--bar-text, #3949ab));
+  color: var(--box-text, #fff);
+  background: var(--bar-text, #3949ab);
   border-radius: 12px;
   padding: 0.3em 1.1em;
   font-size: 2.3rem;
@@ -1765,24 +1755,34 @@ body.dark-mode .unit-progress-bar {
   margin-top: 0.2em;
   box-shadow: 0 2px 16px rgba(60,80,200,0.14);
 }
+.calc-frq-score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .calc-frq-score {
   font-size: 1.1em;
   font-weight: bold;
   margin: 0.2em 0;
 }
 .calc-arrow {
+  background: var(--bar-text, #3949ab);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  width: 1.25em;
+  height: 1.25em;
+  font-size: 1.2em;
   margin: 0.1em 0;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.calc-arrow:active {
+  background: #283593;
 }
 .calc-frq-label {
   font-size: 0.8em;
   color: #888;
   margin-bottom: 2px;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --calc-frq-score-bg: #22283a;
-    --calc-frq-setall-bg: #3a4163;
-    --calc-score-predicted-bg: #f2f5fc;
-    --calc-score-predicted-text: #283593;
-  }
 }
