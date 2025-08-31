@@ -1510,7 +1510,7 @@ CSS
   #qotdStatsBtn,
   #qotdLeaderboardBtn,
   #qotdStreak {
-    font-size: 0.85rem !important;
+    font-size: 0.8rem !important;
     padding: 6px 12px !important;
     min-width: 60px !important;
     height: 28px !important;
@@ -1542,4 +1542,10 @@ CSS
     height: 32px !important;
     padding: 0 !important;
   }
+   .button-row {
+  display: flex;
+  gap: 8px;
+}
+#qotdLeaderboardBtn { flex: 2; }
+#qotdStatsBtn { flex: 1; }
 }
