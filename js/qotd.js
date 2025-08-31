@@ -200,6 +200,7 @@ function setupQOTDHandlers(q) {
           answerIndex: selectedIdx,
           correct
         });
+        renderUserStreakAlways();
       } catch (err) {
         console.error("[QOTD] Error saving Firestore attempt doc:", err);
       }
@@ -294,10 +295,24 @@ async function renderUserStreakAlways() {
     attempts.sort((a, b) => a.date.localeCompare(b.date));
 
     // Streak calculations
-    let currentStreak = 0, prevDate = null, streak = 0;
+    let streak = 0, prevDate = null;
+    let currentStreak = 0;
+    let yesterdayStreak = 0;
+    const todayStr = getTodayStrEastern();
+    const yesterdayStr = (() => {
+      const now = new Date();
+      // Eastern time string for yesterday
+      now.setDate(now.getDate() - 1);
+      const yyyy = now.getFullYear();
+      const mm = String(now.getMonth() + 1).padStart(2, '0');
+      const dd = String(now.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    })();
+
     for (let i = 0; i < attempts.length; ++i) {
       if (!attempts[i].correct) {
         streak = 0;
+        prevDate = attempts[i].date;
         continue;
       }
       const thisDate = attempts[i].date;
@@ -311,12 +326,21 @@ async function renderUserStreakAlways() {
         streak = 1;
       }
       prevDate = thisDate;
+      // If we're at yesterday, store the streak
+      if (thisDate === yesterdayStr) {
+        yesterdayStreak = streak;
+      }
     }
 
-    if (attempts.length && attempts[attempts.length-1].date === getTodayStrEastern() && attempts[attempts.length-1].correct) {
+    // If answered today's correctly, use streak; otherwise, show streak up to yesterday
+    if (
+      attempts.length &&
+      attempts[attempts.length - 1].date === todayStr &&
+      attempts[attempts.length - 1].correct
+    ) {
       currentStreak = streak;
     } else {
-      currentStreak = 0;
+      currentStreak = yesterdayStreak;
     }
 
     qotdStreak.innerHTML = `<span class="streak-number">${currentStreak}</span> <span class="fire-icon" tabindex="0" style="cursor:pointer;">🔥</span>`;
@@ -332,7 +356,7 @@ async function renderUserStreakAlways() {
           let parent = fireIcon.closest('.qotd-actions');
           if (!parent) parent = qotdStreak.parentElement;
           const parentRect = parent.getBoundingClientRect();
-          streakTooltip.style.left = `${rect.left - parentRect.left + rect.width/2 - streakTooltip.offsetWidth/2}px`;
+          streakTooltip.style.left = `${rect.left - parentRect.left + rect.width / 2 - streakTooltip.offsetWidth / 2}px`;
           streakTooltip.style.top = `${rect.top - parentRect.top - streakTooltip.offsetHeight - 10}px`;
         }, 1);
       }
@@ -344,11 +368,11 @@ async function renderUserStreakAlways() {
       fireIcon.addEventListener('mouseleave', hideStreakTooltip);
       fireIcon.addEventListener('focus', showStreakTooltip);
       fireIcon.addEventListener('blur', hideStreakTooltip);
-      fireIcon.addEventListener('click', function(e) {
+      fireIcon.addEventListener('click', function (e) {
         showStreakTooltip(e);
         setTimeout(hideStreakTooltip, 1200);
       });
-      fireIcon.addEventListener('touchstart', function(e) {
+      fireIcon.addEventListener('touchstart', function (e) {
         showStreakTooltip(e);
         setTimeout(hideStreakTooltip, 1200);
       });
