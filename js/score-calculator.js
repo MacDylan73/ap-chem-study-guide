@@ -2,12 +2,32 @@
 // This file now waits for the calculator HTML to be present before initializing,
 // so it's safe to use with dynamic insertion via fetch.
 
-// Wrap all setup in a function
+// Dynamically fetch and insert the score calculator HTML, then initialize logic
+
+document.addEventListener('DOMContentLoaded', () => {
+  const container = document.getElementById('score-calculator-container');
+  if (container) {
+    fetch('score-calculator.html') // fetch from root
+      .then(response => {
+        if (!response.ok) throw new Error('Could not load score-calculator.html');
+        return response.text();
+      })
+      .then(html => {
+        container.innerHTML = html;
+        initScoreCalculator();
+      })
+      .catch(err => {
+        container.innerHTML = '<p style="color:red">Score calculator could not be loaded.</p>';
+        console.error(err);
+      });
+  }
+});
+
 function initScoreCalculator() {
   // MCQ
   const mcqSlider = document.getElementById("mcq-slider");
   const mcqScore = document.getElementById("mcq-score");
-  if (!mcqSlider || !mcqScore) return; // Don't run if calculator not present
+  if (!mcqSlider || !mcqScore) return;
 
   // Long FRQ
   const longScores = [0, 0, 0];
@@ -31,22 +51,18 @@ function initScoreCalculator() {
   // Predicted score
   const predictedScoreElem = document.getElementById("calc-score-predicted");
 
-  // Utility functions
   function clamp(v, min, max) { return Math.min(Math.max(v, min), max); }
 
-  // --- MCQ slider ---
   mcqSlider.addEventListener("input", () => {
     mcqScore.textContent = mcqSlider.value;
     updatePredictedScore();
   });
 
-  // --- FRQ arrow logic ---
   document.querySelectorAll(".calc-arrow").forEach(btn => {
     btn.addEventListener("click", () => {
       const frqType = btn.getAttribute("data-frq");
       const idx = btn.getAttribute("data-idx");
       const isUp = btn.classList.contains("calc-arrow-up");
-      // Handle Long FRQ
       if (frqType === "long") {
         if (idx === "setall") {
           let v = Number(longSetAllBox.textContent.split('/')[0]);
@@ -62,13 +78,11 @@ function initScoreCalculator() {
           v = clamp(v + (isUp ? 1 : -1), 0, 10);
           longScores[i] = v;
           longBoxes[i].textContent = v;
-          // If all 3 match, update setall
           if (longScores.every(x => x === v)) {
             longSetAllBox.textContent = `${v}/10`;
           }
         }
       }
-      // Handle Short FRQ
       if (frqType === "short") {
         if (idx === "setall") {
           let v = Number(shortSetAllBox.textContent.split('/')[0]);
@@ -84,7 +98,6 @@ function initScoreCalculator() {
           v = clamp(v + (isUp ? 1 : -1), 0, 4);
           shortScores[i] = v;
           shortBoxes[i].textContent = v;
-          // If all 4 match, update setall
           if (shortScores.every(x => x === v)) {
             shortSetAllBox.textContent = `${v}/4`;
           }
@@ -94,15 +107,12 @@ function initScoreCalculator() {
     });
   });
 
-  // --- SetAll boxes allow direct sync if all scores match ---
   function syncSetAllBoxes() {
-    // Long
     if (longScores.every(x => x === longScores[0])) {
       longSetAllBox.textContent = `${longScores[0]}/10`;
     } else {
       longSetAllBox.textContent = '--/10';
     }
-    // Short
     if (shortScores.every(x => x === shortScores[0])) {
       shortSetAllBox.textContent = `${shortScores[0]}/4`;
     } else {
@@ -111,46 +121,18 @@ function initScoreCalculator() {
   }
   setInterval(syncSetAllBoxes, 500);
 
-  // --- Main Score Calculation ---
   function updatePredictedScore() {
-    // MCQ: 60 questions, 50%
-    // FRQ: 3 long (10 pts ea), 4 short (4 pts ea), total 3*10+4*4=52 pts, 50%
     const mcqRaw = Number(mcqSlider.value);
     const mcqPercent = mcqRaw / 60;
     const frqRaw = longScores.reduce((a,b)=>a+b,0) + shortScores.reduce((a,b)=>a+b,0);
     const frqPercent = frqRaw / 52;
-
-    // Weighted percent
     const weightedPercent = 0.5 * mcqPercent + 0.5 * frqPercent;
-
-    // Map to AP score (estimates based on released exams)
     let apScore = 1;
     if (weightedPercent >= 0.72) apScore = 5;
     else if (weightedPercent >= 0.60) apScore = 4;
     else if (weightedPercent >= 0.48) apScore = 3;
     else if (weightedPercent >= 0.35) apScore = 2;
-    else apScore = 1;
-
     predictedScoreElem.textContent = apScore;
   }
-
   updatePredictedScore();
 }
-
-// Try to initialize right away (for static HTML use)
-initScoreCalculator();
-
-// Also re-initialize if HTML is dynamically inserted
-// (e.g. via fetch into #score-calculator-container)
-const observer = new MutationObserver((mutationsList, observer) => {
-  for (const mutation of mutationsList) {
-    if (mutation.type === "childList") {
-      // If calculator HTML appears, initialize!
-      if (document.getElementById("mcq-slider")) {
-        initScoreCalculator();
-        break;
-      }
-    }
-  }
-});
-observer.observe(document.body, { childList: true, subtree: true });
