@@ -34,18 +34,30 @@ function checkAnswer(button, isCorrect, explanation) {
 
     // Mark this question as answered correctly
     let thisQid = button.closest('.question-box').dataset.qid;
-    let progressKey = 'progress_' + subunitKey;
-    let progress = JSON.parse(localStorage.getItem(progressKey) || '{}');
-    progress[thisQid] = true;
-    localStorage.setItem(progressKey, JSON.stringify(progress));
+    // Track progress in memory only (for unsigned users)
+    if (!window.isSignedIn || !window.currentUser) {
+      // Use in-memory object attached to subunitDiv
+      subunitDiv._tempProgress = subunitDiv._tempProgress || {};
+      subunitDiv._tempProgress[thisQid] = true;
+    }
 
     // If all questions in subunit answered correctly, mark subunit complete
-    let allCorrect = questionIds.every(qid => progress[qid]);
+    let allCorrect = questionIds.every(qid => {
+      if (window.isSignedIn && window.currentUser) {
+        // For signed-in users, completion handled by Firestore
+        return true; // always true, checkmark logic handled elsewhere
+      } else {
+        // For unsigned users, check in-memory progress
+        return subunitDiv._tempProgress && subunitDiv._tempProgress[qid];
+      }
+    });
+
     if (allCorrect) {
       if (window.isSignedIn && window.currentUser) {
-        const unitId = getCurrentUnitId(); // You need a way to identify the current unit, e.g. "unit-1"
-        setSubunitComplete(unitId, subunitKey); // This is your helper from js/progress.js
+        const unitId = getCurrentUnitId();
+        setSubunitComplete(unitId, subunitKey);
       }
+      // For unsigned users, checkmark will show until reload (see below)
     }
     // Update checkmarks (if function exists)
     if (window.updateSubunitCheckmarks) window.updateSubunitCheckmarks();
@@ -65,13 +77,19 @@ export async function updateSubunitCheckmarks() {
     let subunitKey = subunitHeader.textContent.trim();
 
     let isComplete = false;
-    if (progressData && progressData.units) {
+    if (window.isSignedIn && window.currentUser && progressData && progressData.units) {
       // Use Firestore progress if signed-in
-      const unitId = getCurrentUnitId(); // Same as above: get current unit's ID
+      const unitId = getCurrentUnitId();
       isComplete = !!progressData.units[unitId]?.subunits?.[subunitKey];
-    } else {
-      // Fallback to localStorage for unsigned users
-      isComplete = localStorage.getItem('quizComplete_' + subunitKey) === 'true';
+    } else if (subunitDiv._tempProgress) {
+      // For unsigned users, check in-memory temp progress
+      let questionBoxes = subunitDiv.querySelectorAll('.question-box');
+      let questionIds = [];
+      questionBoxes.forEach((qbox, idx) => {
+        qbox.dataset.qid = `${subunitKey}-${idx}`;
+        questionIds.push(qbox.dataset.qid);
+      });
+      isComplete = questionIds.every(qid => subunitDiv._tempProgress[qid]);
     }
 
     if (isComplete) {
@@ -81,7 +99,7 @@ export async function updateSubunitCheckmarks() {
     }
   });
 }
-// Optionally, set this up automatically on DOMContentLoaded
+
 document.addEventListener('DOMContentLoaded', () => {
   updateSubunitCheckmarks();
   window.updateSubunitCheckmarks = updateSubunitCheckmarks;
@@ -264,13 +282,10 @@ export function setupFinalQuizLogic() {
 
       // Only save progress if user is signed in
       if (window.isSignedIn && window.currentUser) {
-        const unitId = getCurrentUnitId(); // Replace with your actual way to get the unit ID!
-        setFinalQuizComplete(unitId, percent);
-      } else {
-        // Optionally, fallback to localStorage for guests
         const unitId = getCurrentUnitId();
-        localStorage.setItem('finalQuizScore_' + unitId, percent);
+        setFinalQuizComplete(unitId, percent);
       }
+      // For guests, nothing is stored
     }
 
     // Attach handler (outside the function, after DOM ready)
