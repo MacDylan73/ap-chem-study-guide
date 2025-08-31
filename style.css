@@ -1626,3 +1626,17 @@ body.dark-mode .unit-progress-bar {
   color: var(--accent, #43a047);
   letter-spacing: 0.5px;
 }
+.unit-btn {
+  transition:
+    box-shadow 0.15s,
+    border-color 0.15s,
+    background 0.15s,
+    transform 0.16s cubic-bezier(.5,1.5,.6,1);
+}
+.unit-btn:hover,
+.unit-btn:focus {
+  background: var(--choice-bg);
+  border-color: var(--accent, #8bc34a);
+  box-shadow: 0 4px 16px rgba(76,175,80,0.12);
+  transform: translateX(16px); /* Slides right on hover */
+}
