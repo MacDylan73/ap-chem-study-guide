@@ -54,6 +54,12 @@ export async function setFinalQuizComplete(unitId, percent) {
   }, { merge: true });
 }
 
+/**
+ * Dynamically updates unit buttons on the index page to reflect progress and enables navigation.
+ * - Fills progress bar with green according to percent completion.
+ * - Injects percent completion text.
+ * - Makes the button navigate to the correct unit page on click.
+ */
 export async function updateUnitButtonProgress() {
   // Only run on index page
   if (!document.querySelector('.unit-btn')) return;
@@ -79,11 +85,30 @@ export async function updateUnitButtonProgress() {
     }
     if (progressFill) progressFill.style.width = percent + '%';
     if (percentElem) percentElem.textContent = percent + '%';
+
+    // Enable navigation on button click
+    btn.onclick = () => {
+      // You may want to use a mapping if your filenames differ!
+      // For now, assumes pattern: unit-1 => unit-1-atomic-structure.html, etc.
+      // You can change this logic if your filenames are different.
+      let pageMap = {
+        'unit-1': 'unit-1-atomic-structure.html',
+        'unit-2': 'unit-2-molecular-structure.html',
+        'unit-3': 'unit-3-intermolecular-forces-and-properties.html',
+        'unit-4': 'unit-4-chemical-reactions.html',
+        'unit-5': 'unit-5-kinetics.html',
+        'unit-6': 'unit-6-thermodynamics.html',
+        'unit-7': 'unit-7-equilibrium.html',
+        'unit-8': 'unit-8-acids-and-bases.html',
+        'unit-9': 'unit-9-applications-of-thermodynamics.html'
+      };
+      const url = pageMap[unitId] || `${unitId}.html`;
+      window.location.href = url;
+    };
   });
 }
 
-// Optionally, call this on DOMContentLoaded (if index page)
-// Or, import and call from index.js
+// Call update on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
   updateUnitButtonProgress();
 });
