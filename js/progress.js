@@ -110,14 +110,14 @@ export async function updateUnitButtonProgress() {
     btn.onclick = () => {
       let pageMap = {
         'unit-1': 'unit-1-atomic-structure.html',
-        'unit-2': 'unit-2-molecular-structure.html',
-        'unit-3': 'unit-3-intermolecular-forces-and-properties.html',
+        'unit-2': 'unit-2-compound-structure-and-properties.html',
+        'unit-3': 'unit-3-properties-of-substances-and-mixtures.html',
         'unit-4': 'unit-4-chemical-reactions.html',
         'unit-5': 'unit-5-kinetics.html',
         'unit-6': 'unit-6-thermochemistry.html',
         'unit-7': 'unit-7-equilibrium.html',
         'unit-8': 'unit-8-acids-and-bases.html',
-        'unit-9': 'unit-9-applications-of-thermodynamics.html'
+        'unit-9': 'unit-9-thermodynamics-and-electrochemistry.html'
       };
       const url = pageMap[unitId] || `${unitId}.html`;
       window.location.href = url;
