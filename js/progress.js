@@ -114,7 +114,7 @@ export async function updateUnitButtonProgress() {
         'unit-3': 'unit-3-intermolecular-forces-and-properties.html',
         'unit-4': 'unit-4-chemical-reactions.html',
         'unit-5': 'unit-5-kinetics.html',
-        'unit-6': 'unit-6-thermodynamics.html',
+        'unit-6': 'unit-6-thermochemistry.html',
         'unit-7': 'unit-7-equilibrium.html',
         'unit-8': 'unit-8-acids-and-bases.html',
         'unit-9': 'unit-9-applications-of-thermodynamics.html'
