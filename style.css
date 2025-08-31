@@ -1504,3 +1504,42 @@ CSS
     font-size: 1em !important;
   }
 }
+
+/* Make leaderboard, stats, and streak buttons smaller on small screens */
+@media (max-width: 600px) {
+  #qotdStatsBtn,
+  #qotdLeaderboardBtn,
+  #qotdStreak {
+    font-size: 0.85rem !important;
+    padding: 6px 12px !important;
+    min-width: 60px !important;
+    height: 28px !important;
+    border-radius: 6px !important;
+    margin: 3px !important;
+  }
+
+  /* If leaderboard uses <button>s inside .leaderboard-list, shrink them too */
+  .leaderboard-list button {
+    font-size: 0.85rem !important;
+    padding: 6px 12px !important;
+    min-width: 60px !important;
+    height: 28px !important;
+    border-radius: 6px !important;
+    margin: 3px !important;
+  }
+
+  /* Shrink fire icon and streak number inside #qotdStreak */
+  #qotdStreak .streak-number,
+  #qotdStreak .fire-icon {
+    font-size: 1rem !important;
+    vertical-align: middle;
+  }
+
+  /* You can target modal close buttons too if needed */
+  .modal-close {
+    font-size: 1rem !important;
+    width: 32px !important;
+    height: 32px !important;
+    padding: 0 !important;
+  }
+}
