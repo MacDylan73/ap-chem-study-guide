@@ -53,3 +53,37 @@ export async function setFinalQuizComplete(unitId, percent) {
     }
   }, { merge: true });
 }
+
+export async function updateUnitButtonProgress() {
+  // Only run on index page
+  if (!document.querySelector('.unit-btn')) return;
+
+  let progressData = window.isSignedIn && window.currentUser
+    ? await getProgress()
+    : null;
+
+  document.querySelectorAll('.unit-btn').forEach(btn => {
+    const unitId = btn.dataset.unitId;
+    const progressFill = btn.querySelector('.unit-progress-fill');
+    const percentElem = btn.querySelector('.unit-percent');
+
+    let percent = 0;
+    if (progressData && progressData.units && progressData.units[unitId]) {
+      const unit = progressData.units[unitId];
+      const subunits = unit.subunits || {};
+      const subunitsComplete = Object.values(subunits).filter(Boolean).length;
+      const totalSubunits = Object.keys(subunits).length;
+      const finalQuizComplete = unit.finalQuizCompleted ? 1 : 0;
+      const percentRaw = ((subunitsComplete + finalQuizComplete) / (totalSubunits + 1)) * 100;
+      percent = Math.round(percentRaw);
+    }
+    if (progressFill) progressFill.style.width = percent + '%';
+    if (percentElem) percentElem.textContent = percent + '%';
+  });
+}
+
+// Optionally, call this on DOMContentLoaded (if index page)
+// Or, import and call from index.js
+document.addEventListener('DOMContentLoaded', () => {
+  updateUnitButtonProgress();
+});
