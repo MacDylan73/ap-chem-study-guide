@@ -1,5 +1,6 @@
 import { setupGating } from './gating.js';
 import { setSubunitComplete, setFinalQuizComplete, getProgress } from './progress.js';
+import { onAuthChange } from './auth.js';
 
 // Progress tracking for quiz questions per subunit
 function checkAnswer(button, isCorrect, explanation) {
@@ -103,8 +104,9 @@ export async function updateSubunitCheckmarks() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  updateSubunitCheckmarks();
+onAuthChange(async user => {
+  await updateSubunitCheckmarks();
+  // Optionally, set global for manual updates
   window.updateSubunitCheckmarks = updateSubunitCheckmarks;
 });
 window.checkAnswer = checkAnswer;
