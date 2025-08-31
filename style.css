@@ -1701,10 +1701,10 @@ body.dark-mode .unit-progress-bar {
   flex-wrap: wrap;
 }
 
-/* Updated: Use --choice-bg, center content, and add spacing */
+/* UPDATED: Use --choice-bg for backgrounds. Set main score text color to --bar-text for visibility */
 .calc-frq-score-box {
   background: var(--choice-bg, #2c313a);
-  color: var(--box-text, #f0f0f0);
+  color: var(--bar-text, #f0f0f0); /* <-- Main text uses bar-text variable now */
   border-radius: 7px;
   border: 1.5px solid var(--bar-text, #3949ab);
   min-width: 60px;
@@ -1714,8 +1714,8 @@ body.dark-mode .unit-progress-bar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;      /* This centers everything vertically */
-  gap: 0.18em;                  /* Add a little vertical spacing between arrows/score/label */
+  justify-content: center;
+  gap: 0.18em;
   position: relative;
   font-size: 1.07em;
   box-shadow: 0 1px 3px rgba(60,80,200,0.03);
@@ -1724,7 +1724,7 @@ body.dark-mode .unit-progress-bar {
   margin-left: auto;
   min-width: 65px;
   background: var(--choice-bg, #2c313a);
-  color: var(--box-text, #f0f0f0);
+  color: var(--bar-text, #f0f0f0); /* <-- Main text uses bar-text variable now */
   border-color: #b3c0fc;
 }
 .calc-frq-setall-label {
@@ -1746,8 +1746,9 @@ body.dark-mode .unit-progress-bar {
   margin-bottom: 0.17em;
   text-align: center;
 }
+/* Main predicted score uses bar-text variable for the main score */
 .calc-score-predicted {
-  color: var(--box-text, #f0f0f0);
+  color: var(--bar-text, #f0f0f0); /* <-- Main text uses bar-text variable now */
   background: var(--choice-bg, #2c313a);
   border-radius: 12px;
   padding: 0.3em 1.1em;
