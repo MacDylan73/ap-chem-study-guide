@@ -23,7 +23,15 @@ function getQOTDIndex(numQuestions) {
 
 // Utility: today's date string for attempt records
 function getTodayStrEastern() {
-  return new Date().toISOString().slice(0, 10); // "YYYY-MM-DD"
+  // Get current date in Eastern Time
+  const easternNow = new Date(
+    new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
+  );
+  // Format as YYYY-MM-DD
+  const yyyy = easternNow.getFullYear();
+  const mm = String(easternNow.getMonth() + 1).padStart(2, '0');
+  const dd = String(easternNow.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
 }
 
 // Utility: today's date/time
@@ -37,8 +45,10 @@ function getEasternTimeDate() {
 }
 
 function getQOTDIndexEastern(numQuestions) {
-  const easternNow = getEasternTimeDate();
-  const daysSinceEpoch = Math.floor(easternNow.getTime() / (1000 * 60 * 60 * 24));
+  const easternToday = getTodayStrEastern();
+  // Days since epoch in Eastern Time
+  const easternDate = new Date(easternToday);
+  const daysSinceEpoch = Math.floor(easternDate.getTime() / (1000 * 60 * 60 * 24));
   return daysSinceEpoch % numQuestions;
 }
 
