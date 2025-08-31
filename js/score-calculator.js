@@ -28,18 +28,28 @@ function initScoreCalculator() {
   const mcqScore = document.getElementById("mcq-score");
   if (!mcqSlider || !mcqScore) return;
 
+  // Initialize MCQ to 30 (middle)
+  mcqSlider.value = 30;
+  mcqScore.textContent = mcqSlider.value;
+
   // Long FRQ
-  const longScores = [0, 0, 0];
+  const longScores = [5, 5, 5]; // initialize to 50%
   const longBoxes = [
     document.getElementById("frq-long-0"),
     document.getElementById("frq-long-1"),
     document.getElementById("frq-long-2")
   ];
   const longSetAllBox = document.getElementById("frq-long-setall");
-  let longSetAllValue = 0; // Always a number
+  let longSetAllValue = 5; // always number, starts at 5
+
+  // Initialize UI for Long FRQs
+  for (let i = 0; i < longScores.length; i++) {
+    longBoxes[i].textContent = `${longScores[i]}/10`;
+  }
+  longSetAllBox.textContent = `${longSetAllValue}/10`;
 
   // Short FRQ
-  const shortScores = [0, 0, 0, 0];
+  const shortScores = [2, 2, 2, 2]; // initialize to 50%
   const shortBoxes = [
     document.getElementById("frq-short-0"),
     document.getElementById("frq-short-1"),
@@ -47,7 +57,13 @@ function initScoreCalculator() {
     document.getElementById("frq-short-3")
   ];
   const shortSetAllBox = document.getElementById("frq-short-setall");
-  let shortSetAllValue = 0; // Always a number
+  let shortSetAllValue = 2; // always number, starts at 2
+
+  // Initialize UI for Short FRQs
+  for (let i = 0; i < shortScores.length; i++) {
+    shortBoxes[i].textContent = `${shortScores[i]}/4`;
+  }
+  shortSetAllBox.textContent = `${shortSetAllValue}/4`;
 
   // Predicted score
   const predictedScoreElem = document.getElementById("calc-score-predicted");
@@ -67,7 +83,7 @@ function initScoreCalculator() {
       // Handle Long FRQ
       if (frqType === "long") {
         if (idx === "setall") {
-          // Always use longSetAllValue as the source
+          // Only change longSetAllValue on its own arrow click
           let v = longSetAllValue;
           v = clamp(v + (isUp ? 1 : -1), 0, 10);
           longSetAllValue = v;
@@ -82,9 +98,7 @@ function initScoreCalculator() {
           v = clamp(v + (isUp ? 1 : -1), 0, 10);
           longScores[i] = v;
           longBoxes[i].textContent = `${v}/10`;
-          // Update setall value to last changed score
-          longSetAllValue = v;
-          longSetAllBox.textContent = `${longSetAllValue}/10`;
+          // Do NOT update longSetAllValue or box
         }
       }
       // Handle Short FRQ
@@ -104,16 +118,14 @@ function initScoreCalculator() {
           v = clamp(v + (isUp ? 1 : -1), 0, 4);
           shortScores[i] = v;
           shortBoxes[i].textContent = `${v}/4`;
-          // Update setall value to last changed score
-          shortSetAllValue = v;
-          shortSetAllBox.textContent = `${shortSetAllValue}/4`;
+          // Do NOT update shortSetAllValue or box
         }
       }
       updatePredictedScore();
     });
   });
 
-  // SetAll boxes always show a number, never "--/10" or "--/4"
+  // SetAll boxes always show their current value
   function syncSetAllBoxes() {
     longSetAllBox.textContent = `${longSetAllValue}/10`;
     shortSetAllBox.textContent = `${shortSetAllValue}/4`;
