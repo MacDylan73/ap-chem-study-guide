@@ -1551,7 +1551,7 @@ CSS
 }
 
 
-/* INDEX PAGE UNIT BUTTONS */
+/* INDEX PAGE UNIT BUTTONS - UPDATED */
 .unit-btn {
   display: flex;
   align-items: center;
@@ -1560,12 +1560,12 @@ CSS
   border: 2px solid var(--box-border);
   border-radius: 12px;
   margin-bottom: 18px;
-  padding: 18px 24px;
+  padding: 13px 18px; /* Reduced height */
   cursor: pointer;
   transition: box-shadow 0.15s, border-color 0.15s, background 0.15s;
   box-shadow: 0 2px 8px rgba(0,0,0,0.04);
   position: relative;
-  font-size: 1.05rem;
+  font-size: 1.03rem; /* Slightly smaller */
   color: var(--text-color);
 }
 
@@ -1582,19 +1582,23 @@ CSS
 }
 
 .unit-title {
-  font-size: 1.09em;
+  font-size: 1.08em;
   font-weight: 500;
-  color: var(--text-color);
+  color: var(--heading-color, var(--text-color)); /* Matches title of unit buttons box */
 }
 
 .unit-progress-bar {
-  margin-top: 8px;
-  height: 8px;
-  background: var(--box-border);
+  margin-top: 7px;
+  height: 7px;
+  background: #bdbdbd; /* Always gray, both themes */
   border-radius: 4px;
   overflow: hidden;
   width: 100%;
   position: relative;
+}
+
+body.dark-mode .unit-progress-bar {
+  background: #44445a; /* Override for dark mode - matches your dark box borders */
 }
 
 .unit-progress-fill {
@@ -1607,17 +1611,17 @@ CSS
 
 .unit-btn-divider {
   width: 2px;
-  height: 48px;
+  height: 38px; /* Reduced height for shorter buttons */
   background: var(--box-border);
-  margin: 0 18px;
+  margin: 0 14px; /* Slightly narrower gap */
   border-radius: 1px;
   opacity: 0.55;
 }
 
 .unit-percent {
-  font-size: 1.05em;
+  font-size: 0.99em;
   font-weight: 600;
-  min-width: 48px;
+  min-width: 44px;
   text-align: right;
   color: var(--accent, #43a047);
   letter-spacing: 0.5px;
