@@ -67,8 +67,10 @@ function checkAnswer(button, isCorrect, explanation) {
 // Quiz checkmarks logic (now in questions.js)
 export async function updateSubunitCheckmarks() {
   let progressData = null;
+
   if (window.isSignedIn && window.currentUser) {
     progressData = await getProgress();
+    console.log("[Checkmarks] Firestore progressData:", progressData);
   }
 
   document.querySelectorAll('.subunit').forEach(subunitDiv => {
@@ -78,8 +80,9 @@ export async function updateSubunitCheckmarks() {
 
     let isComplete = false;
     if (window.isSignedIn && window.currentUser && progressData && progressData.units) {
-      // Use Firestore progress if signed-in
       const unitId = getCurrentUnitId();
+      // Log for debugging
+      console.log(`[Checkmarks] Unit: ${unitId}, Subunit: ${subunitKey}, Complete:`, progressData.units[unitId]?.subunits?.[subunitKey]);
       isComplete = !!progressData.units[unitId]?.subunits?.[subunitKey];
     } else if (subunitDiv._tempProgress) {
       // For unsigned users, check in-memory temp progress
