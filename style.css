@@ -1549,3 +1549,76 @@ CSS
 #qotdLeaderboardBtn { flex: 2; }
 #qotdStatsBtn { flex: 1; }
 }
+
+
+/* INDEX PAGE UNIT BUTTONS */
+.unit-btn {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background: var(--box-bg);
+  border: 2px solid var(--box-border);
+  border-radius: 12px;
+  margin-bottom: 18px;
+  padding: 18px 24px;
+  cursor: pointer;
+  transition: box-shadow 0.15s, border-color 0.15s, background 0.15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  position: relative;
+  font-size: 1.05rem;
+  color: var(--text-color);
+}
+
+.unit-btn:hover, .unit-btn:focus {
+  background: var(--choice-bg);
+  border-color: var(--accent, #8bc34a);
+  box-shadow: 0 4px 16px rgba(76,175,80,0.12);
+}
+
+.unit-btn-content {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.unit-title {
+  font-size: 1.09em;
+  font-weight: 500;
+  color: var(--text-color);
+}
+
+.unit-progress-bar {
+  margin-top: 8px;
+  height: 8px;
+  background: var(--box-border);
+  border-radius: 4px;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.unit-progress-fill {
+  height: 100%;
+  background: var(--accent, #43a047);
+  border-radius: 4px;
+  width: 0%; /* Set dynamically */
+  transition: width 0.3s;
+}
+
+.unit-btn-divider {
+  width: 2px;
+  height: 48px;
+  background: var(--box-border);
+  margin: 0 18px;
+  border-radius: 1px;
+  opacity: 0.55;
+}
+
+.unit-percent {
+  font-size: 1.05em;
+  font-weight: 600;
+  min-width: 48px;
+  text-align: right;
+  color: var(--accent, #43a047);
+  letter-spacing: 0.5px;
+}
