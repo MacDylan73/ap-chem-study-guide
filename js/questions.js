@@ -263,6 +263,16 @@ export function setupFinalQuizLogic() {
       });
     }
 
+    //Save Percent/Completion
+    // Calculate percent correct
+    const percent = Math.round((correctCount / totalQuestions) * 100);
+
+    // Only save progress if user is signed in
+    if (window.isSignedIn && window.currentUser) {
+      const unitId = getCurrentUnitId(); // Replace with your actual way to get the unit ID!
+      setFinalQuizComplete(unitId, percent);
+    }
+
     if (submitBtn) {
       submitBtn.onclick = submitHandler;
     }
