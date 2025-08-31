@@ -108,9 +108,6 @@ export async function updateUnitButtonProgress() {
   });
 }
 
-// Call update on DOMContentLoaded
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("authstatechanged", () => {
   updateUnitButtonProgress();
 });
-
-window.updateUnitButtonProgress = updateUnitButtonProgress;
