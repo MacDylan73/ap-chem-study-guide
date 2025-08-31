@@ -220,63 +220,65 @@ export function setupFinalQuizLogic() {
     }
 
     function submitHandler() {
-      submitBtn.disabled = true;
-      stopTimer(); // Stop when submitting
+  submitBtn.disabled = true;
+  stopTimer(); // Stop when submitting
 
-      let correctCount = 0;
-      let totalQuestions = questionBoxes.length;
+  let correctCount = 0;
+  let totalQuestions = questionBoxes.length;
 
-      questionBoxes.forEach(qbox => {
-        const buttons = qbox.querySelectorAll('.answer-options button');
-        const feedbackDiv = qbox.querySelector('.feedback-text');
-        buttons.forEach(b => b.classList.remove('selected', 'correct', 'incorrect'));
+  questionBoxes.forEach(qbox => {
+    const buttons = qbox.querySelectorAll('.answer-options button');
+    const feedbackDiv = qbox.querySelector('.feedback-text');
+    buttons.forEach(b => b.classList.remove('selected', 'correct', 'incorrect'));
 
-        const selectedBtn = qbox.selectedBtn;
-        if (!selectedBtn) {
-          feedbackDiv.textContent = "No answer selected.";
-          return;
-        }
-        const isCorrect = selectedBtn.dataset.correct === "true";
-        feedbackDiv.textContent = selectedBtn.dataset.explanation ?? "";
-        if (isCorrect) {
-          selectedBtn.classList.add('correct');
-          correctCount++;
-        } else {
-          selectedBtn.classList.add('incorrect');
-        }
-      });
-
-      // Show score below timer
-      if (scoreElem) {
-        scoreElem.textContent = `Score: ${correctCount} out of ${totalQuestions} correct`;
-        scoreElem.style.display = "block";
-      }
-
-      // Change button to "Try Again"
-      submitBtn.textContent = "Try Again";
-      submitBtn.disabled = false;
-      submitBtn.onclick = resetQuiz;
-
-      // Disable answer selection until retry
-      questionBoxes.forEach(qbox => {
-        qbox.querySelectorAll('.answer-options button').forEach(btn => btn.disabled = true);
-      });
+    const selectedBtn = qbox.selectedBtn;
+    if (!selectedBtn) {
+      feedbackDiv.textContent = "No answer selected.";
+      return;
     }
-
-    //Save Percent/Completion
-    // Calculate percent correct
-    const percent = Math.round((correctCount / totalQuestions) * 100);
-
-    // Only save progress if user is signed in
-    if (window.isSignedIn && window.currentUser) {
-      const unitId = getCurrentUnitId(); // Replace with your actual way to get the unit ID!
-      setFinalQuizComplete(unitId, percent);
-    }
-
-    if (submitBtn) {
-      submitBtn.onclick = submitHandler;
+    const isCorrect = selectedBtn.dataset.correct === "true";
+    feedbackDiv.textContent = selectedBtn.dataset.explanation ?? "";
+    if (isCorrect) {
+      selectedBtn.classList.add('correct');
+      correctCount++;
+    } else {
+      selectedBtn.classList.add('incorrect');
     }
   });
+
+  // Show score below timer
+  if (scoreElem) {
+    scoreElem.textContent = `Score: ${correctCount} out of ${totalQuestions} correct`;
+    scoreElem.style.display = "block";
+  }
+
+  // Change button to "Try Again"
+  submitBtn.textContent = "Try Again";
+  submitBtn.disabled = false;
+  submitBtn.onclick = resetQuiz;
+
+  // Disable answer selection until retry
+  questionBoxes.forEach(qbox => {
+    qbox.querySelectorAll('.answer-options button').forEach(btn => btn.disabled = true);
+  });
+
+  // ---- Save Percent/Completion ----
+  const percent = Math.round((correctCount / totalQuestions) * 100);
+
+  // Only save progress if user is signed in
+  if (window.isSignedIn && window.currentUser) {
+    const unitId = getCurrentUnitId(); // Replace with your actual way to get the unit ID!
+    setFinalQuizComplete(unitId, percent);
+  } else {
+    // Optionally, fallback to localStorage for guests
+    const unitId = getCurrentUnitId();
+    localStorage.setItem('finalQuizScore_' + unitId, percent);
+  }
+}
+
+// Attach handler (outside the function, after DOM ready)
+if (submitBtn) {
+  submitBtn.onclick = submitHandler;
 }
 
 // Get Unit ID for saving
