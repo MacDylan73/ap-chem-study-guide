@@ -112,3 +112,5 @@ export async function updateUnitButtonProgress() {
 document.addEventListener('DOMContentLoaded', () => {
   updateUnitButtonProgress();
 });
+
+window.updateUnitButtonProgress = updateUnitButtonProgress;
