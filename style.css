@@ -1647,17 +1647,6 @@ body.dark-mode .unit-progress-bar {
 
 
 /* SCORE CCALCULATOR */
-.exam-score-calculator-box {
-  background: var(--box-bg, #f6f8ff);
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(60,80,200,0.08);
-  padding: 2rem 1.5rem 1.5rem 1.5rem;
-  margin-top: 2rem;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  font-family: inherit;
-}
 .calc-title {
   color: var(--bar-text, #3949ab);
   font-size: 1.6rem;
