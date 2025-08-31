@@ -1765,3 +1765,22 @@ body.dark-mode .unit-progress-bar {
   margin-top: 0.2em;
   box-shadow: 0 2px 16px rgba(60,80,200,0.14);
 }
+.calc-frq-score-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calc-frq-score {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin: 0.2em 0;
+}
+.calc-arrow {
+  margin: 0.1em 0;
+}
+.calc-frq-label {
+  font-size: 0.8em;
+  color: #888;
+  margin-bottom: 2px;
+}
