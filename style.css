@@ -1701,7 +1701,7 @@ body.dark-mode .unit-progress-bar {
   flex-wrap: wrap;
 }
 .calc-frq-score-box {
-  background: #fff;
+  background: var(--calc-frq-score-bg, #fff);
   border-radius: 7px;
   border: 1.5px solid var(--bar-text, #3949ab);
   min-width: 60px;
@@ -1733,7 +1733,7 @@ body.dark-mode .unit-progress-bar {
 .calc-frq-setall {
   margin-left: auto;
   min-width: 65px;
-  background: #e3eafc;
+  background: var(--calc-frq-setall-bg, #e3eafc);
   border-color: #b3c0fc;
 }
 .calc-frq-setall-label {
@@ -1756,8 +1756,8 @@ body.dark-mode .unit-progress-bar {
   text-align: center;
 }
 .calc-score-predicted {
-  color: #fff;
-  background: var(--bar-text, #3949ab);
+  color: var(--calc-score-predicted-text, #fff);
+  background: var(--calc-score-predicted-bg, var(--bar-text, #3949ab));
   border-radius: 12px;
   padding: 0.3em 1.1em;
   font-size: 2.3rem;
@@ -1765,12 +1765,6 @@ body.dark-mode .unit-progress-bar {
   margin-top: 0.2em;
   box-shadow: 0 2px 16px rgba(60,80,200,0.14);
 }
-.calc-frq-score-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 .calc-frq-score {
   font-size: 1.1em;
   font-weight: bold;
@@ -1783,4 +1777,12 @@ body.dark-mode .unit-progress-bar {
   font-size: 0.8em;
   color: #888;
   margin-bottom: 2px;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --calc-frq-score-bg: #22283a;
+    --calc-frq-setall-bg: #3a4163;
+    --calc-score-predicted-bg: #f2f5fc;
+    --calc-score-predicted-text: #283593;
+  }
 }
