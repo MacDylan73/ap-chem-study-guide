@@ -1,5 +1,5 @@
 import { setupGating } from './gating.js';
-import { setSubunitComplete, setFinalQuizComplete } from './progress.js';
+import { setSubunitComplete, setFinalQuizComplete, getProgress } from './progress.js';
 
 // Progress tracking for quiz questions per subunit
 function checkAnswer(button, isCorrect, explanation) {
@@ -42,7 +42,10 @@ function checkAnswer(button, isCorrect, explanation) {
     // If all questions in subunit answered correctly, mark subunit complete
     let allCorrect = questionIds.every(qid => progress[qid]);
     if (allCorrect) {
-      localStorage.setItem('quizComplete_' + subunitKey, 'true');
+      if (window.isSignedIn && window.currentUser) {
+        const unitId = getCurrentUnitId(); // You need a way to identify the current unit, e.g. "unit-1"
+        setSubunitComplete(unitId, subunitKey); // This is your helper from js/progress.js
+      }
     }
     // Update checkmarks (if function exists)
     if (window.updateSubunitCheckmarks) window.updateSubunitCheckmarks();
@@ -51,12 +54,27 @@ function checkAnswer(button, isCorrect, explanation) {
 
 
 // Quiz checkmarks logic (now in questions.js)
-export function updateSubunitCheckmarks() {
+export async function updateSubunitCheckmarks() {
+  let progressData = null;
+  if (window.isSignedIn && window.currentUser) {
+    progressData = await getProgress();
+  }
+
   document.querySelectorAll('.subunit').forEach(subunitDiv => {
     let subunitHeader = subunitDiv.querySelector('.subunit-header');
     if (!subunitHeader) return;
     let subunitKey = subunitHeader.textContent.trim();
-    let isComplete = localStorage.getItem('quizComplete_' + subunitKey) === 'true';
+
+    let isComplete = false;
+    if (progressData && progressData.units) {
+      // Use Firestore progress if signed-in
+      const unitId = getCurrentUnitId(); // Same as above: get current unit's ID
+      isComplete = !!progressData.units[unitId]?.subunits?.[subunitKey];
+    } else {
+      // Fallback to localStorage for unsigned users
+      isComplete = localStorage.getItem('quizComplete_' + subunitKey) === 'true';
+    }
+
     if (isComplete) {
       subunitHeader.classList.add('completed');
     } else {
@@ -64,7 +82,6 @@ export function updateSubunitCheckmarks() {
     }
   });
 }
-
 // Optionally, set this up automatically on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
   updateSubunitCheckmarks();
