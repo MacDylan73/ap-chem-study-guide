@@ -1,5 +1,21 @@
 import { db, getUser } from './auth.js';
-import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+/**
+ * Master subunit counts per unit.
+ * Keys must match data-unit-id attributes in index.html.
+ */
+const totalSubunitsByUnit = {
+  "unit-1": 8,
+  "unit-2": 7,
+  "unit-3": 13,
+  "unit-4": 9,
+  "unit-5": 11,
+  "unit-6": 9,
+  "unit-7": 12,
+  "unit-8": 11,
+  "unit-9": 11
+};
 
 /**
  * Get the current user's progress document from Firestore.
@@ -73,13 +89,17 @@ export async function updateUnitButtonProgress() {
     const progressFill = btn.querySelector('.unit-progress-fill');
     const percentElem = btn.querySelector('.unit-percent');
 
+    // Always use the canonical subunit count for denominator
+    const totalSubunits = totalSubunitsByUnit[unitId] || 0;
+
     let percent = 0;
     if (progressData && progressData.units && progressData.units[unitId]) {
       const unit = progressData.units[unitId];
       const subunits = unit.subunits || {};
+      // Only count completed subunits (true values)
       const subunitsComplete = Object.values(subunits).filter(Boolean).length;
-      const totalSubunits = Object.keys(subunits).length;
       const finalQuizComplete = unit.finalQuizCompleted ? 1 : 0;
+      // Denominator is total subunits + 1 (for the final quiz)
       const percentRaw = ((subunitsComplete + finalQuizComplete) / (totalSubunits + 1)) * 100;
       percent = Math.round(percentRaw);
     }
@@ -88,9 +108,6 @@ export async function updateUnitButtonProgress() {
 
     // Enable navigation on button click
     btn.onclick = () => {
-      // You may want to use a mapping if your filenames differ!
-      // For now, assumes pattern: unit-1 => unit-1-atomic-structure.html, etc.
-      // You can change this logic if your filenames are different.
       let pageMap = {
         'unit-1': 'unit-1-atomic-structure.html',
         'unit-2': 'unit-2-molecular-structure.html',
@@ -108,6 +125,7 @@ export async function updateUnitButtonProgress() {
   });
 }
 
+// Listen for auth state change and update progress bars
 document.addEventListener("authstatechanged", () => {
   updateUnitButtonProgress();
 });
