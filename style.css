@@ -1584,7 +1584,7 @@ CSS
 .unit-title {
   font-size: 1.08em;
   font-weight: 500;
-  color: var(--heading-color, var(--text-color)); /* Matches title of unit buttons box */
+  color: var(--heading-color, var(--bar-text)); /* Matches title of unit buttons box */
 }
 
 .unit-progress-bar {
@@ -1639,4 +1639,7 @@ body.dark-mode .unit-progress-bar {
   border-color: var(--accent, #8bc34a);
   box-shadow: 0 4px 16px rgba(76,175,80,0.12);
   transform: translateX(16px); /* Slides right on hover */
+}
+.unit-btn .unit-title {
+  color: var(--bar-text); /* fallback to blue if --bar-text not set */
 }
