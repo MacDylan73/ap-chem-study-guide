@@ -129,3 +129,6 @@ export async function updateUnitButtonProgress() {
 document.addEventListener("authstatechanged", () => {
   updateUnitButtonProgress();
 });
+window.addEventListener('pageshow', function(event) {
+  updateUnitButtonProgress();
+});
