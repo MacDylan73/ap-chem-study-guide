@@ -665,7 +665,6 @@ async function importQOTDModals() {
     statsBtn.onclick = () => {
       statsModal.style.display = 'flex';
       loadUserStatsModal();
-      showConfetti(); // TEMPORARY TEMPORARY TEMPORARY
     };
   }
   if (leaderboardBtn && leaderboardModal) {
