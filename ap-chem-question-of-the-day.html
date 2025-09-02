@@ -3,18 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <title>AP Chem QOTD</title>
-  <link rel="stylesheet" href="css/main.css">
-  <!-- Add other CSS files as needed -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/topbar.css">
+  <link rel="stylesheet" href="css/bottombar.css">
 </head>
 <body>
-  <header>
-    <h1>AP Chemistry Question of the Day</h1>
-    <a href="index.html" class="back-link">← Back to Home</a>
-  </header>
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
   <main>
+    <h2>Question of the Day</h2>
     <div id="qotd-container">
-      <!-- QOTD content will be rendered here -->
+      <!-- QOTD content will go here -->
     </div>
   </main>
+  <div id="indexBottomBar" class="bottom-bar">
+    <div class="bottom-bar-left" id="bottomBarLeft">
+      <!-- Auth buttons injected by JS -->
+    </div>
+    <div class="bottom-bar-center">
+      <button id="returnHomeBtn" onclick="window.location.href='index.html'">Return to Home</button>
+    </div>
+    <div class="bottom-bar-right">
+      <button id="futureFeatureBtn" disabled>Future Feature</button>
+    </div>
+  </div>
+  <script type="module">
+    import { loadTopbar } from './js/topbar.js';
+    import { loadSidebar } from './js/sidebar.js';
+    import { onAuthChange, updateUnitBottomBarAuthButtons } from './js/auth.js';
+    import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
+    window.toggleTheme = toggleTheme;
+    // Load the top bar with the QOTD title
+    loadTopbar("Question of the Day");
+    // Load the sidebar
+    loadSidebar();
+    // Setup bottom bar auth buttons
+    onAuthChange(updateUnitBottomBarAuthButtons);
+    // Apply theme from local storage
+    applySavedTheme();
+  </script>
 </body>
 </html>
