@@ -92,6 +92,7 @@
       db // <-- Make sure db is imported here!
     } from './js/auth.js';
     import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
+    window.toggleTheme = toggleTheme;
     import { setupUsernameModal } from './js/username-modal.js';
     import { loadQOTD, renderUserStreakAlways, updateStatsBox } from './js/qotd.js';
     import { setupLeaderboardTabs, loadLeaderboard } from './js/leaderboard.js';
