@@ -205,6 +205,8 @@ function setupQOTDHandlers(q) {
           correct
         });
         renderUserStreakAlways();
+        updateStatsBox(); // <-- Add this
+        loadLeaderboard("total", db);
       } catch (err) {
         console.error("[QOTD] Error saving Firestore attempt doc:", err);
       }
