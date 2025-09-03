@@ -19,6 +19,105 @@ body {
 }
 main {
   flex: 1 0 auto;
+  padding: 0 0 2rem 0;
+}
+.qotd-header {
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+.qotd-subheader {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--heading-color, #3949ab);
+  margin-bottom: 24px;
+}
+.qotd-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+.qotd-stats-box {
+  flex: 0 0 320px;
+  background: var(--box-bg, #f7f7fc);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
+  padding: 1.5rem 1rem;
+  margin-top: 16px;
+}
+.qotd-question-box {
+  flex: 0 0 420px;
+  background: var(--box-bg, #fff);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
+  padding: 2rem 1.5rem;
+  margin-left: 24px;
+  margin-top: 0;
+}
+@media (max-width: 900px) {
+  .qotd-layout { flex-direction: column; align-items: center; gap: 18px; }
+  .qotd-stats-box, .qotd-question-box { margin-left: 0; width: 96vw; max-width: 420px; }
+}
+.leaderboard-section {
+  margin: 0 auto;
+  max-width: 700px;
+  background: var(--box-bg, #fff);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
+  padding: 2rem 1.5rem;
+}
+.leaderboard-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 18px;
+}
+.leaderboard-tab {
+  padding: 0.6em 1.8em;
+  background: var(--tab-bg, #e3e6fa);
+  color: var(--tab-text, #3949ab);
+  border: none;
+  border-radius: 8px 8px 0 0;
+  font-weight: 600;
+  font-size: 1.08rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+}
+.leaderboard-tab.active {
+  background: var(--tab-active-bg, #3949ab);
+  color: var(--tab-active-text, #fff);
+}
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+.leaderboard-table th, .leaderboard-table td {
+  padding: 0.8em 0.5em;
+  text-align: left;
+  font-size: 1rem;
+  border-bottom: 1px solid #e3e6fa;
+}
+.leaderboard-table th {
+  color: var(--tab-text, #3949ab);
+  font-weight: 700;
+  background: #f4f6fd;
+}
+.leaderboard-table tr:first-child td {
+  font-weight: bold;
+  color: var(--accent, #43a047);
+}
+.leaderboard-table tr:nth-child(even) {
+  background: #f7f8fd;
+}
+.leaderboard-table tr:last-child td {
+  border-bottom: none;
 }
   </style>
 </head>
@@ -26,9 +125,53 @@ main {
   <div id="topbar-container"></div>
   <div id="sidebar-container"></div>
   <main>
-    <h2>AP Chem Question of the Day</h2>
-    <div id="qotd-container">
-      <!-- QOTD content will go here -->
+    <div class="qotd-header">
+      <h2>Question of the Day</h2>
+      <div class="qotd-subheader">
+        <!-- Put your custom subheader text here! -->
+        Welcome to the AP Chem QOTD Challenge! Try the daily question, check your stats, and climb the leaderboard.
+      </div>
+    </div>
+    <div class="qotd-layout">
+      <div class="qotd-stats-box" id="qotdStatsBox">
+        <h3>Your Stats</h3>
+        <!-- Stats will be injected via JS -->
+        <ul style="list-style:none; padding:0; margin-top:14px;">
+          <li><strong>Total Correct:</strong> <span id="userTotalCorrect">--</span></li>
+          <li><strong>Current Streak:</strong> <span id="userStreak">--</span></li>
+          <li><strong>Best Streak:</strong> <span id="userBestStreak">--</span></li>
+          <li><strong>Percent Correct:</strong> <span id="userPercentCorrect">--</span></li>
+        </ul>
+      </div>
+      <div class="qotd-question-box" id="qotdQuestionBox">
+        <h3>Today's Question</h3>
+        <!-- Question will be injected via JS -->
+        <div id="qotdContent">
+          <!-- Placeholder for question, choices, submit, feedback, etc. -->
+        </div>
+      </div>
+    </div>
+    <div class="leaderboard-section">
+      <div class="leaderboard-tabs">
+        <button class="leaderboard-tab active" id="tabTotalCorrect">Top Total Correct</button>
+        <button class="leaderboard-tab" id="tabStreak">Top Streak</button>
+        <button class="leaderboard-tab" id="tabPercentCorrect">Top % Correct</button>
+      </div>
+      <div id="leaderboardContent">
+        <!-- Leaderboard table will be injected via JS -->
+        <table class="leaderboard-table" id="leaderboardTable">
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>User</th>
+              <th id="leaderboardMetricHeader">Total Correct</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Leaderboard rows inserted here -->
+          </tbody>
+        </table>
+      </div>
     </div>
   </main>
   <div id="indexBottomBar" class="bottom-bar">
