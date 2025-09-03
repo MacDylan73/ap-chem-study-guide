@@ -1,49 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>AP Chem QOTD</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="css/topbar.css">
-  <link rel="stylesheet" href="css/bottombar.css">
-  <link rel="stylesheet" href="css/qotd.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP Chemistry Course Guide</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/topbar.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/bottombar.css" /> 
 </head>
 <body>
+  <!-- Top Navigation Bar will be rendered here -->
   <div id="topbar-container"></div>
+
+  <!-- Sidebar will be rendered here -->
   <div id="sidebar-container"></div>
- 
+
+  <!-- Page Content -->
+  <div class="container">
+    <!-- Intro Box -->
+    <div class="box">
+      <h1>Welcome to the Sample AP Chemistry Study Guide</h1>
+      <p>
+        Created by a former AP Chem student who scored a 5 on the exam, this site is designed to help you understand every concept in each unit, as well as the types of questions you will be expected to answer on your AP exam. All content in this course is based directly on information from the College Board CED and AP Classroom.
+      </p>
+    </div>
+
+    <!-- QOTD -->
+<div class="box">
+  <h2>AP Chemistry Question of the Day</h2>
+  <div class="qotd-question-area">
+    <div class="qotd-blur-overlay" id="qotdBlurOverlay">
+      <button id="qotdSignInBtn">Sign In to Answer</button>
+    </div>
+    <div class="qotd-question-content" id="qotdQuestionContent"></div>
+  </div>
+  <div class="qotd-feedback" id="qotdFeedback" style="display:none;"></div>
+  <div class="qotd-actions">
+    <span class="qotd-streak" id="qotdStreak"></span>
+    <div id="streakTooltip" class="streak-tooltip" style="display:none;position:absolute;"></div>
+    <button id="qotdLeaderboardBtn">View Leaderboard</button>
+    <button id="qotdStatsBtn">Stats</button>
+  </div>
+  <a href="ap-chem-question-of-the-day">Go to Question of the Day →</a>
+</div>
+    
+    <!-- Unit Links Box -->
+    <div class="box">
+  <h2>AP Chem Unit Notes and Practice Tests</h2>
+  <hr>
+  <button class="unit-btn" data-unit-id="unit-1">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 1: Atomic Structure and Properties</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-2">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 2: Compound Structure and Properties</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-3">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 3: Properties of Substances and Mixtures</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-4">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 4: Chemical Reactions</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-5">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 5: Kinetics</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-6">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 6: Thermochemistry</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-7">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 7: Equilibrium</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-8">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 8: Acids and Bases</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-9">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 9: Thermodynamics and Electrochemistry</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+</div>
+
+    <!-- Format Box -->
+    <div class="box">
+      <h2>AP Chemistry Course Exam Format</h2>
+      <ul>
+        <li><strong>Section I: Multiple Choice (MCQ)</strong>
+          <ul>
+            <li>60 questions</li>
+            <li>90 minutes</li>
+            <li>50% of exam score</li>
+          </ul>
+        </li>
+        <li><strong>Section II: Free Response (FRQ)</strong>
+          <ul>
+            <li>7 questions (3 long, 4 short)</li>
+            <li>105 minutes</li>
+            <li>50% of exam score</li>
+          </ul>
+        </li>
+      </ul>
+      <p>
+        <strong><a href="ap-chem-exam-format">Go to exam format and info page →</a></strong>
+      </p>
+    </div>
+
+    <!-- Score Calculator will render here -->
+    <div id="score-calculator-container"></div>
+
+    <!-- Countdown Box -->
+    <div class="box">
+      <div class="countdown" id="countdownText">
+        Loading countdown...
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar for Index Page -->
   <div id="indexBottomBar" class="bottom-bar">
     <div class="bottom-bar-left" id="bottomBarLeft"></div>
     <div class="bottom-bar-center">
-      <button id="returnHomeBtn" onclick="window.location.href='index.html'">Return to Home</button>
+      <button
     </div>
     <div class="bottom-bar-right">
       <button id="futureFeatureBtn" disabled>Future Feature</button>
     </div>
   </div>
 
-  <div id="auth-modal-container"></div>
+  <!-- Modal and Overlay Box -->
+  <div id="qotdModalContainer"></div>
   <div id="confettiOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:2000;"></div>
-  <div id="username-modal-container"></div>
 
+  <!-- JavaScript -->
+  <!-- Utility scripts -->
+  <script src="js/util.js" defer></script>
+  <script src="js/score-calculator.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      renderCountdown("countdownText", "May 5, 2026");
+    });
+  </script>
+
+  <!-- Modular JS imports for all UI and authentication logic -->
   <script type="module">
-    // ---------- Shared imports ----------
+    // Import shared modules for UI, authentication, and modal logic
     import { loadTopbar } from './js/topbar.js';
     import { loadSidebar } from './js/sidebar.js';
     import {
       onAuthChange,
+      signInHandler,
+      signOutHandler,
       setupAuthModalEvents,
       ensureUsernameOnLogin,
-      updateUnitBottomBarAuthButtons,
-      db // <-- Make sure db is imported here!
+      updateIndexBarAuthButtons
     } from './js/auth.js';
-    import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
+    import { toggleTheme,
+             applySavedTheme
+    } from './js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
     import { setupUsernameModal } from './js/username-modal.js';
-    import { loadQOTD, renderUserStreakAlways, updateStatsBox } from './js/qotd.js';
-    import { setupLeaderboardTabs, loadLeaderboard } from './js/leaderboard.js';
+    import './js/qotd.js';
+    import './js/progress.js';
 
-    // ---------- Modal loader functions ----------
     async function loadAuthModal() {
       const resp = await fetch('auth-modal.html');
       const html = await resp.text();
@@ -54,38 +233,26 @@
       const html = await resp.text();
       document.body.insertAdjacentHTML('beforeend', html);
     }
-
-    // ---------- DOM Ready setup ----------
-    document.addEventListener("DOMContentLoaded", async () => {
-      await loadAuthModal();
+    
+    // Render all elements
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadAuthModal(); 
       await loadUsernameModal();
+      
       setupAuthModalEvents();
       setupUsernameModal();
-
-      loadTopbar("Question of the Day");
-      loadSidebar();
+      
+      await loadTopbar("AP Chemistry Course Guide and Practice Tests");
       applySavedTheme();
-
-      // QOTD logic
-      await loadQOTD();
-      renderUserStreakAlways();
-      updateStatsBox();
-
-      // Leaderboard setup - FIXED: pass db!
-      setupLeaderboardTabs((metric) => loadLeaderboard(metric, db));
-      loadLeaderboard("total", db);
-
-      // Bottom bar auth logic
-      updateUnitBottomBarAuthButtons();
+      loadSidebar();
+      updateIndexBarAuthButtons();
     });
-
-    // ---------- Auth Change Event for Stats & Streak ----------
+    
+    // Listen for auth state changes, update UI, and ensure username modal is shown if needed
     onAuthChange(async user => {
       await ensureUsernameOnLogin();
-      updateUnitBottomBarAuthButtons();
-      renderUserStreakAlways();
-      updateStatsBox();
-      loadLeaderboard("total", db);
+      updateIndexBarAuthButtons();
+      // Any additional UI updates can go here
     });
   </script>
 </body>
