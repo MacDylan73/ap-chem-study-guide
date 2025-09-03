@@ -277,7 +277,7 @@ function showAppSignInModal() {
 }
 
 // ---- Always-on streak display and tooltip logic ----
-async function renderUserStreakAlways() {
+export async function renderUserStreakAlways() {
   const qotdStreak = document.getElementById('qotdStreak');
   const streakTooltip = document.getElementById('streakTooltip');
   if (!qotdStreak || !streakTooltip) return;
