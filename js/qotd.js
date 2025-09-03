@@ -88,7 +88,7 @@ function startEasternCountdown() {
 
 // ------------------ QOTD Display Logic (index page) -------------------
 
-async function loadQOTD() {
+export async function loadQOTD() {
   const res = await fetch('questions.json');
   const questions = await res.json();
   const idx = getQOTDIndexEastern(questions.length);
