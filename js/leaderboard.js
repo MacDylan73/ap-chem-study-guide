@@ -1,8 +1,7 @@
 // leaderboard.js
 
-// Move all imports to the top of the file!
 import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
+import { getUser } from './auth.js';
 
 // Tab setup expects a callback that takes a metric and loads leaderboard with that metric
 export function setupLeaderboardTabs(loadLeaderboardCallback) {
@@ -89,25 +88,54 @@ export async function loadLeaderboard(metric, db) {
     }
   }
 
-  // Sort and render leaderboard
+  // Sort leaderboard
   let sorted;
   if (metric === "total") sorted = Object.entries(stats).sort((a, b) => b[1].correct - a[1].correct);
   else if (metric === "streak") sorted = Object.entries(stats).sort((a, b) => b[1].bestStreak - a[1].bestStreak);
   else sorted = Object.entries(stats).sort((a, b) => b[1].percent - a[1].percent);
 
   tbody.innerHTML = "";
-  sorted.slice(0, 15).forEach(([uid, data], i) => {
+
+  // Get current user UID
+  const currentUser = getUser && typeof getUser === "function" ? getUser() : null;
+  const currentUserUid = currentUser?.uid;
+
+  // Helper to render a row, highlight if active user
+  function renderRow(i, data, uid, isBottomRow = false) {
     let value;
     if (metric === "total") value = data.correct;
     else if (metric === "streak") value = data.bestStreak;
     else value = `${data.percent.toFixed(1)}%`;
-    tbody.innerHTML += `<tr>
-      <td>${i+1}</td>
-      <td>${data.username}</td>
+
+    const isActive = uid === currentUserUid;
+    const activeClass = isActive
+      ? (isBottomRow ? "active-user active-user-bottom" : "active-user")
+      : "";
+    return `<tr class="${activeClass}">
+      <td>${i}</td>
+      <td>${data.username}${isActive ? '<span class="active-user-label">You</span>' : ''}</td>
       <td>${value}</td>
     </tr>`;
+  }
+
+  // Render Top 15
+  let userWasInTop = false;
+  sorted.slice(0, 15).forEach(([uid, data], i) => {
+    if (uid === currentUserUid) userWasInTop = true;
+    tbody.innerHTML += renderRow(i + 1, data, uid, false);
   });
+
+  // If no data
   if (tbody.innerHTML === "") {
     tbody.innerHTML = `<tr><td colspan="3" style="text-align:center">No leaderboard data.</td></tr>`;
+  }
+
+  // Show active user's stats at the bottom if not in top 15
+  if (currentUserUid && !userWasInTop) {
+    const userEntry = sorted.findIndex(([uid]) => uid === currentUserUid);
+    if (userEntry !== -1) {
+      const [uid, data] = sorted[userEntry];
+      tbody.innerHTML += renderRow(userEntry + 1, data, uid, true);
+    }
   }
 }
