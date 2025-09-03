@@ -199,7 +199,7 @@
   font-weight: bold;
 }
 .leaderboard-table tr:nth-child(even) {
-  background: #f7f8fd;
+  background: var(--hover-bg);
 }
 .leaderboard-table tr:last-child td {
   border-bottom: none;
