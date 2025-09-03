@@ -44,10 +44,50 @@
   padding: 2rem 1.5rem;
   margin-left: 24px;
   margin-top: 0;
+  position: relative;
+}
+.qotd-streak-icon-container {
+  position: absolute;
+  top: 12px;
+  right: 50%;
+  transform: translateX(50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+#qotdStreak {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #e65100;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+#streakTooltip {
+  position: absolute;
+  top: -38px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fffbe9;
+  color: #e65100;
+  border-radius: 7px;
+  padding: 4px 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  z-index: 10;
 }
 @media (max-width: 900px) {
   .qotd-layout { flex-direction: column; align-items: center; gap: 18px; }
   .qotd-stats-box, .qotd-question-box { margin-left: 0; width: 96vw; max-width: 420px; }
+  .qotd-streak-icon-container { right: 50%; }
 }
 .leaderboard-section {
   margin: 0 auto;
@@ -130,6 +170,10 @@
         </ul>
       </div>
       <div class="qotd-question-box" id="qotdQuestionBox">
+        <div class="qotd-streak-icon-container">
+          <div id="qotdStreak"><!-- JS injects streak number and fire icon here --></div>
+          <div id="streakTooltip" style="display:none;"></div>
+        </div>
         <h3>Today's Question</h3>
         <!-- Question will be injected via JS -->
         <div id="qotdContent">
