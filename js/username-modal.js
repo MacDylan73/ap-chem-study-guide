@@ -1,6 +1,9 @@
 import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 import { db, isSignedIn, currentUser, isUsernameTaken } from './auth.js'; 
 
+import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { db, isSignedIn, currentUser, isUsernameTaken } from './auth.js'; 
+
 export function setupUsernameModal() {
   const usernameModal = document.getElementById('usernameModal');
   const closeUsernameModal = document.getElementById('closeUsernameModal');
@@ -16,17 +19,52 @@ export function setupUsernameModal() {
     errorMsg.style.fontSize = '0.97em';
     errorMsg.style.marginTop = '6px';
     errorMsg.style.minHeight = '1.2em';
-    // Insert just after input
     usernameInput.parentNode.insertBefore(errorMsg, saveUsernameBtn);
   }
 
-  closeUsernameModal.onclick = () => { 
-    usernameModal.style.display = 'none'; 
-    errorMsg.textContent = '';
+  // Helper to check if user has a username
+  async function userHasUsername() {
+    if (!isSignedIn || !currentUser) return false;
+    const userRef = doc(db, "users", currentUser.uid);
+    const snapshot = await getDoc(userRef);
+    return snapshot.exists() && !!snapshot.data().username;
+  }
+
+  closeUsernameModal.onclick = async () => {
+    if (await userHasUsername()) {
+      usernameModal.style.display = 'none';
+      errorMsg.textContent = '';
+    } else {
+      errorMsg.textContent = "Enter a valid username before closing.";
+    }
   };
 
+  // Prevent closing via click outside modal
+  window.addEventListener('click', async function(e) {
+    if (e.target === usernameModal) {
+      if (await userHasUsername()) {
+        usernameModal.style.display = 'none';
+        errorMsg.textContent = '';
+      } else {
+        errorMsg.textContent = "Enter a valid username before closing.";
+      }
+    }
+  });
+
+  // Prevent closing via ESC key
+  window.addEventListener('keydown', async function(e) {
+    if (e.key === "Escape" && usernameModal.style.display === 'block') {
+      if (await userHasUsername()) {
+        usernameModal.style.display = 'none';
+        errorMsg.textContent = '';
+      } else {
+        errorMsg.textContent = "Enter a valid username before closing.";
+      }
+    }
+  });
+
   saveUsernameBtn.onclick = async () => {
-    errorMsg.textContent = ''; // Clear previous errors
+    errorMsg.textContent = '';
     const newUsername = usernameInput.value.trim();
     if (!isSignedIn || !currentUser) {
       errorMsg.textContent = "Please sign in first!";
