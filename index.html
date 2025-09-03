@@ -40,8 +40,10 @@
   <div class="qotd-actions">
     <span class="qotd-streak" id="qotdStreak"></span>
     <div id="streakTooltip" class="streak-tooltip" style="display:none;position:absolute;"></div>
+    <!-- 
     <button id="qotdLeaderboardBtn">View Leaderboard</button>
     <button id="qotdStatsBtn">Stats</button>
+    -->
   </div>
   <a href="ap-chem-question-of-the-day">Go to Question of the Day →</a>
 </div>
@@ -245,6 +247,19 @@
       loadSidebar();
       updateIndexBarAuthButtons();
     });
+
+    // Redirect QOTD clicks
+    document.addEventListener('DOMContentLoaded', () => {
+    const qBox = document.querySelector('.question-box');
+    if (qBox) {
+      qBox.style.cursor = 'pointer';
+      qBox.addEventListener('click', function(e) {
+      // Prevent answer button clicks from submitting/leaking
+      if (e.target.classList.contains('qotd-answer-btn') || e.target.id === 'qotdSubmitBtn') return;
+      window.location.href = 'qotd.html';
+    });
+    }
+  });
     
     // Listen for auth state changes, update UI, and ensure username modal is shown if needed
     onAuthChange(async user => {
