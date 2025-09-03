@@ -254,6 +254,26 @@
 .qotd-feedback.correct { color: #43a047; }
 .qotd-feedback.incorrect { color: #e65100; }
 
+/* Make the QOTD submit button match box border style */
+.qotd-submit-btn {
+  border: 1.8px solid var(--box-border);
+  border-radius: 8px;
+  padding: 0.6em 1.5em;
+  background: var(--button-bg, #f7f8fd);
+  font-size: 1.05em;
+  cursor: pointer;
+}
+
+/* Center the submit button inside the question box */
+.qotd-question-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qotd-question-box .qotd-submit-btn {
+  margin-top: 1.2em;
+}
 /* ---- Responsive for Mobile ---- */
 @media (max-width: 900px) {
   .qotd-layout {
