@@ -44,7 +44,7 @@ export async function loadLeaderboard(metric, db) {
   try {
     attemptsSnap = await getDocs(collection(db, "qotd_attempts"));
   } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="3" style="color:red;text-align:center">${err.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="3" style="color:red;text-align:center">Please sign in to view the leaderboard</td></tr>`;
     return;
   }
 
