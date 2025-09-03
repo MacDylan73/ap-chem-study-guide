@@ -94,7 +94,7 @@
     import { loadSidebar } from './js/sidebar.js';
     import { onAuthChange, updateUnitBottomBarAuthButtons, getUser, db, auth } from './js/auth.js';
     import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
-    import { loadQOTD, renderUserStreakAlways } from './js/qotd.js';
+    import { loadQOTD, renderUserStreakAlways, updateStatsBox } from './js/qotd.js';
     import { setupLeaderboardTabs, loadLeaderboard } from './js/leaderboard.js';
 
     // ---------- Theme and layout setup ----------
@@ -108,6 +108,7 @@
     document.addEventListener("DOMContentLoaded", async () => {
       await loadQOTD();
       renderUserStreakAlways();
+      updateStatsBox();
 
       // Initialize leaderboard tabs and load default leaderboard
       setupLeaderboardTabs((metric) => loadLeaderboard(metric, db));
