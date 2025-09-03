@@ -92,8 +92,9 @@
   width: 34px;
   height: 34px;
   border-radius: 50%;
-  background: radial-gradient(circle at 60% 40%, #ff9800 0%, #e65100 100%);
-  color: #fff;
+  background: radial-gradient(circle at 60% 40%, #ffe0b2 0%, #ffb74d 100%);
+  /* Lighter orange/yellowish background for less blending */
+  color: #e65100;
   font-size: 1.8rem;
   box-shadow: 0 2px 8px rgba(44,49,83,0.09);
   border: 2px solid #fff0;
@@ -105,17 +106,25 @@
   box-shadow: 0 4px 16px rgba(230,81,0,0.16);
   outline: none;
 }
+/* Streak number style for orange color */
+.streak-number {
+  font-size: 1.34rem;
+  font-weight: 700;
+  color: #ff9800; /* Orange to match the fire icon background */
+  margin-right: 3px;
+  vertical-align: middle;
+}
 
 /* ---- STREAK TOOLTIP ---- */
 #streakTooltip {
   position: absolute;
   left: 50%;
-  top: -38px;
+  top: -46px;
   transform: translateX(-50%);
   background: #fffbe9;
   color: #e65100;
   border-radius: 7px;
-  padding: 6px 18px;
+  padding: 7px 18px;
   font-size: 1rem;
   font-weight: 500;
   box-shadow: 0 2px 8px rgba(44,49,83,0.09);
@@ -137,7 +146,7 @@
   /* The padding leaves a little space on sides for desktop */
   position: relative;
   margin-bottom: 32px;
-  margin-top: 44px;
+  margin-top: 62px; /* Extra margin so box above doesn't clip into tabs */
 }
 /* Tabs pop out above leaderboard box */
 .leaderboard-tabs {
@@ -184,9 +193,10 @@
   font-weight: 700;
   background: #f4f6fd;
 }
-.leaderboard-table tr:first-child td {
+.leaderboard-table tr.active-user td {
+  background: #e8f7ef !important;
+  color: #43a047 !important;
   font-weight: bold;
-  color: var(--accent, #43a047);
 }
 .leaderboard-table tr:nth-child(even) {
   background: #f7f8fd;
@@ -265,7 +275,6 @@
     padding-left: 4vw;
     padding-right: 4vw;
   }
-
   /* On mobile, render stats below question */
   .qotd-question-box {
     order: 1;
@@ -285,7 +294,7 @@
     padding-left: 4vw;
     padding-right: 4vw;
     border-radius: 12px;
-    margin-top: 44px;
+    margin-top: 62px;
   }
   .leaderboard-tabs {
     left: 0;
@@ -314,4 +323,3 @@
   outline: 2px solid #3949ab;
   outline-offset: 2px;
 }
-
