@@ -1,1 +1,317 @@
+/* ========== QOTD PAGE STYLES ========== */
+
+/* Layout */
+.qotd-header {
+  text-align: center;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+.qotd-subheader {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--heading-color, #3949ab);
+  margin-bottom: 24px;
+}
+.qotd-layout {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+.qotd-stats-box {
+  flex: 0 0 320px;
+  background: var(--box-bg, #f7f7fc);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
+  padding: 1.5rem 1rem;
+  margin-top: 16px;
+}
+/* Bigger question box for desktop */
+.qotd-question-box {
+  flex: 0 0 540px;
+  background: var(--box-bg, #fff);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
+  padding: 2.5rem 2rem;
+  margin-left: 24px;
+  margin-top: 0;
+  position: relative;
+  min-height: 340px;
+}
+
+/* ---- BLUR OVERLAY ---- */
+.qotd-blur-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(245,245,255,0.93);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 12px;
+}
+.qotd-blur-overlay .sign-in-btn {
+  padding: 0.85em 2.2em;
+  font-size: 1.08rem;
+  background: #e65100;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(44,49,83,0.09);
+}
+
+/* ---- STREAK ICON ---- */
+.qotd-streak-icon-container {
+  position: absolute;
+  top: 12px;
+  right: 50%;
+  transform: translateX(50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+}
+#qotdStreak {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+.qotd-streak-icon-container .fire-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 60% 40%, #ff9800 0%, #e65100 100%);
+  color: #fff;
+  font-size: 1.8rem;
+  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
+  border: 2px solid #fff0;
+  margin-left: 2px;
+  transition: box-shadow 0.2s;
+}
+.qotd-streak-icon-container .fire-icon:active,
+.qotd-streak-icon-container .fire-icon:focus {
+  box-shadow: 0 4px 16px rgba(230,81,0,0.16);
+  outline: none;
+}
+
+/* ---- STREAK TOOLTIP ---- */
+#streakTooltip {
+  position: absolute;
+  left: 50%;
+  top: -38px;
+  transform: translateX(-50%);
+  background: #fffbe9;
+  color: #e65100;
+  border-radius: 7px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* ---- LEADERBOARD ---- */
+.leaderboard-section {
+  margin: 0 auto;
+  max-width: 1200px;
+  background: var(--box-bg, #fff);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
+  padding: 2rem 2vw 2.5rem 2vw;
+  /* The padding leaves a little space on sides for desktop */
+  position: relative;
+  margin-bottom: 32px;
+  margin-top: 44px;
+}
+/* Tabs pop out above leaderboard box */
+.leaderboard-tabs {
+  position: absolute;
+  top: -44px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  z-index: 2;
+}
+.leaderboard-tab {
+  padding: 0.6em 1.8em;
+  background: var(--tab-bg, #e3e6fa);
+  color: var(--tab-text, #3949ab);
+  border: none;
+  border-radius: 8px 8px 0 0;
+  font-weight: 600;
+  font-size: 1.08rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(44,49,83,0.11);
+  margin-bottom: -2px;
+}
+.leaderboard-tab.active {
+  background: var(--tab-active-bg, #3949ab);
+  color: var(--tab-active-text, #fff);
+}
+.leaderboard-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+.leaderboard-table th, .leaderboard-table td {
+  padding: 0.8em 0.5em;
+  text-align: left;
+  font-size: 1rem;
+  border-bottom: 1px solid #e3e6fa;
+}
+.leaderboard-table th {
+  color: var(--tab-text, #3949ab);
+  font-weight: 700;
+  background: #f4f6fd;
+}
+.leaderboard-table tr:first-child td {
+  font-weight: bold;
+  color: var(--accent, #43a047);
+}
+.leaderboard-table tr:nth-child(even) {
+  background: #f7f8fd;
+}
+.leaderboard-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* ---- QUESTION BOX QUESTION/TEXT ---- */
+.question-box {
+  margin-top: 12px;
+  margin-bottom: 16px;
+}
+.question-text {
+  font-size: 1.2rem;
+  margin-bottom: 18px;
+  font-weight: 500;
+  color: #3949ab;
+}
+.answer-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.qotd-answer-btn {
+  padding: 0.7em 2em;
+  font-size: 1.06rem;
+  background: #e3e6fa;
+  color: #3949ab;
+  border: none;
+  border-radius: 7px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 6px rgba(44,49,83,0.09);
+  transition: background 0.18s, color 0.18s, box-shadow 0.16s;
+}
+.qotd-answer-btn.selected, .qotd-answer-btn:focus {
+  background: #3949ab;
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(44,49,83,0.14);
+  outline: none;
+}
+.qotd-answer-btn:disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}
+.qotd-feedback {
+  margin-top: 14px;
+  font-size: 1.14rem;
+  font-weight: 600;
+  color: #e65100;
+  display: none;
+}
+.qotd-feedback.correct { color: #43a047; }
+.qotd-feedback.incorrect { color: #e65100; }
+
+/* ---- Responsive for Mobile ---- */
+@media (max-width: 900px) {
+  .qotd-layout {
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .qotd-stats-box,
+  .qotd-question-box {
+    margin-left: 0;
+    width: 98vw;
+    max-width: 98vw;
+    min-width: 0;
+    box-sizing: border-box;
+    margin-right: 0;
+    padding-left: 4vw;
+    padding-right: 4vw;
+  }
+
+  /* On mobile, render stats below question */
+  .qotd-question-box {
+    order: 1;
+    margin-top: 16px;
+  }
+  .qotd-stats-box {
+    order: 2;
+    margin-top: 12px;
+  }
+  /* Leaderboard at very bottom, full width */
+  .leaderboard-section {
+    order: 3;
+    width: 98vw;
+    max-width: 98vw;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    border-radius: 12px;
+    margin-top: 44px;
+  }
+  .leaderboard-tabs {
+    left: 0;
+    width: 100%;
+    gap: 1.2rem;
+    top: -44px;
+  }
+}
+
+/* Small screens: reduce padding and font size a bit */
+@media (max-width: 600px) {
+  .qotd-question-box, .qotd-stats-box, .leaderboard-section {
+    padding-left: 2vw;
+    padding-right: 2vw;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .question-text { font-size: 1.06rem; }
+  .qotd-answer-btn { font-size: 0.98rem; padding: 0.6em 1.2em; }
+  .leaderboard-table th, .leaderboard-table td { font-size: 0.95rem; }
+  .leaderboard-section { padding: 1.4rem 2vw 2rem 2vw; }
+}
+
+/* Accessibility: Focus ring for buttons */
+.qotd-answer-btn:focus, .sign-in-btn:focus, .leaderboard-tab:focus {
+  outline: 2px solid #3949ab;
+  outline-offset: 2px;
+}
 
