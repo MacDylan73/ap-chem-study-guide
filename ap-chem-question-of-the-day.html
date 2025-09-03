@@ -7,149 +7,27 @@
   <link rel="stylesheet" href="css/topbar.css">
   <link rel="stylesheet" href="css/bottombar.css">
   <style>
-.qotd-header {
-  text-align: center;
-  margin-top: 32px;
-  margin-bottom: 12px;
-}
-.qotd-subheader {
-  text-align: center;
-  font-size: 1.25rem;
-  font-weight: 500;
-  color: var(--heading-color, #3949ab);
-  margin-bottom: 24px;
-}
-.qotd-layout {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 32px;
-  margin-bottom: 36px;
-  flex-wrap: wrap;
-}
-.qotd-stats-box {
-  flex: 0 0 320px;
-  background: var(--box-bg, #f7f7fc);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
-  padding: 1.5rem 1rem;
-  margin-top: 16px;
-}
-.qotd-question-box {
-  flex: 0 0 420px;
-  background: var(--box-bg, #fff);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
-  padding: 2rem 1.5rem;
-  margin-left: 24px;
-  margin-top: 0;
-  position: relative;
-}
-.qotd-streak-icon-container {
-  position: absolute;
-  top: 12px;
-  right: 50%;
-  transform: translateX(50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 2;
-}
-#qotdStreak {
-  font-size: 1.4rem;
-  font-weight: 600;
-  color: #e65100;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  user-select: none;
-}
-#streakTooltip {
-  position: absolute;
-  top: -38px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #fffbe9;
-  color: #e65100;
-  border-radius: 7px;
-  padding: 4px 12px;
-  font-size: 1rem;
-  font-weight: 500;
-  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s;
-  white-space: nowrap;
-  z-index: 10;
-}
-@media (max-width: 900px) {
-  .qotd-layout { flex-direction: column; align-items: center; gap: 18px; }
-  .qotd-stats-box, .qotd-question-box { margin-left: 0; width: 96vw; max-width: 420px; }
-  .qotd-streak-icon-container { right: 50%; }
-}
-.leaderboard-section {
-  margin: 0 auto;
-  max-width: 700px;
-  background: var(--box-bg, #fff);
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(44,49,83,0.09);
-  padding: 2rem 1.5rem;
-}
-.leaderboard-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 18px;
-}
-.leaderboard-tab {
-  padding: 0.6em 1.8em;
-  background: var(--tab-bg, #e3e6fa);
-  color: var(--tab-text, #3949ab);
-  border: none;
-  border-radius: 8px 8px 0 0;
-  font-weight: 600;
-  font-size: 1.08rem;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-  outline: none;
-}
-.leaderboard-tab.active {
-  background: var(--tab-active-bg, #3949ab);
-  color: var(--tab-active-text, #fff);
-}
-.leaderboard-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 12px;
-}
-.leaderboard-table th, .leaderboard-table td {
-  padding: 0.8em 0.5em;
-  text-align: left;
-  font-size: 1rem;
-  border-bottom: 1px solid #e3e6fa;
-}
-.leaderboard-table th {
-  color: var(--tab-text, #3949ab);
-  font-weight: 700;
-  background: #f4f6fd;
-}
-.leaderboard-table tr:first-child td {
-  font-weight: bold;
-  color: var(--accent, #43a047);
-}
-.leaderboard-table tr:nth-child(even) {
-  background: #f7f8fd;
-}
-.leaderboard-table tr:last-child td {
-  border-bottom: none;
-}
+    /* --- your existing CSS unchanged --- */
+    .qotd-header { text-align: center; margin-top: 32px; margin-bottom: 12px; }
+    .qotd-subheader { text-align: center; font-size: 1.25rem; font-weight: 500; color: var(--heading-color, #3949ab); margin-bottom: 24px; }
+    .qotd-layout { display: flex; flex-direction: row; justify-content: center; align-items: flex-start; gap: 32px; margin-bottom: 36px; flex-wrap: wrap; }
+    .qotd-stats-box { flex: 0 0 320px; background: var(--box-bg, #f7f7fc); border-radius: 12px; box-shadow: 0 2px 8px rgba(44,49,83,0.09); padding: 1.5rem 1rem; margin-top: 16px; }
+    .qotd-question-box { flex: 0 0 420px; background: var(--box-bg, #fff); border-radius: 12px; box-shadow: 0 2px 8px rgba(44,49,83,0.09); padding: 2rem 1.5rem; margin-left: 24px; margin-top: 0; position: relative; }
+    .qotd-streak-icon-container { position: absolute; top: 12px; right: 50%; transform: translateX(50%); display: flex; flex-direction: column; align-items: center; z-index: 2; }
+    #qotdStreak { font-size: 1.4rem; font-weight: 600; color: #e65100; display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+    #streakTooltip { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); background: #fffbe9; color: #e65100; border-radius: 7px; padding: 4px 12px; font-size: 1rem; font-weight: 500; box-shadow: 0 2px 8px rgba(44,49,83,0.09); opacity: 0; pointer-events: none; transition: opacity 0.2s; white-space: nowrap; z-index: 10; }
+    @media (max-width: 900px) { .qotd-layout { flex-direction: column; align-items: center; gap: 18px; } .qotd-stats-box, .qotd-question-box { margin-left: 0; width: 96vw; max-width: 420px; } .qotd-streak-icon-container { right: 50%; } }
+    .leaderboard-section { margin: 0 auto; max-width: 700px; background: var(--box-bg, #fff); border-radius: 12px; box-shadow: 0 2px 8px rgba(44,49,83,0.09); padding: 2rem 1.5rem; }
+    .leaderboard-tabs { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 18px; }
+    .leaderboard-tab { padding: 0.6em 1.8em; background: var(--tab-bg, #e3e6fa); color: var(--tab-text, #3949ab); border: none; border-radius: 8px 8px 0 0; font-weight: 600; font-size: 1.08rem; cursor: pointer; transition: background 0.2s, color 0.2s; outline: none; }
+    .leaderboard-tab.active { background: var(--tab-active-bg, #3949ab); color: var(--tab-active-text, #fff); }
+    .leaderboard-table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+    .leaderboard-table th, .leaderboard-table td { padding: 0.8em 0.5em; text-align: left; font-size: 1rem; border-bottom: 1px solid #e3e6fa; }
+    .leaderboard-table th { color: var(--tab-text, #3949ab); font-weight: 700; background: #f4f6fd; }
+    .leaderboard-table tr:first-child td { font-weight: bold; color: var(--accent, #43a047); }
+    .leaderboard-table tr:nth-child(even) { background: #f7f8fd; }
+    .leaderboard-table tr:last-child td { border-bottom: none; }
   </style>
-  <!-- Firebase & Firestore scripts (add your credentials as needed) -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 </head>
 <body>
   <div id="topbar-container"></div>
@@ -211,55 +89,40 @@
     </div>
   </div>
   <script type="module">
-    // --------- Topbar / Sidebar / Theme logic ----------
+    // ---------- All imports at the top ----------
     import { loadTopbar } from './js/topbar.js';
     import { loadSidebar } from './js/sidebar.js';
-    import { onAuthChange, updateUnitBottomBarAuthButtons, getUser } from './js/auth.js';
+    import { onAuthChange, updateUnitBottomBarAuthButtons, getUser, db, auth } from './js/auth.js';
     import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
+    import { loadQOTD, renderUserStreakAlways } from './js/qotd.js';
+    import { setupLeaderboardTabs, loadLeaderboard } from './js/leaderboard.js';
+
+    // ---------- Theme and layout setup ----------
     window.toggleTheme = toggleTheme;
     loadTopbar("Question of the Day");
     loadSidebar();
     applySavedTheme();
     onAuthChange(updateUnitBottomBarAuthButtons);
 
-    // --------- QOTD Question Logic ----------
-    import { loadQOTD, renderUserStreakAlways } from './js/qotd.js';
-
+    // ---------- DOM Ready setup ----------
     document.addEventListener("DOMContentLoaded", async () => {
-      // Load QOTD question
-      await loadQOTD(); // injects question/choices/feedback into #qotdContent
-
-      // Load user streak and stats
+      await loadQOTD();
       renderUserStreakAlways();
 
-      // Setup leaderboard
-      setupLeaderboardTabs();
-      loadLeaderboard("total");
-    });
-
-    // Leaderboard
-    import { setupLeaderboardTabs, loadLeaderboard } from './js/leaderboard.js';
-
-    // Ensure db is available (from your firebase setup)
-    // Example:
-    import { db } from './js/auth.js';
-
-    // Initialize leaderboard tabs and load default leaderboard
-    document.addEventListener("DOMContentLoaded", () => {
+      // Initialize leaderboard tabs and load default leaderboard
       setupLeaderboardTabs((metric) => loadLeaderboard(metric, db));
-      loadLeaderboard("total", db);    
+      loadLeaderboard("total", db);
     });
 
-    // --------- Auth Change Event for Stats & Streak ---------
+    // ---------- Auth Change Event for Stats & Streak ----------
+    // Note: updateStatsBox and updateStreakIcon should be imported or defined if used.
+    // If you use renderUserStreakAlways for streak logic, you may not need updateStreakIcon.
     auth.onAuthStateChanged(() => {
-      updateStatsBox();
-      updateStreakIcon();
-      // Optionally reload QOTD if you want to restrict it to signed-in users
+      // If you have these functions, otherwise remove or replace them.
+      // updateStatsBox();
+      // updateStreakIcon();
+      renderUserStreakAlways();
     });
-
-    // --------- Initial Load ---------
-    updateStatsBox();
-    updateStreakIcon();
   </script>
 </body>
 </html>
