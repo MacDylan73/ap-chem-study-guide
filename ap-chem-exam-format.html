@@ -1,1 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AP Chem QOTD</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/topbar.css">
+  <link rel="stylesheet" href="css/bottombar.css">
+  <link rel="stylesheet" href="css/qotd.css">
+</head>
+<body>
+  <div id="topbar-container"></div>
+  <div id="sidebar-container"></div>
+ 
+  <div id="indexBottomBar" class="bottom-bar">
+    <div class="bottom-bar-left" id="bottomBarLeft"></div>
+    <div class="bottom-bar-center">
+      <button id="returnHomeBtn" onclick="window.location.href='index.html'">Return to Home</button>
+    </div>
+    <div class="bottom-bar-right">
+      <button id="futureFeatureBtn" disabled>Future Feature</button>
+    </div>
+  </div>
 
+  <div id="auth-modal-container"></div>
+  <div id="confettiOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:2000;"></div>
+  <div id="username-modal-container"></div>
+
+  <script type="module">
+    // ---------- Shared imports ----------
+    import { loadTopbar } from './js/topbar.js';
+    import { loadSidebar } from './js/sidebar.js';
+    import {
+      onAuthChange,
+      setupAuthModalEvents,
+      ensureUsernameOnLogin,
+      updateUnitBottomBarAuthButtons,
+      db // <-- Make sure db is imported here!
+    } from './js/auth.js';
+    import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
+    window.toggleTheme = toggleTheme;
+    import { setupUsernameModal } from './js/username-modal.js';
+    import { loadQOTD, renderUserStreakAlways, updateStatsBox } from './js/qotd.js';
+    import { setupLeaderboardTabs, loadLeaderboard } from './js/leaderboard.js';
+
+    // ---------- Modal loader functions ----------
+    async function loadAuthModal() {
+      const resp = await fetch('auth-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+    async function loadUsernameModal() {
+      const resp = await fetch('username-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+
+    // ---------- DOM Ready setup ----------
+    document.addEventListener("DOMContentLoaded", async () => {
+      await loadAuthModal();
+      await loadUsernameModal();
+      setupAuthModalEvents();
+      setupUsernameModal();
+
+      loadTopbar("Question of the Day");
+      loadSidebar();
+      applySavedTheme();
+
+      // QOTD logic
+      await loadQOTD();
+      renderUserStreakAlways();
+      updateStatsBox();
+
+      // Leaderboard setup - FIXED: pass db!
+      setupLeaderboardTabs((metric) => loadLeaderboard(metric, db));
+      loadLeaderboard("total", db);
+
+      // Bottom bar auth logic
+      updateUnitBottomBarAuthButtons();
+    });
+
+    // ---------- Auth Change Event for Stats & Streak ----------
+    onAuthChange(async user => {
+      await ensureUsernameOnLogin();
+      updateUnitBottomBarAuthButtons();
+      renderUserStreakAlways();
+      updateStatsBox();
+      loadLeaderboard("total", db);
+    });
+  </script>
+</body>
+</html>
