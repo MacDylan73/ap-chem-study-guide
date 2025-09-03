@@ -1,7 +1,8 @@
 // leaderboard.js
 
 // Move all imports to the top of the file!
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
 
 // Tab setup expects a callback that takes a metric and loads leaderboard with that metric
 export function setupLeaderboardTabs(loadLeaderboardCallback) {
