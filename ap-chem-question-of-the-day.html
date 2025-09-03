@@ -15,6 +15,17 @@
     .qotd-streak-icon-container { position: absolute; top: 12px; right: 50%; transform: translateX(50%); display: flex; flex-direction: column; align-items: center; z-index: 2; }
     #qotdStreak { font-size: 1.4rem; font-weight: 600; color: #e65100; display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
     #streakTooltip { position: absolute; top: -38px; left: 50%; transform: translateX(-50%); background: #fffbe9; color: #e65100; border-radius: 7px; padding: 4px 12px; font-size: 1rem; font-weight: 500; box-shadow: 0 2px 8px rgba(44,49,83,0.09); opacity: 0; pointer-events: none; transition: opacity 0.2s; white-space: nowrap; z-index: 10; }
+    .qotd-blur-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(245,245,255,0.93);
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      border-radius: 12px;
+    }
     @media (max-width: 900px) { .qotd-layout { flex-direction: column; align-items: center; gap: 18px; } .qotd-stats-box, .qotd-question-box { margin-left: 0; width: 96vw; max-width: 420px; } .qotd-streak-icon-container { right: 50%; } }
     .leaderboard-section { margin: 0 auto; max-width: 700px; background: var(--box-bg, #fff); border-radius: 12px; box-shadow: 0 2px 8px rgba(44,49,83,0.09); padding: 2rem 1.5rem; }
     .leaderboard-tabs { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 18px; }
@@ -50,16 +61,15 @@
         <div id="statsErrorMsg" style="color:#c00; margin-top:10px; display:none;"></div>
       </div>
       <div class="qotd-question-box" id="qotdQuestionBox">
+        <div id="qotdBlurOverlay" class="qotd-blur-overlay" style="display:none;">
+          <button id="qotdSignInBtn" class="sign-in-btn">Sign In to Answer</button>
+        </div>
         <div class="qotd-streak-icon-container">
           <div id="qotdStreak"></div>
           <div id="streakTooltip" style="display:none;"></div>
         </div>
         <h3>Today's Question</h3>
-        <div id="qotdQuestionContent">
-          <div id="qotdBlurOverlay" class="qotd-blur-overlay" style="display:none;">
-          <button id="qotdSignInBtn" class="sign-in-btn">Sign In to Answer</button>
-        </div>
-        </div>
+        <div id="qotdQuestionContent"></div>
       </div>
     </div>
     <div class="leaderboard-section">
