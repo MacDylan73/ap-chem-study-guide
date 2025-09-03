@@ -352,64 +352,61 @@
   /* Top bar */
   #topbar-container,
   .topbar {
-    min-height: 52px;
-    font-size: 1.04rem;
-    padding: 0 0.5em;
+    min-height: 56px !important;
+    font-size: 1.18rem !important;
+    padding: 0 1em !important;
   }
 
   /* Sidebar */
   #sidebar-container,
   .sidebar {
-    width: 94vw !important;
-    min-width: 0;
-    font-size: 1rem;
-    padding: 0.8em 0.6em;
+    width: 98vw !important;
+    font-size: 1.12rem !important;
+    padding: 1.2em 1em !important;
   }
 
   /* Bottom bar */
   #indexBottomBar,
   .bottom-bar {
-    font-size: 1.06rem !important;
-    padding: 0.7em 1vw !important;
-    min-height: 50px;
-    border-radius: 0;
-  }
-  .bottom-bar-left,
-  .bottom-bar-right,
-  .bottom-bar-center {
-    font-size: 1rem;
-    padding: 0.4em 0.2em;
+    font-size: 1.15rem !important;
+    padding: 1em 2vw !important;
+    min-height: 54px !important;
   }
 
-  /* Modals: Stats & Leaderboard */
-  .modal, .leaderboard-section, #userStatsModal {
-    width: 98vw !important;
-    max-width: 98vw !important;
-    left: 1vw !important;
-    right: 1vw !important;
-    border-radius: 12px !important;
-    padding: 1.2em 2vw !important;
-    box-sizing: border-box;
-  }
-  /* Modal content stacked vertically */
-  .modal-content, .leaderboard-section {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-  }
-  /* Question and stats boxes stacked */
+  /* Main content boxes stacked and larger */
   .qotd-layout {
     flex-direction: column !important;
-    gap: 12px !important;
+    gap: 18px !important;
   }
   .qotd-question-box,
   .qotd-stats-box {
     width: 98vw !important;
     max-width: 98vw !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    border-radius: 12px !important;
-    padding: 1em 2vw !important;
+    padding: 1.5em 3vw !important;
+    font-size: 1.09em !important;
+  }
+
+  /* Modals: full screen, stacked content */
+  .modal, .leaderboard-section, #userStatsModal {
+    width: 99vw !important;
+    max-width: 99vw !important;
+    left: 0 !important;
+    right: 0 !important;
+    border-radius: 16px !important;
+    padding: 1.8em 2vw !important;
+    box-sizing: border-box;
+  }
+  .modal-content, .leaderboard-section {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 14px !important;
+  }
+
+  /* Table font size for readability */
+  .leaderboard-table th,
+  .leaderboard-table td {
+    font-size: 1.07rem !important;
+    padding: 0.7em 0.2em !important;
   }
 }
-
