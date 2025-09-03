@@ -222,7 +222,7 @@
     // --------- Topbar / Sidebar / Theme logic ----------
     import { loadTopbar } from './js/topbar.js';
     import { loadSidebar } from './js/sidebar.js';
-    import { onAuthChange, updateUnitBottomBarAuthButtons } from './js/auth.js';
+    import { onAuthChange, updateUnitBottomBarAuthButtons, getUser } from './js/auth.js';
     import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
     loadTopbar("Question of the Day");
@@ -232,7 +232,6 @@
 
     // --------- QOTD Question Logic ----------
     import { loadQOTD, renderUserStreakAlways } from './js/qotd.js';
-    import { getUser } from '/js/auth.js';
 
     document.addEventListener("DOMContentLoaded", async () => {
       // Load QOTD question
