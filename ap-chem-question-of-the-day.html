@@ -245,6 +245,18 @@
       loadLeaderboard("total");
     });
 
+    // Leaderboard
+    import { setupLeaderboardTabs, loadLeaderboard } from './js/leaderboard.js';
+
+    // Ensure db is available (from your firebase setup)
+    // Example:
+    import { db } from './js/auth.js';
+
+    // Initialize leaderboard tabs and load default leaderboard
+    document.addEventListener("DOMContentLoaded", () => {
+      setupLeaderboardTabs((metric) => loadLeaderboard(metric, db));
+      loadLeaderboard("total", db);    
+    });
 
     // --------- Auth Change Event for Stats & Streak ---------
     auth.onAuthStateChanged(() => {
