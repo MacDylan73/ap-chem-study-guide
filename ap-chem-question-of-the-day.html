@@ -231,7 +231,8 @@
     onAuthChange(updateUnitBottomBarAuthButtons);
 
     // --------- QOTD Question Logic ----------
-    import { loadQOTD, getUser, renderUserStreakAlways } from './js/qotd.js';
+    import { loadQOTD, renderUserStreakAlways } from './js/qotd.js';
+    import { getUser } from '/js/auth.js';
 
     document.addEventListener("DOMContentLoaded", async () => {
       // Load QOTD question
