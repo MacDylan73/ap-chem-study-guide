@@ -27,6 +27,67 @@
       <button id="futureFeatureBtn" disabled>Future Feature</button>
     </div>
   </div>
+  <!-- Animated Chemistry Background -->
+<div class="chem-bg-anim" aria-hidden="true">
+  <svg class="chem-icon beaker" width="64" height="64" viewBox="0 0 64 64">
+    <path d="M20 10V40C20 50 44 50 44 40V10" fill="none" stroke="var(--chem-bg-icon, #bdbdbd)" stroke-width="3"/>
+    <ellipse cx="32" cy="45" rx="12" ry="5" fill="var(--chem-bg-icon, #bdbdbd)" opacity="0.12"/>
+  </svg>
+  <svg class="chem-icon atom" width="64" height="64" viewBox="0 0 64 64">
+    <circle cx="32" cy="32" r="12" stroke="var(--chem-bg-icon, #bdbdbd)" stroke-width="3" fill="none"/>
+    <ellipse cx="32" cy="32" rx="20" ry="8" stroke="var(--chem-bg-icon, #bdbdbd)" stroke-width="2" fill="none"/>
+    <ellipse cx="32" cy="32" rx="8" ry="20" stroke="var(--chem-bg-icon, #bdbdbd)" stroke-width="2" fill="none"/>
+  </svg>
+  <svg class="chem-icon thermometer" width="64" height="64" viewBox="0 0 64 64">
+    <rect x="28" y="10" width="8" height="32" rx="4" fill="none" stroke="var(--chem-bg-icon, #bdbdbd)" stroke-width="3"/>
+    <circle cx="32" cy="50" r="7" fill="var(--chem-bg-icon, #bdbdbd)" opacity="0.15"/>
+  </svg>
+</div>
+
+<style>
+.chem-bg-anim {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.chem-bg-anim .chem-icon {
+  position: absolute;
+  opacity: 0.18;
+  /* Use CSS variable for color, adapts to theme */
+  stroke: var(--chem-bg-icon, #bdbdbd);
+  fill: var(--chem-bg-icon, #bdbdbd);
+  transition: stroke 0.3s, fill 0.3s;
+}
+
+/* Icon positions/sizes, tweak as needed */
+.chem-bg-anim .beaker      { left: 10vw; top: 10vh; width: 64px; height: 64px; animation: chemFloat1 24s linear infinite; }
+.chem-bg-anim .atom        { left: 60vw; top: 30vh; width: 72px; height: 72px; animation: chemFloat2 32s linear infinite; }
+.chem-bg-anim .thermometer { left: 30vw; top: 70vh; width: 54px; height: 54px; animation: chemFloat3 28s linear infinite; }
+
+/* Animations for gentle floating */
+@keyframes chemFloat1 { 0% {transform: translateY(0);} 100% {transform: translateY(-40px);} }
+@keyframes chemFloat2 { 0% {transform: translateY(0);} 100% {transform: translateY(-30px);} }
+@keyframes chemFloat3 { 0% {transform: translateY(0);} 100% {transform: translateY(-50px);} }
+
+/* Theme support: change icon color via CSS variable */
+body.light-mode, :root {
+  --chem-bg-icon: #bdbdbd;
+}
+body.dark-mode {
+  --chem-bg-icon: #44445a;
+}
+
+/* Accessibility: reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .chem-bg-anim .chem-icon {
+    animation: none !important;
+  }
+}
+</style>
   <script type="module">
     import { loadTopbar } from './js/topbar.js';
     import { loadSidebar } from './js/sidebar.js';
@@ -42,5 +103,6 @@
     // Apply theme from local storage
     applySavedTheme();
   </script>
+  
 </body>
 </html>
