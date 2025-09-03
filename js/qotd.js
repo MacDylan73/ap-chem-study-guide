@@ -743,4 +743,86 @@ function showConfetti() {
   }, 3500);
 }
 
+// Extra Stat Box for QOTD Page 
+export async function updateStatsBox() {
+  const statsTotalCorrect = document.getElementById('statsTotalCorrect');
+  const statsCurrentStreak = document.getElementById('statsCurrentStreak');
+  const statsLongestStreak = document.getElementById('statsLongestStreak');
+  const statsPercentCorrect = document.getElementById('statsPercentCorrect');
+  const statsErrorMsg = document.getElementById('statsErrorMsg');
+
+  statsErrorMsg.style.display = "none";
+  statsTotalCorrect.textContent = "...";
+  statsCurrentStreak.textContent = "...";
+  statsLongestStreak.textContent = "...";
+  statsPercentCorrect.textContent = "...";
+
+  const user = getUser();
+  if (!user) {
+    statsErrorMsg.style.display = "block";
+    statsErrorMsg.textContent = "Sign in to view your stats.";
+    statsTotalCorrect.textContent = "--";
+    statsCurrentStreak.textContent = "--";
+    statsLongestStreak.textContent = "--";
+    statsPercentCorrect.textContent = "--";
+    return;
+  }
+
+  try {
+    const attemptsRef = collection(db, "qotd_attempts");
+    const q = query(attemptsRef, where("uid", "==", user.uid));
+    const snap = await getDocs(q);
+    const attempts = [];
+    snap.forEach(doc => attempts.push(doc.data()));
+
+    // Compute stats
+    const totalAttempted = attempts.length;
+    const totalCorrect = attempts.filter(a => a.correct).length;
+    attempts.sort((a, b) => a.date.localeCompare(b.date));
+
+    // Streak calculations
+    let currentStreak = 0, longestStreak = 0;
+    let prevDate = null;
+    let streak = 0;
+    for (let i = 0; i < attempts.length; ++i) {
+      if (!attempts[i].correct) {
+        streak = 0;
+        continue;
+      }
+      const thisDate = attempts[i].date;
+      if (prevDate) {
+        const prev = new Date(prevDate);
+        const curr = new Date(thisDate);
+        const daysDiff = (curr - prev) / (1000*60*60*24);
+        if (daysDiff === 1) streak++;
+        else streak = 1;
+      } else {
+        streak = 1;
+      }
+      prevDate = thisDate;
+      if (streak > longestStreak) longestStreak = streak;
+    }
+    // Current streak: last attempt date = today and correct
+    if (attempts.length && attempts[attempts.length-1].date === getTodayStrEastern() && attempts[attempts.length-1].correct) {
+      currentStreak = streak;
+    } else {
+      currentStreak = 0;
+    }
+
+    const percentCorrect = totalAttempted > 0 ? ((100 * totalCorrect) / totalAttempted) : 0;
+
+    statsTotalCorrect.textContent = totalCorrect;
+    statsCurrentStreak.textContent = currentStreak;
+    statsLongestStreak.textContent = longestStreak;
+    statsPercentCorrect.textContent = percentCorrect.toFixed(1) + "%";
+  } catch (err) {
+    statsErrorMsg.style.display = "block";
+    statsErrorMsg.textContent = "Error loading stats: " + err.message;
+    statsTotalCorrect.textContent = "--";
+    statsCurrentStreak.textContent = "--";
+    statsLongestStreak.textContent = "--";
+    statsPercentCorrect.textContent = "--";
+  }
+}
+
 // ---- End of AP Chem QOTD logic ----
