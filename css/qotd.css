@@ -347,3 +347,69 @@
   border-top: 2px solid #3949ab;
 }
 
+
+@media (max-width: 600px) {
+  /* Top bar */
+  #topbar-container,
+  .topbar {
+    min-height: 52px;
+    font-size: 1.04rem;
+    padding: 0 0.5em;
+  }
+
+  /* Sidebar */
+  #sidebar-container,
+  .sidebar {
+    width: 94vw !important;
+    min-width: 0;
+    font-size: 1rem;
+    padding: 0.8em 0.6em;
+  }
+
+  /* Bottom bar */
+  #indexBottomBar,
+  .bottom-bar {
+    font-size: 1.06rem !important;
+    padding: 0.7em 1vw !important;
+    min-height: 50px;
+    border-radius: 0;
+  }
+  .bottom-bar-left,
+  .bottom-bar-right,
+  .bottom-bar-center {
+    font-size: 1rem;
+    padding: 0.4em 0.2em;
+  }
+
+  /* Modals: Stats & Leaderboard */
+  .modal, .leaderboard-section, #userStatsModal {
+    width: 98vw !important;
+    max-width: 98vw !important;
+    left: 1vw !important;
+    right: 1vw !important;
+    border-radius: 12px !important;
+    padding: 1.2em 2vw !important;
+    box-sizing: border-box;
+  }
+  /* Modal content stacked vertically */
+  .modal-content, .leaderboard-section {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  /* Question and stats boxes stacked */
+  .qotd-layout {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  .qotd-question-box,
+  .qotd-stats-box {
+    width: 98vw !important;
+    max-width: 98vw !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    border-radius: 12px !important;
+    padding: 1em 2vw !important;
+  }
+}
+
