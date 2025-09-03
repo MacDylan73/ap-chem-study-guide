@@ -248,19 +248,6 @@
       loadSidebar();
       updateIndexBarAuthButtons();
     });
-
-    // Redirect QOTD clicks
-    document.addEventListener('DOMContentLoaded', () => {
-    const qBox = document.querySelector('.question-box');
-    if (qBox) {
-      qBox.style.cursor = 'pointer';
-      qBox.addEventListener('click', function(e) {
-      // Prevent answer button clicks from submitting/leaking
-      if (e.target.classList.contains('qotd-answer-btn') || e.target.id === 'qotdSubmitBtn') return;
-      window.location.href = 'qotd.html';
-    });
-    }
-  });
     
     // Listen for auth state changes, update UI, and ensure username modal is shown if needed
     onAuthChange(async user => {
