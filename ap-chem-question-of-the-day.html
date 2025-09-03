@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="css/topbar.css">
   <link rel="stylesheet" href="css/bottombar.css">
   <style>
-    /* --- your existing CSS unchanged --- */
     .qotd-header { text-align: center; margin-top: 32px; margin-bottom: 12px; }
     .qotd-subheader { text-align: center; font-size: 1.25rem; font-weight: 500; color: var(--heading-color, #3949ab); margin-bottom: 24px; }
     .qotd-layout { display: flex; flex-direction: row; justify-content: center; align-items: flex-start; gap: 32px; margin-bottom: 36px; flex-wrap: wrap; }
@@ -93,7 +92,6 @@
     </div>
   </div>
 
-  <!-- Modal container for dynamic injection -->
   <div id="auth-modal-container"></div>
   <div id="username-modal-container"></div>
 
@@ -105,7 +103,8 @@
       onAuthChange,
       setupAuthModalEvents,
       ensureUsernameOnLogin,
-      updateUnitBottomBarAuthButtons
+      updateUnitBottomBarAuthButtons,
+      db // <-- Make sure db is imported here!
     } from './js/auth.js';
     import { setupUsernameModal } from './js/username-modal.js';
     import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
@@ -140,10 +139,10 @@
       renderUserStreakAlways();
       updateStatsBox();
 
-      // Leaderboard setup
-      setupLeaderboardTabs((metric) => loadLeaderboard(metric));
-      loadLeaderboard("total");
-      
+      // Leaderboard setup - FIXED: pass db!
+      setupLeaderboardTabs((metric) => loadLeaderboard(metric, db));
+      loadLeaderboard("total", db);
+
       // Bottom bar auth logic
       updateUnitBottomBarAuthButtons();
     });
