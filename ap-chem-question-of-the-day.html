@@ -41,18 +41,18 @@
     </div>
     <div class="qotd-layout">
       <div class="qotd-stats-box" id="qotdStatsBox">
-  <h3>Your Stats</h3>
-  <ul style="list-style:none; padding:0; margin-top:14px;">
-    <li><strong>Total Correct:</strong> <span id="statsTotalCorrect">--</span></li>
-    <li><strong>Current Streak:</strong> <span id="statsCurrentStreak">--</span></li>
-    <li><strong>Best Streak:</strong> <span id="statsLongestStreak">--</span></li>
-    <li><strong>Percent Correct:</strong> <span id="statsPercentCorrect">--</span></li>
-  </ul>
-  <div id="statsErrorMsg" style="color:#c00; margin-top:10px; display:none;"></div>
-  <div id="qotdBlurOverlay" class="qotd-blur-overlay" style="display:none;">
-    <button id="qotdSignInBtn" class="sign-in-btn">Sign In to Answer</button>
-  </div>
-</div>
+        <h3>Your Stats</h3>
+        <ul style="list-style:none; padding:0; margin-top:14px;">
+          <li><strong>Total Correct:</strong> <span id="statsTotalCorrect">--</span></li>
+          <li><strong>Current Streak:</strong> <span id="statsCurrentStreak">--</span></li>
+          <li><strong>Best Streak:</strong> <span id="statsLongestStreak">--</span></li>
+          <li><strong>Percent Correct:</strong> <span id="statsPercentCorrect">--</span></li>
+        </ul>
+        <div id="statsErrorMsg" style="color:#c00; margin-top:10px; display:none;"></div>
+        <div id="qotdBlurOverlay" class="qotd-blur-overlay" style="display:none;">
+          <button id="qotdSignInBtn" class="sign-in-btn">Sign In to Answer</button>
+        </div>
+      </div>
       <div class="qotd-question-box" id="qotdQuestionBox">
         <div class="qotd-streak-icon-container">
           <div id="qotdStreak"></div>
@@ -92,43 +92,68 @@
       <button id="futureFeatureBtn" disabled>Future Feature</button>
     </div>
   </div>
-  
+
+  <!-- Modal container for dynamic injection -->
   <div id="auth-modal-container"></div>
-  
+  <div id="username-modal-container"></div>
+
   <script type="module">
-    // ---------- All imports at the top ----------
-    import { loadTopbar } from './js/topbar.js';
-    import { loadSidebar } from './js/sidebar.js';
-    import { onAuthChange, updateUnitBottomBarAuthButtons, getUser, db, auth } from './js/auth.js';
+    // ---------- Shared imports ----------
+    import { 
+      loadTopbar,
+      loadSidebar
+    } from './js/topbar.js';
+    import {
+      onAuthChange,
+      setupAuthModalEvents,
+      ensureUsernameOnLogin,
+      updateUnitBottomBarAuthButtons
+    } from './js/auth.js';
+    import { setupUsernameModal } from './js/username-modal.js';
     import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
     import { loadQOTD, renderUserStreakAlways, updateStatsBox } from './js/qotd.js';
     import { setupLeaderboardTabs, loadLeaderboard } from './js/leaderboard.js';
 
-    // ---------- Theme and layout setup ----------
-    window.toggleTheme = toggleTheme;
-    loadTopbar("Question of the Day");
-    loadSidebar();
-    applySavedTheme();
-    onAuthChange(updateUnitBottomBarAuthButtons);
+    // ---------- Modal loader functions ----------
+    async function loadAuthModal() {
+      const resp = await fetch('auth-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+    async function loadUsernameModal() {
+      const resp = await fetch('username-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
 
     // ---------- DOM Ready setup ----------
     document.addEventListener("DOMContentLoaded", async () => {
+      await loadAuthModal();
+      await loadUsernameModal();
+      setupAuthModalEvents();
+      setupUsernameModal();
+
+      loadTopbar("Question of the Day");
+      loadSidebar();
+      applySavedTheme();
+
+      // QOTD logic
       await loadQOTD();
       renderUserStreakAlways();
       updateStatsBox();
 
-      // Initialize leaderboard tabs and load default leaderboard
-      setupLeaderboardTabs((metric) => loadLeaderboard(metric, db));
-      loadLeaderboard("total", db);
+      // Leaderboard setup
+      setupLeaderboardTabs((metric) => loadLeaderboard(metric));
+      loadLeaderboard("total");
+      
+      // Bottom bar auth logic
+      updateUnitBottomBarAuthButtons();
     });
 
     // ---------- Auth Change Event for Stats & Streak ----------
-    // Note: updateStatsBox and updateStreakIcon should be imported or defined if used.
-    // If you use renderUserStreakAlways for streak logic, you may not need updateStreakIcon.
-    auth.onAuthStateChanged(() => {
-      // If you have these functions, otherwise remove or replace them.
-      // updateStatsBox();
-      // updateStreakIcon();
+    onAuthChange(async user => {
+      await ensureUsernameOnLogin();
+      updateUnitBottomBarAuthButtons();
       renderUserStreakAlways();
       updateStatsBox();
     });
