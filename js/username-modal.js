@@ -1,9 +1,6 @@
 import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 import { db, isSignedIn, currentUser, isUsernameTaken } from './auth.js'; 
 
-import { doc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-import { db, isSignedIn, currentUser, isUsernameTaken } from './auth.js'; 
-
 export function setupUsernameModal() {
   const usernameModal = document.getElementById('usernameModal');
   const closeUsernameModal = document.getElementById('closeUsernameModal');
