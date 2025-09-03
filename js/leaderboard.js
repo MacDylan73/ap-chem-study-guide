@@ -34,13 +34,14 @@ export async function loadLeaderboard(metric, db) {
   tbody.innerHTML = '<tr><td colspan="3" style="text-align:center">Loading...</td></tr>';
 
   // Fetch all attempts
-  let attemptsSnap;
-  try {
-    attemptsSnap = await db.collection("qotd_attempts").get();
-  } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="3" style="color:red;text-align:center">${err.message}</td></tr>`;
-    return;
-  }
+  import { collection, getDocs } from "firebase/firestore"; // at the top of leaderboard.js
+
+let attemptsSnap;
+try {
+  attemptsSnap = await getDocs(collection(db, "qotd_attempts"));
+} catch (err) {
+  ...
+}
 
   // Aggregate stats by user
   const stats = {}; // uid -> { correct, attempted, streak, bestStreak, dates, username }
