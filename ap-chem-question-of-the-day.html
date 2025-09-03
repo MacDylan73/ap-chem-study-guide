@@ -20,66 +20,13 @@ body {
 main {
   flex: 1 0 auto;
 }
-
-/* Chemistry Brick Background */
-.chem-bg-brick {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 3vw;
-}
-
-.chem-bg-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  gap: 7vw;
-  /* Stagger every other row for "brick" effect */
-}
-.chem-bg-row:nth-child(even) {
-  margin-left: 4vw;
-}
-
-.chem-icon {
-  width: 50px; height: 50px;
-  opacity: 0.13;
-  stroke: var(--chem-bg-icon, #bdbdbd);
-  fill: var(--chem-bg-icon, #bdbdbd);
-  transition: stroke 0.3s, fill 0.3s;
-}
-
-/* Theme support: color adapts to light/dark */
-body.light-mode, :root {
-  --chem-bg-icon: #bdbdbd;
-}
-body.dark-mode {
-  --chem-bg-icon: #44445a;
-}
-
-/* Responsive: shrink icons on mobile */
-@media (max-width: 600px) {
-  .chem-icon { width: 34px; height: 34px; }
-  .chem-bg-row { gap: 5vw; }
-  .chem-bg-row:nth-child(even) { margin-left: 2vw; }
-}
-
-/* Accessibility: reduce motion disables any future animation */
-@media (prefers-reduced-motion: reduce) {
-  .chem-bg-brick .chem-icon { animation: none !important; }
-}
   </style>
 </head>
 <body>
   <div id="topbar-container"></div>
   <div id="sidebar-container"></div>
   <main>
-    <h2>Question of the Day</h2>
+    <h2>AP Chem Question of the Day</h2>
     <div id="qotd-container">
       <!-- QOTD content will go here -->
     </div>
@@ -93,93 +40,6 @@ body.dark-mode {
     </div>
     <div class="bottom-bar-right">
       <button id="futureFeatureBtn" disabled>Future Feature</button>
-    </div>
-  </div>
-  <!-- Chemistry Brick Layout Background -->
-  <div class="chem-bg-brick" aria-hidden="true">
-    <div class="chem-bg-row">
-      <!-- Flask -->
-      <svg class="chem-icon flask" viewBox="0 0 64 64">
-        <path d="M24 10v24c0 6-3 12-8 16h32c-5-4-8-10-8-16V10" fill="none" stroke="var(--chem-bg-icon)" stroke-width="3"/>
-        <ellipse cx="32" cy="50" rx="12" ry="5" fill="var(--chem-bg-icon)" opacity="0.12"/>
-      </svg>
-      <!-- Atom -->
-      <svg class="chem-icon atom" viewBox="0 0 64 64">
-        <circle cx="32" cy="32" r="12" stroke="var(--chem-bg-icon)" stroke-width="3" fill="none"/>
-        <ellipse cx="32" cy="32" rx="20" ry="8" stroke="var(--chem-bg-icon)" stroke-width="2" fill="none"/>
-        <ellipse cx="32" cy="32" rx="8" ry="20" stroke="var(--chem-bg-icon)" stroke-width="2" fill="none"/>
-      </svg>
-      <!-- Test Tube -->
-      <svg class="chem-icon test-tube" viewBox="0 0 64 64">
-        <rect x="28" y="10" width="8" height="32" rx="4" fill="none" stroke="var(--chem-bg-icon)" stroke-width="3"/>
-        <ellipse cx="32" cy="46" rx="6" ry="2.5" fill="var(--chem-bg-icon)" opacity="0.12"/>
-      </svg>
-      <!-- Molecule -->
-      <svg class="chem-icon molecule" viewBox="0 0 64 64">
-        <circle cx="32" cy="32" r="8" fill="var(--chem-bg-icon)" opacity="0.16"/>
-        <circle cx="50" cy="22" r="5" fill="var(--chem-bg-icon)" opacity="0.16"/>
-        <circle cx="14" cy="14" r="5" fill="var(--chem-bg-icon)" opacity="0.16"/>
-        <line x1="32" y1="32" x2="50" y2="22" stroke="var(--chem-bg-icon)" stroke-width="2" opacity="0.16"/>
-        <line x1="32" y1="32" x2="14" y2="14" stroke="var(--chem-bg-icon)" stroke-width="2" opacity="0.16"/>
-      </svg>
-      <!-- Thermometer -->
-      <svg class="chem-icon thermometer" viewBox="0 0 64 64">
-        <rect x="28" y="10" width="8" height="32" rx="4" fill="none" stroke="var(--chem-bg-icon)" stroke-width="3"/>
-        <circle cx="32" cy="50" r="7" fill="var(--chem-bg-icon)" opacity="0.15"/>
-      </svg>
-    </div>
-    <!-- More Rows - Staggered for Brick Effect -->
-    <div class="chem-bg-row">
-      <svg class="chem-icon molecule" viewBox="0 0 64 64">
-        <circle cx="32" cy="32" r="8" fill="var(--chem-bg-icon)" opacity="0.16"/>
-        <circle cx="50" cy="22" r="5" fill="var(--chem-bg-icon)" opacity="0.16"/>
-        <circle cx="14" cy="14" r="5" fill="var(--chem-bg-icon)" opacity="0.16"/>
-        <line x1="32" y1="32" x2="50" y2="22" stroke="var(--chem-bg-icon)" stroke-width="2" opacity="0.16"/>
-        <line x1="32" y1="32" x2="14" y2="14" stroke="var(--chem-bg-icon)" stroke-width="2" opacity="0.16"/>
-      </svg>
-      <svg class="chem-icon flask" viewBox="0 0 64 64">
-        <path d="M24 10v24c0 6-3 12-8 16h32c-5-4-8-10-8-16V10" fill="none" stroke="var(--chem-bg-icon)" stroke-width="3"/>
-        <ellipse cx="32" cy="50" rx="12" ry="5" fill="var(--chem-bg-icon)" opacity="0.12"/>
-      </svg>
-      <svg class="chem-icon atom" viewBox="0 0 64 64">
-        <circle cx="32" cy="32" r="12" stroke="var(--chem-bg-icon)" stroke-width="3" fill="none"/>
-        <ellipse cx="32" cy="32" rx="20" ry="8" stroke="var(--chem-bg-icon)" stroke-width="2" fill="none"/>
-        <ellipse cx="32" cy="32" rx="8" ry="20" stroke="var(--chem-bg-icon)" stroke-width="2" fill="none"/>
-      </svg>
-      <svg class="chem-icon thermometer" viewBox="0 0 64 64">
-        <rect x="28" y="10" width="8" height="32" rx="4" fill="none" stroke="var(--chem-bg-icon)" stroke-width="3"/>
-        <circle cx="32" cy="50" r="7" fill="var(--chem-bg-icon)" opacity="0.15"/>
-      </svg>
-      <svg class="chem-icon test-tube" viewBox="0 0 64 64">
-        <rect x="28" y="10" width="8" height="32" rx="4" fill="none" stroke="var(--chem-bg-icon)" stroke-width="3"/>
-        <ellipse cx="32" cy="46" rx="6" ry="2.5" fill="var(--chem-bg-icon)" opacity="0.12"/>
-      </svg>
-    </div>
-    <div class="chem-bg-row">
-      <svg class="chem-icon atom" viewBox="0 0 64 64">
-        <circle cx="32" cy="32" r="12" stroke="var(--chem-bg-icon)" stroke-width="3" fill="none"/>
-        <ellipse cx="32" cy="32" rx="20" ry="8" stroke="var(--chem-bg-icon)" stroke-width="2" fill="none"/>
-        <ellipse cx="32" cy="32" rx="8" ry="20" stroke="var(--chem-bg-icon)" stroke-width="2" fill="none"/>
-      </svg>
-      <svg class="chem-icon test-tube" viewBox="0 0 64 64">
-        <rect x="28" y="10" width="8" height="32" rx="4" fill="none" stroke="var(--chem-bg-icon)" stroke-width="3"/>
-        <ellipse cx="32" cy="46" rx="6" ry="2.5" fill="var(--chem-bg-icon)" opacity="0.12"/>
-      </svg>
-      <svg class="chem-icon flask" viewBox="0 0 64 64">
-        <path d="M24 10v24c0 6-3 12-8 16h32c-5-4-8-10-8-16V10" fill="none" stroke="var(--chem-bg-icon)" stroke-width="3"/>
-        <ellipse cx="32" cy="50" rx="12" ry="5" fill="var(--chem-bg-icon)" opacity="0.12"/>
-      </svg>
-      <svg class="chem-icon molecule" viewBox="0 0 64 64">
-        <circle cx="32" cy="32" r="8" fill="var(--chem-bg-icon)" opacity="0.16"/>
-        <circle cx="50" cy="22" r="5" fill="var(--chem-bg-icon)" opacity="0.16"/>
-        <circle cx="14" cy="14" r="5" fill="var(--chem-bg-icon)" opacity="0.16"/>
-        <line x1="32" y1="32" x2="50" y2="22" stroke="var(--chem-bg-icon)" stroke-width="2" opacity="0.16"/>
-        <line x1="32" y1="32" x2="14" y2="14" stroke="var(--chem-bg-icon)" stroke-width="2" opacity="0.16"/>
-      </svg>
-      <svg class="chem-icon thermometer" viewBox="0 0 64 64">
-        <rect x="28" y="10" width="8" height="32" rx="4" fill="none" stroke="var(--chem-bg-icon)" stroke-width="3"/>
-        <circle cx="32" cy="50" r="7" fill="var(--chem-bg-icon)" opacity="0.15"/>
-      </svg>
     </div>
   </div>
   <script type="module">
