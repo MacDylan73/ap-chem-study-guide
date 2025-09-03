@@ -1,5 +1,9 @@
 // leaderboard.js
 
+// Move all imports to the top of the file!
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+
+// Tab setup expects a callback that takes a metric and loads leaderboard with that metric
 export function setupLeaderboardTabs(loadLeaderboardCallback) {
   const tabTotal = document.getElementById('tabTotalCorrect');
   const tabStreak = document.getElementById('tabStreak');
@@ -28,20 +32,20 @@ export function setupLeaderboardTabs(loadLeaderboardCallback) {
   });
 }
 
+// Main leaderboard loader, uses Firestore modular API
 export async function loadLeaderboard(metric, db) {
   const leaderboardTable = document.getElementById('leaderboardTable');
   const tbody = leaderboardTable.querySelector('tbody');
   tbody.innerHTML = '<tr><td colspan="3" style="text-align:center">Loading...</td></tr>';
 
   // Fetch all attempts
-  import { collection, getDocs } from "firebase/firestore"; // at the top of leaderboard.js
-
-let attemptsSnap;
-try {
-  attemptsSnap = await getDocs(collection(db, "qotd_attempts"));
-} catch (err) {
-  ...
-}
+  let attemptsSnap;
+  try {
+    attemptsSnap = await getDocs(collection(db, "qotd_attempts"));
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="3" style="color:red;text-align:center">${err.message}</td></tr>`;
+    return;
+  }
 
   // Aggregate stats by user
   const stats = {}; // uid -> { correct, attempted, streak, bestStreak, dates, username }
@@ -53,9 +57,8 @@ try {
     stats[d.uid].dates.push(d.date);
   });
 
-  // Compute streaks and percent correct
+  // Compute best streak and percent correct
   for (const [uid, data] of Object.entries(stats)) {
-    // Compute best streak
     const datesSorted = data.dates.filter(Boolean).sort();
     let streak = 0, bestStreak = 0, prevDate = null;
     for (const dateStr of datesSorted) {
@@ -75,11 +78,11 @@ try {
     data.percent = data.attempted > 0 ? (100 * data.correct / data.attempted) : 0;
   }
 
-  // Get usernames
+  // Get usernames from users collection
   for (const uid of Object.keys(stats)) {
     try {
-      const userDoc = await db.collection("users").doc(uid).get();
-      stats[uid].username = userDoc.exists ? (userDoc.data().username || uid) : uid;
+      const userDocSnap = await getDoc(doc(db, "users", uid));
+      stats[uid].username = userDocSnap.exists() ? (userDocSnap.data().username || uid) : uid;
     } catch {
       stats[uid].username = uid;
     }
