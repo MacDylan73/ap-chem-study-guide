@@ -41,14 +41,15 @@
     </div>
     <div class="qotd-layout">
       <div class="qotd-stats-box" id="qotdStatsBox">
-        <h3>Your Stats</h3>
-        <ul style="list-style:none; padding:0; margin-top:14px;">
-          <li><strong>Total Correct:</strong> <span id="userTotalCorrect">--</span></li>
-          <li><strong>Current Streak:</strong> <span id="userStreak">--</span></li>
-          <li><strong>Best Streak:</strong> <span id="userBestStreak">--</span></li>
-          <li><strong>Percent Correct:</strong> <span id="userPercentCorrect">--</span></li>
-        </ul>
-      </div>
+  <h3>Your Stats</h3>
+  <ul style="list-style:none; padding:0; margin-top:14px;">
+    <li><strong>Total Correct:</strong> <span id="statsTotalCorrect">--</span></li>
+    <li><strong>Current Streak:</strong> <span id="statsCurrentStreak">--</span></li>
+    <li><strong>Best Streak:</strong> <span id="statsLongestStreak">--</span></li>
+    <li><strong>Percent Correct:</strong> <span id="statsPercentCorrect">--</span></li>
+  </ul>
+  <div id="statsErrorMsg" style="color:#c00; margin-top:10px; display:none;"></div>
+</div>
       <div class="qotd-question-box" id="qotdQuestionBox">
         <div class="qotd-streak-icon-container">
           <div id="qotdStreak"></div>
