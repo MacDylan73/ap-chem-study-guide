@@ -69,9 +69,9 @@ export function signInHandler() {
     .then(result => {
       isSignedIn = true;
       currentUser = result.user;
-      window.isSignedIn = isSignedIn; // <-- Already here
-      window.currentUser = currentUser; // (optional)
-      window.dispatchEvent(new CustomEvent('user-signed-in')); // <-- ADD THIS LINE
+      window.isSignedIn = isSignedIn;
+      window.currentUser = currentUser;
+      window.dispatchEvent(new CustomEvent('user-signed-in'));
       return result.user;
     })
     .catch(error => {
@@ -98,7 +98,6 @@ export function hideUsernameModal() {
 export async function isUsernameTaken(username) {
   const usersRef = collection(db, "users");
   const q = query(usersRef, where("username", "==", username));
-  console.log("isSignedIn:", isSignedIn, "currentUser:", currentUser);
   const snapshot = await getDocs(q);
   return !snapshot.empty;
 }
@@ -146,13 +145,17 @@ export function setupAuthModalEvents() {
 
   async function handleResendVerification(user, email, errorElem, resendBtn) {
     if (!canResendVerification(email)) {
-      if (errorElem) errorElem.textContent = `Please wait before resending. Try again in a few minutes.`;
+      if (errorElem)
+        errorElem.textContent =
+          "Verification emails can only be requested every 5 minutes. Please check your spam/junk folder as well.";
       resendBtn.disabled = true;
       return;
     }
     await sendEmailVerification(user);
     localStorage.setItem("lastVerificationResend_" + email, Date.now().toString());
-    if (errorElem) errorElem.textContent = "Verification email resent! Check your inbox.";
+    if (errorElem)
+      errorElem.textContent =
+        "Verification email resent! Check your inbox and your spam/junk folder.";
     resendBtn.disabled = true;
     setTimeout(() => {
       resendBtn.disabled = !canResendVerification(email);
@@ -196,82 +199,90 @@ export function setupAuthModalEvents() {
   };
 
   // Google sign-in
-if (googleSignInBtn) {
-  googleSignInBtn.onclick = async () => {
-    if (authError) authError.textContent = '';
-    try {
-      await signInWithPopup(auth, provider);
-      await ensureUsernameOnLogin(); // <-- Only for Google sign-in
-      signInModal.style.display = "none";
-    } catch (err) {
-      if (authError) authError.textContent = err.message;
-    }
-  };
-}
-
-// Email/Password form submit
-if (authForm) {
-  authForm.onsubmit = async (e) => {
-    e.preventDefault();
-    if (authError) authError.textContent = '';
-    const email = document.getElementById('authEmail').value.trim();
-    const password = document.getElementById('authPassword').value;
-    let resendBtn = document.getElementById("resendVerificationBtn");
-    if (resendBtn) resendBtn.style.display = "none";
-
-    if (isRegister) {
-      const username = authUsername.value.trim();
-      if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-        if (authError) authError.textContent = "Username must be 3–20 Letters/Numbers/Underscores.";
-        return;
-      }
-      if (await isUsernameTaken(username)) {
-        if (authError) authError.textContent = "Username Already Taken.";
-        return;
-      }
+  if (googleSignInBtn) {
+    googleSignInBtn.onclick = async () => {
+      if (authError) authError.textContent = '';
       try {
-        const cred = await createUserWithEmailAndPassword(auth, email, password);
-        await updateProfile(cred.user, { displayName: username });
-        await sendEmailVerification(cred.user);
-        await setDoc(doc(db, "users", cred.user.uid), { username }, { merge: true });
-        await signOut(auth); // Immediately sign out after sending verification
-        if (authError) authError.textContent =
-          "Account created! Please verify your email before logging in. Verification link sent to your inbox.";
-        // Do NOT call ensureUsernameOnLogin here!
-        // signInModal.style.display = "none"; // Let user close it after reading message
-      } catch (err) {
-        if (authError) authError.textContent = err.message;
-      }
-    } else {
-      try {
-        const cred = await signInWithEmailAndPassword(auth, email, password);
-        if (!cred.user.emailVerified) {
-          if (authError) authError.textContent =
-            "Your email is not verified. Please check your inbox for the verification link.";
-
-          let resendBtn = document.getElementById("resendVerificationBtn");
-          if (!resendBtn) {
-            resendBtn = document.createElement("button");
-            resendBtn.id = "resendVerificationBtn";
-            resendBtn.textContent = "Resend Verification Email";
-            resendBtn.style.marginTop = "10px";
-            authError.parentNode.appendChild(resendBtn);
-          }
-          resendBtn.style.display = "inline-block";
-          resendBtn.disabled = !canResendVerification(email);
-          resendBtn.onclick = () => handleResendVerification(cred.user, email, authError, resendBtn);
-
-          await signOut(auth); // Immediately sign out
-          return;
-        }
-        await ensureUsernameOnLogin(); // If somehow username not set, prompt (shouldn't happen for email/pass)
+        await signInWithPopup(auth, provider);
+        await ensureUsernameOnLogin(); // Only for Google sign-in
         signInModal.style.display = "none";
       } catch (err) {
         if (authError) authError.textContent = err.message;
       }
-    }
-  };
-}
+    };
+  }
+
+  // Email/Password form submit
+  if (authForm) {
+    authForm.onsubmit = async (e) => {
+      e.preventDefault();
+      if (authError) authError.textContent = '';
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+      let resendBtn = document.getElementById("resendVerificationBtn");
+      if (resendBtn) resendBtn.style.display = "none";
+
+      if (isRegister) {
+        const username = authUsername.value.trim();
+        if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+          if (authError) authError.textContent = "Username must be 3–20 Letters/Numbers/Underscores.";
+          return;
+        }
+        if (await isUsernameTaken(username)) {
+          if (authError) authError.textContent = "Username Already Taken.";
+          return;
+        }
+        try {
+          const cred = await createUserWithEmailAndPassword(auth, email, password);
+          await updateProfile(cred.user, { displayName: username });
+          await sendEmailVerification(cred.user);
+          await setDoc(doc(db, "users", cred.user.uid), { username }, { merge: true });
+          await signOut(auth); // Immediately sign out after sending verification
+
+          // Switch to login tab and show verification message on login tab
+          if (tabSignIn) tabSignIn.onclick();
+          if (authError) {
+            authError.textContent =
+              "Account created! Please verify your email before logging in. " +
+              "A verification link has been sent to your inbox. " +
+              "If you do not see the email, please check your spam or junk folder.";
+          }
+          // Modal stays open, user can log in after verifying
+        } catch (err) {
+          if (authError) authError.textContent = err.message;
+        }
+      } else {
+        try {
+          const cred = await signInWithEmailAndPassword(auth, email, password);
+          if (!cred.user.emailVerified) {
+            if (authError)
+              authError.textContent =
+                "Your email is not verified. Please check your inbox for the verification link. " +
+                "Check your spam/junk folder if you don't see it.";
+
+            let resendBtn = document.getElementById("resendVerificationBtn");
+            if (!resendBtn) {
+              resendBtn = document.createElement("button");
+              resendBtn.id = "resendVerificationBtn";
+              resendBtn.textContent = "Resend Verification Email";
+              resendBtn.style.marginTop = "10px";
+              authError.parentNode.appendChild(resendBtn);
+            }
+            resendBtn.style.display = "inline-block";
+            resendBtn.disabled = !canResendVerification(email);
+            resendBtn.onclick = () => handleResendVerification(cred.user, email, authError, resendBtn);
+
+            await signOut(auth); // Immediately sign out
+            return;
+          }
+          await ensureUsernameOnLogin(); // If somehow username not set, prompt (shouldn't happen for email/pass)
+          signInModal.style.display = "none";
+        } catch (err) {
+          if (authError) authError.textContent = err.message;
+        }
+      }
+    };
+  }
 }
 
 export function signOutHandler() {
@@ -279,7 +290,7 @@ export function signOutHandler() {
     .then(() => {
       isSignedIn = false;
       currentUser = null;
-      window.isSignedIn = false; // <-- ADD THIS LINE
+      window.isSignedIn = false;
       window.currentUser = null;
       document.dispatchEvent(new CustomEvent("authstatechanged", { detail: { user: null } }));
     })
@@ -316,15 +327,15 @@ export function updateIndexBarAuthButtons() {
     const changeUsernameBtn = document.createElement("button");
     changeUsernameBtn.textContent = "Change Username";
     changeUsernameBtn.onclick = async () => {
-  document.getElementById("usernameModal").style.display = "block";
-  const input = document.getElementById("usernameInput");
-  if (input) {
-    // Fetch and set the current username
-    const username = await getUsername();
-    input.value = username || "";
-    input.focus();
-  }
-};
+      document.getElementById("usernameModal").style.display = "block";
+      const input = document.getElementById("usernameInput");
+      if (input) {
+        // Fetch and set the current username
+        const username = await getUsername();
+        input.value = username || "";
+        input.focus();
+      }
+    };
     leftDiv.appendChild(changeUsernameBtn);
   } else {
     const signUpBtn = document.createElement("button");
