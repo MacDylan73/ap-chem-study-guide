@@ -782,7 +782,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Listen for auth state changes, update UI, and ensure username modal is shown if needed
 onAuthChange(async user => {
-  await ensureUsernameOnLogin();
+  // Only show username modal for Google sign-in
+  if (user && user.providerData.some(p => p.providerId === "google.com")) {   
+    await ensureUsernameOnLogin();
+  }
   updateUnitBottomBarAuthButtons();
 });
 </script>
