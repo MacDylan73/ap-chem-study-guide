@@ -135,6 +135,29 @@ export function setupAuthModalEvents() {
   const closeSignInModal = document.getElementById('closeSignInModal');
 
   let isRegister = false;
+  const RESEND_COOLDOWN_MINUTES = 5;
+
+  function canResendVerification(email) {
+    const lastSent = localStorage.getItem("lastVerificationResend_" + email);
+    if (!lastSent) return true;
+    const minutesPassed = (Date.now() - parseInt(lastSent, 10)) / 1000 / 60;
+    return minutesPassed >= RESEND_COOLDOWN_MINUTES;
+  }
+
+  async function handleResendVerification(user, email, errorElem, resendBtn) {
+    if (!canResendVerification(email)) {
+      if (errorElem) errorElem.textContent = `Please wait before resending. Try again in a few minutes.`;
+      resendBtn.disabled = true;
+      return;
+    }
+    await sendEmailVerification(user);
+    localStorage.setItem("lastVerificationResend_" + email, Date.now().toString());
+    if (errorElem) errorElem.textContent = "Verification email resent! Check your inbox.";
+    resendBtn.disabled = true;
+    setTimeout(() => {
+      resendBtn.disabled = !canResendVerification(email);
+    }, 1000);
+  }
 
   // Tab switching logic
   tabSignIn.onclick = () => {
@@ -145,6 +168,9 @@ export function setupAuthModalEvents() {
     submitAuthBtn.textContent = 'Sign In';
     authModalTitle.textContent = 'Sign In to Your Account';
     if (authError) authError.textContent = '';
+    // Hide resend button if it exists
+    let resendBtn = document.getElementById("resendVerificationBtn");
+    if (resendBtn) resendBtn.style.display = "none";
   };
   tabRegister.onclick = () => {
     isRegister = true;
@@ -154,6 +180,9 @@ export function setupAuthModalEvents() {
     submitAuthBtn.textContent = 'Register';
     authModalTitle.textContent = 'Register a New Account';
     if (authError) authError.textContent = '';
+    // Hide resend button if it exists
+    let resendBtn = document.getElementById("resendVerificationBtn");
+    if (resendBtn) resendBtn.style.display = "none";
   };
 
   closeSignInModal.onclick = () => {
@@ -161,6 +190,9 @@ export function setupAuthModalEvents() {
     if (authError) authError.textContent = '';
     if (authForm) authForm.reset();
     tabSignIn.onclick(); // Reset to sign-in tab
+    // Hide resend button if it exists
+    let resendBtn = document.getElementById("resendVerificationBtn");
+    if (resendBtn) resendBtn.style.display = "none";
   };
 
   // Google sign-in
@@ -177,55 +209,67 @@ export function setupAuthModalEvents() {
   }
 
   // Email/Password form submit
-if (authForm) {
-  authForm.onsubmit = async (e) => {
-    e.preventDefault();
-    if (authError) authError.textContent = '';
-    const email = document.getElementById('authEmail').value.trim();
-    const password = document.getElementById('authPassword').value;
-    if (isRegister) {
-  const username = authUsername.value.trim();
-  if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-    if (authError) authError.textContent = "Username must be 3–20 Letters/Numbers/Underscores.";
-    return;
-  }
-  if (await isUsernameTaken(username)) {
-    if (authError) authError.textContent = "Username Already Taken.";
-    return;
-  }
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(cred.user, { displayName: username });
-    await sendEmailVerification(cred.user);
+  if (authForm) {
+    authForm.onsubmit = async (e) => {
+      e.preventDefault();
+      if (authError) authError.textContent = '';
+      const email = document.getElementById('authEmail').value.trim();
+      const password = document.getElementById('authPassword').value;
+      // Hide resend button if it exists
+      let resendBtn = document.getElementById("resendVerificationBtn");
+      if (resendBtn) resendBtn.style.display = "none";
 
-    if (authError) authError.textContent = "Verification email sent, please verify you email before signing in!";
-
-    // Wait for Auth state to update before writing to Firestore
-    await new Promise(resolve => {
-      const unsub = onAuthStateChanged(auth, user => {
-        if (user && user.uid === cred.user.uid) {
-          unsub();
-          resolve();
+      if (isRegister) {
+        const username = authUsername.value.trim();
+        if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+          if (authError) authError.textContent = "Username must be 3–20 Letters/Numbers/Underscores.";
+          return;
         }
-      });
-    });
+        if (await isUsernameTaken(username)) {
+          if (authError) authError.textContent = "Username Already Taken.";
+          return;
+        }
+        try {
+          const cred = await createUserWithEmailAndPassword(auth, email, password);
+          await updateProfile(cred.user, { displayName: username });
+          await sendEmailVerification(cred.user);
+          await signOut(auth); // Immediately sign out after sending verification
+          if (authError) authError.textContent =
+            "Account created! Please verify your email before logging in. Verification link sent to your inbox.";
+          // Optionally close modal here or let user close it
+        } catch (err) {
+          if (authError) authError.textContent = err.message;
+        }
+      } else {
+        try {
+          const cred = await signInWithEmailAndPassword(auth, email, password);
+          if (!cred.user.emailVerified) {
+            if (authError) authError.textContent =
+              "Your email is not verified. Please check your inbox for the verification link.";
 
-    await setDoc(doc(db, "users", cred.user.uid), { username }, { merge: true });
-    await ensureUsernameOnLogin();
-    signInModal.style.display = "none";
-  } catch (err) {
-    if (authError) authError.textContent = err.message;
-  }
-} else {
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        signInModal.style.display = "none";
-      } catch (err) {
-        if (authError) authError.textContent = err.message;
+            // Create resend button if not present
+            let resendBtn = document.getElementById("resendVerificationBtn");
+            if (!resendBtn) {
+              resendBtn = document.createElement("button");
+              resendBtn.id = "resendVerificationBtn";
+              resendBtn.textContent = "Resend Verification Email";
+              resendBtn.style.marginTop = "10px";
+              authError.parentNode.appendChild(resendBtn);
+            }
+            resendBtn.style.display = "inline-block";
+            resendBtn.disabled = !canResendVerification(email);
+            resendBtn.onclick = () => handleResendVerification(cred.user, email, authError, resendBtn);
+
+            await signOut(auth); // Immediately sign out
+            return;
+          }
+          signInModal.style.display = "none";
+        } catch (err) {
+          if (authError) authError.textContent = err.message;
+        }
       }
-    }
-  };
-}
+    };
+  }
 }
 
 export function signOutHandler() {
