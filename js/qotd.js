@@ -99,16 +99,20 @@ export async function loadQOTD() {
   if (!container) return;
 
   // Render the question UI
+  // Determine if we're on the QOTD page
+  const isQotdPage = window.location.pathname.includes("ap-chem-question-of-the-day");
+
+  // Render the question UI
   container.innerHTML = `
-    <div class="question-box">
-      <div class="question-text">${q.question}</div>
-      <div class="answer-options">
-        ${q.answers.map((ans, i) => `<button class="qotd-answer-btn" data-idx="${i}">${ans}</button>`).join('')}
-      </div>
-      <button id="qotdSubmitBtn" style="display:none;margin-top:12px;">Submit</button>
-      <div class="qotd-feedback" style="display:none;margin-top:14px;"></div>
-      <div id="qotdCountdown" style="margin-top:16px; font-size:1rem; color:gray;"></div>
+  <div class="question-box">
+    <div class="question-text">${q.question}</div>
+    <div class="answer-options">
+      ${q.answers.map((ans, i) => `<button class="qotd-answer-btn" data-idx="${i}">${ans}</button>`).join('')}
     </div>
+    ${isQotdPage ? `<button id="qotdSubmitBtn" style="display:none;margin-top:12px;">Submit</button>` : ""}
+    <div class="qotd-feedback" style="display:none;margin-top:14px;"></div>
+    <div id="qotdCountdown" style="margin-top:16px; font-size:1rem; color:gray;"></div>
+  </div>
   `;
 
   // ------- Check for previous attempt ------
