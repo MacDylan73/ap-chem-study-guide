@@ -196,80 +196,82 @@ export function setupAuthModalEvents() {
   };
 
   // Google sign-in
-  if (googleSignInBtn) {
-    googleSignInBtn.onclick = async () => {
-      if (authError) authError.textContent = '';
+if (googleSignInBtn) {
+  googleSignInBtn.onclick = async () => {
+    if (authError) authError.textContent = '';
+    try {
+      await signInWithPopup(auth, provider);
+      await ensureUsernameOnLogin(); // <-- Only for Google sign-in
+      signInModal.style.display = "none";
+    } catch (err) {
+      if (authError) authError.textContent = err.message;
+    }
+  };
+}
+
+// Email/Password form submit
+if (authForm) {
+  authForm.onsubmit = async (e) => {
+    e.preventDefault();
+    if (authError) authError.textContent = '';
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value;
+    let resendBtn = document.getElementById("resendVerificationBtn");
+    if (resendBtn) resendBtn.style.display = "none";
+
+    if (isRegister) {
+      const username = authUsername.value.trim();
+      if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
+        if (authError) authError.textContent = "Username must be 3–20 Letters/Numbers/Underscores.";
+        return;
+      }
+      if (await isUsernameTaken(username)) {
+        if (authError) authError.textContent = "Username Already Taken.";
+        return;
+      }
       try {
-        await signInWithPopup(auth, provider);
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(cred.user, { displayName: username });
+        await sendEmailVerification(cred.user);
+        await setDoc(doc(db, "users", cred.user.uid), { username }, { merge: true });
+        await signOut(auth); // Immediately sign out after sending verification
+        if (authError) authError.textContent =
+          "Account created! Please verify your email before logging in. Verification link sent to your inbox.";
+        // Do NOT call ensureUsernameOnLogin here!
+        // signInModal.style.display = "none"; // Let user close it after reading message
+      } catch (err) {
+        if (authError) authError.textContent = err.message;
+      }
+    } else {
+      try {
+        const cred = await signInWithEmailAndPassword(auth, email, password);
+        if (!cred.user.emailVerified) {
+          if (authError) authError.textContent =
+            "Your email is not verified. Please check your inbox for the verification link.";
+
+          let resendBtn = document.getElementById("resendVerificationBtn");
+          if (!resendBtn) {
+            resendBtn = document.createElement("button");
+            resendBtn.id = "resendVerificationBtn";
+            resendBtn.textContent = "Resend Verification Email";
+            resendBtn.style.marginTop = "10px";
+            authError.parentNode.appendChild(resendBtn);
+          }
+          resendBtn.style.display = "inline-block";
+          resendBtn.disabled = !canResendVerification(email);
+          resendBtn.onclick = () => handleResendVerification(cred.user, email, authError, resendBtn);
+
+          await signOut(auth); // Immediately sign out
+          return;
+        }
+        await ensureUsernameOnLogin(); // If somehow username not set, prompt (shouldn't happen for email/pass)
         signInModal.style.display = "none";
       } catch (err) {
         if (authError) authError.textContent = err.message;
       }
-    };
-  }
-
-  // Email/Password form submit
-  if (authForm) {
-    authForm.onsubmit = async (e) => {
-      e.preventDefault();
-      if (authError) authError.textContent = '';
-      const email = document.getElementById('authEmail').value.trim();
-      const password = document.getElementById('authPassword').value;
-      // Hide resend button if it exists
-      let resendBtn = document.getElementById("resendVerificationBtn");
-      if (resendBtn) resendBtn.style.display = "none";
-
-      if (isRegister) {
-        const username = authUsername.value.trim();
-        if (!/^[a-zA-Z0-9_]{3,20}$/.test(username)) {
-          if (authError) authError.textContent = "Username must be 3–20 Letters/Numbers/Underscores.";
-          return;
-        }
-        if (await isUsernameTaken(username)) {
-          if (authError) authError.textContent = "Username Already Taken.";
-          return;
-        }
-        try {
-          const cred = await createUserWithEmailAndPassword(auth, email, password);
-          await updateProfile(cred.user, { displayName: username });
-          await sendEmailVerification(cred.user);
-          await signOut(auth); // Immediately sign out after sending verification
-          if (authError) authError.textContent =
-            "Account created! Please verify your email before logging in. Verification link sent to your inbox.";
-          // Optionally close modal here or let user close it
-        } catch (err) {
-          if (authError) authError.textContent = err.message;
-        }
-      } else {
-        try {
-          const cred = await signInWithEmailAndPassword(auth, email, password);
-          if (!cred.user.emailVerified) {
-            if (authError) authError.textContent =
-              "Your email is not verified. Please check your inbox for the verification link.";
-
-            // Create resend button if not present
-            let resendBtn = document.getElementById("resendVerificationBtn");
-            if (!resendBtn) {
-              resendBtn = document.createElement("button");
-              resendBtn.id = "resendVerificationBtn";
-              resendBtn.textContent = "Resend Verification Email";
-              resendBtn.style.marginTop = "10px";
-              authError.parentNode.appendChild(resendBtn);
-            }
-            resendBtn.style.display = "inline-block";
-            resendBtn.disabled = !canResendVerification(email);
-            resendBtn.onclick = () => handleResendVerification(cred.user, email, authError, resendBtn);
-
-            await signOut(auth); // Immediately sign out
-            return;
-          }
-          signInModal.style.display = "none";
-        } catch (err) {
-          if (authError) authError.textContent = err.message;
-        }
-      }
-    };
-  }
+    }
+  };
+}
 }
 
 export function signOutHandler() {
