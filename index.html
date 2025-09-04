@@ -248,6 +248,20 @@
       loadSidebar();
       updateIndexBarAuthButtons();
     });
+
+    // Redirect QOTD Box 
+    // Make QOTD question area clickable, except for sign-in button
+    document.addEventListener('DOMContentLoaded', () => {
+      const qotdArea = document.querySelector('.qotd-question-area');
+      const signInBtn = document.getElementById('qotdSignInBtn');
+      if (qotdArea) {
+        qotdArea.addEventListener('click', function(e) {
+          if (signInBtn && signInBtn.contains(e.target)) return;
+          window.location.href = 'ap-chem-question-of-the-day';
+        });
+      }
+    });
+
     
     // Listen for auth state changes, update UI, and ensure username modal is shown if needed
     onAuthChange(async user => {
