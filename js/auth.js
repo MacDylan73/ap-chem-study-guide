@@ -13,7 +13,8 @@ import {
   createUserWithEmailAndPassword,
   updateProfile,
   signOut,
-  onAuthStateChanged
+  onAuthStateChanged,
+  sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 import {
   getFirestore,
@@ -195,6 +196,9 @@ if (authForm) {
   try {
     const cred = await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(cred.user, { displayName: username });
+    await sendEmailVerification(cred.user);
+
+    if (authError) authError.textContent = "Verification email sent, please verify you email before signing in!";
 
     // Wait for Auth state to update before writing to Firestore
     await new Promise(resolve => {
