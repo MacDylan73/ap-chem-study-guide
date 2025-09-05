@@ -13,10 +13,8 @@
 <body>
   <!-- Top Navigation Bar will be rendered here -->
   <div id="topbar-container"></div>
-
   <!-- Sidebar will be rendered here -->
   <div id="sidebar-container"></div>
-
   <!-- Page Content -->
   <div class="container">
     <!-- Intro Box -->
@@ -26,8 +24,6 @@
         This is the format sections
       </p>
     </div>
-
-
     <!-- Format Box -->
     <div class="box">
       <h2>AP Chemistry Course Exam Format</h2>
@@ -51,15 +47,58 @@
         <strong><a href="ap-chem-exam-format">Go to exam format and info page →</a></strong>
       </p>
     </div>
-
     <!-- Countdown Box -->
     <div class="box">
       <div class="countdown" id="countdownText">
         Loading countdown...
       </div>
     </div>
+    <!-- Multiple Choice More In-Depth -->
+    <div class="box">
+      <h2>Multiple Choice Section In-Depth</h2>
+      <ul>
+        <li>Questions are discrete or in sets based on stimulus (graphs, charts, passages).</li>
+        <li>No calculators allowed in this section.</li>
+        <li>Focus on conceptual understanding, application, and some memorization.</li>
+        <li>Answer choices may be numerical, chemical, or conceptual.</li>
+        <li>Guessing is not penalized, so answer every question.</li>
+      </ul>
+    </div>
+    <!-- FRQ More In-Depth -->
+    <div class="box">
+      <h2>Free Response Section In-Depth</h2>
+      <ul>
+        <li>3 long FRQs: require detailed explanations, calculations, and multi-part answers.</li>
+        <li>4 short FRQs: focus on specific topics, calculations, or lab/data analysis.</li>
+        <li>Calculators are allowed throughout FRQ section.</li>
+        <li>Show all work for calculations; partial credit may be awarded.</li>
+        <li>Units and significant figures matter; always label answers.</li>
+      </ul>
+    </div>
+    <!-- Exam Day Information -->
+    <div class="box">
+      <h2>Exam Day Information</h2>
+      <ul>
+        <li>Bring #2 pencils for MCQ, black/blue pens for FRQ.</li>
+        <li>Approved calculator for FRQ section (check College Board list).</li>
+        <li>Government-issued or school photo ID.</li>
+        <li>Arrive early; doors may close before exam begins.</li>
+        <li>Know your AP number or student ID.</li>
+        <li>No electronic devices allowed during exam (phones, smartwatches, etc.).</li>
+      </ul>
+    </div>
+    <!-- FAQs Box -->
+    <div class="box">
+      <h2>Frequently Asked Questions</h2>
+      <ul>
+        <li><strong>How is the exam scored?</strong> Both sections are weighted equally (50% each); raw scores are converted to AP scores (1-5).</li>
+        <li><strong>Can I use a calculator during the MCQ?</strong> No, calculators are only allowed in the FRQ section.</li>
+        <li><strong>Are partial credits awarded?</strong> Yes, especially in FRQs if you show your work.</li>
+        <li><strong>What topics should I focus on?</strong> All units in the AP Chemistry curriculum; review released exams for trends.</li>
+        <li><strong>Should I guess if I don't know an answer?</strong> Yes, there is no penalty for guessing.</li>
+      </ul>
+    </div>
   </div>
-
   <!-- Bottom Bar for Index Page -->
   <div id="indexBottomBar" class="bottom-bar">
     <div class="bottom-bar-left" id="bottomBarLeft"></div>
@@ -70,11 +109,9 @@
       <button id="futureFeatureBtn" disabled>Future Feature</button>
     </div>
   </div>
-
   <!-- Modal and Overlay Box -->
   <div id="qotdModalContainer"></div>
   <div id="confettiOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:2000;"></div>
-
   <!-- JavaScript -->
   <!-- Utility scripts -->
   <script src="js/util.js" defer></script>
@@ -84,10 +121,8 @@
       renderCountdown("countdownText", "May 5, 2026");
     });
   </script>
-
   <!-- Modular JS imports for all UI and authentication logic -->
   <script type="module">
-    // Import shared modules for UI, authentication, and modal logic
     import { loadTopbar } from './js/topbar.js';
     import { loadSidebar } from './js/sidebar.js';
     import {
@@ -98,9 +133,7 @@
       ensureUsernameOnLogin,
       updateIndexBarAuthButtons
     } from './js/auth.js';
-    import { toggleTheme,
-             applySavedTheme
-    } from './js/theme-toggle.js';
+    import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
     import { setupUsernameModal } from './js/username-modal.js';
     import './js/qotd.js';
@@ -116,29 +149,23 @@
       const html = await resp.text();
       document.body.insertAdjacentHTML('beforeend', html);
     }
-    
-    // Render all elements
+
     document.addEventListener('DOMContentLoaded', async () => {
       await loadAuthModal(); 
       await loadUsernameModal();
-      
       setupAuthModalEvents();
       setupUsernameModal();
-      
       await loadTopbar("AP Chemistry Course Guide and Practice Tests");
       applySavedTheme();
       loadSidebar();
       updateIndexBarAuthButtons();
     });
-    
-    // Listen for auth state changes, update UI, and ensure username modal is shown if needed
+
     onAuthChange(async user => {
-      // Only show username modal for Google sign-in
-  if (user && user.providerData.some(p => p.providerId === "google.com")) {
-    await ensureUsernameOnLogin();
-  }
+      if (user && user.providerData.some(p => p.providerId === "google.com")) {
+        await ensureUsernameOnLogin();
+      }
       updateIndexBarAuthButtons();
-      // Any additional UI updates can go here
     });
   </script>
 </body>
