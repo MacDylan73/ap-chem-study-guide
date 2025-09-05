@@ -4,46 +4,50 @@
   <meta charset="UTF-8">
   <title>AP Chem QOTD</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/topbar.css">
   <link rel="stylesheet" href="css/bottombar.css">
-  <!-- <link rel="stylesheet" href="css/qotd.css"> -->
+  <link rel="stylesheet" href="css/sidebar.css">
+  <link rel="stylesheet" href="css/qotd.css">
 </head>
 <body>
   <div id="topbar-container"></div>
   <div id="sidebar-container"></div>
-  <main>
-    <div class="qotd-header">
-      <h2>AP Chem Question of the Day</h2>
-      <div class="qotd-subheader">
-        Welcome to the AP Chem Question of the Day Challenge! Try the daily question, check your stats, and climb the leaderboard.
+  <div class="container">
+    <div class="box">
+      <div class="qotd-header">
+        <h2>AP Chem Question of the Day</h2>
+        <div class="qotd-subheader">
+          Welcome to the AP Chem Question of the Day Challenge! Try the daily question, check your stats, and climb the leaderboard.
+        </div>
+      </div>
+      <div class="qotd-layout">
+        <div class="qotd-stats-box" id="qotdStatsBox">
+          <h3>Your Stats</h3>
+          <hr>
+          <ul style="list-style:none; padding:0; margin-top:14px;">
+            <li><strong>Total Correct:</strong> <span id="statsTotalCorrect">--</span></li>
+            <li><strong>Current Streak:</strong> <span id="statsCurrentStreak">--</span></li>
+            <li><strong>Best Streak:</strong> <span id="statsLongestStreak">--</span></li>
+            <li><strong>Percent Correct:</strong> <span id="statsPercentCorrect">--</span></li>
+          </ul>
+          <div id="statsErrorMsg" style="color:#c00; margin-top:10px; display:none;"></div>
+        </div>
+        <div class="qotd-question-box" id="qotdQuestionBox">
+          <div id="qotdBlurOverlay" class="qotd-blur-overlay" style="display:none;">
+            <button id="qotdSignInBtn" class="sign-in-btn">Sign In to Answer</button>
+          </div>
+          <div class="qotd-streak-icon-container">
+            <div id="qotdStreak"></div>
+            <div id="streakTooltip" style="display:none;"></div>
+          </div>
+          <h3>Today's Question</h3>
+          <hr>
+          <div id="qotdQuestionContent"></div>
+        </div>
       </div>
     </div>
-    <div class="qotd-layout">
-      <div class="qotd-stats-box" id="qotdStatsBox">
-        <h3>Your Stats</h3>
-        <hr>
-        <ul style="list-style:none; padding:0; margin-top:14px;">
-          <li><strong>Total Correct:</strong> <span id="statsTotalCorrect">--</span></li>
-          <li><strong>Current Streak:</strong> <span id="statsCurrentStreak">--</span></li>
-          <li><strong>Best Streak:</strong> <span id="statsLongestStreak">--</span></li>
-          <li><strong>Percent Correct:</strong> <span id="statsPercentCorrect">--</span></li>
-        </ul>
-        <div id="statsErrorMsg" style="color:#c00; margin-top:10px; display:none;"></div>
-      </div>
-      <div class="qotd-question-box" id="qotdQuestionBox">
-        <div id="qotdBlurOverlay" class="qotd-blur-overlay" style="display:none;">
-          <button id="qotdSignInBtn" class="sign-in-btn">Sign In to Answer</button>
-        </div>
-        <div class="qotd-streak-icon-container">
-          <div id="qotdStreak"></div>
-          <div id="streakTooltip" style="display:none;"></div>
-        </div>
-        <h3>Today's Question</h3>
-        <hr>
-        <div id="qotdQuestionContent"></div>
-      </div>
-    </div>
-    <div class="leaderboard-section">
+    <div class="box leaderboard-section">
       <h2>AP Chem Question of the Day Leaderboard</h2>
       <hr>
       <div class="leaderboard-tabs">
@@ -65,7 +69,7 @@
         </table>
       </div>
     </div>
-  </main>
+  </div>
   <div id="indexBottomBar" class="bottom-bar">
     <div class="bottom-bar-left" id="bottomBarLeft"></div>
     <div class="bottom-bar-center">
@@ -89,7 +93,7 @@
       setupAuthModalEvents,
       ensureUsernameOnLogin,
       updateUnitBottomBarAuthButtons,
-      db // <-- Make sure db is imported here!
+      db
     } from './js/auth.js';
     import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
@@ -97,7 +101,6 @@
     import { loadQOTD, renderUserStreakAlways, updateStatsBox } from './js/qotd.js';
     import { setupLeaderboardTabs, loadLeaderboard } from './js/leaderboard.js';
 
-    // ---------- Modal loader functions ----------
     async function loadAuthModal() {
       const resp = await fetch('auth-modal.html');
       const html = await resp.text();
@@ -109,7 +112,6 @@
       document.body.insertAdjacentHTML('beforeend', html);
     }
 
-    // ---------- DOM Ready setup ----------
     document.addEventListener("DOMContentLoaded", async () => {
       await loadAuthModal();
       await loadUsernameModal();
@@ -120,25 +122,20 @@
       loadSidebar();
       applySavedTheme();
 
-      // QOTD logic
       await loadQOTD();
       renderUserStreakAlways();
       updateStatsBox();
 
-      // Leaderboard setup - FIXED: pass db!
       setupLeaderboardTabs((metric) => loadLeaderboard(metric, db));
       loadLeaderboard("total", db);
 
-      // Bottom bar auth logic
       updateUnitBottomBarAuthButtons();
     });
 
-    // ---------- Auth Change Event for Stats & Streak ----------
     onAuthChange(async user => {
-      // Only show username modal for Google sign-in
-  if (user && user.providerData.some(p => p.providerId === "google.com")) {
-    await ensureUsernameOnLogin();
-  }
+      if (user && user.providerData.some(p => p.providerId === "google.com")) {
+        await ensureUsernameOnLogin();
+      }
       updateUnitBottomBarAuthButtons();
       renderUserStreakAlways();
       updateStatsBox();
