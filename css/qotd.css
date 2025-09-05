@@ -30,7 +30,6 @@
   padding: 1.5rem 1rem;
   margin-top: 16px;
 }
-/* Bigger question box for desktop */
 .qotd-question-box {
   flex: 0 0 540px;
   background: var(--box-bg, #fff);
@@ -43,7 +42,7 @@
   min-height: 340px;
 }
 
-/* ---- BLUR OVERLAY ---- */
+/* BLUR OVERLAY */
 .qotd-blur-overlay {
   position: absolute;
   top: 0; left: 0; width: 100%; height: 100%;
@@ -67,7 +66,7 @@
   box-shadow: 0 1px 6px rgba(44,49,83,0.09);
 }
 
-/* ---- STREAK ICON ---- */
+/* STREAK ICON */
 .qotd-streak-icon-container {
   position: absolute;
   top: 12px;
@@ -93,7 +92,6 @@
   height: 34px;
   border-radius: 50%;
   background: radial-gradient(circle at 60% 40%, #ffe0b2 0%, #ffb74d 100%);
-  /* Lighter orange/yellowish background for less blending */
   color: #e65100;
   font-size: 1.8rem;
   box-shadow: 0 2px 8px rgba(44,49,83,0.09);
@@ -106,16 +104,15 @@
   box-shadow: 0 4px 16px rgba(230,81,0,0.16);
   outline: none;
 }
-/* Streak number style for orange color */
 .streak-number {
   font-size: 1.34rem;
   font-weight: 700;
-  color: #ff9800; /* Orange to match the fire icon background */
+  color: #ff9800;
   margin-right: 3px;
   vertical-align: middle;
 }
 
-/* ---- STREAK TOOLTIP ---- */
+/* STREAK TOOLTIP */
 #streakTooltip {
   position: absolute;
   left: 50%;
@@ -135,7 +132,7 @@
   z-index: 10;
 }
 
-/* ---- LEADERBOARD ---- */
+/* LEADERBOARD */
 .leaderboard-section {
   margin: 0 auto;
   max-width: 1200px;
@@ -143,12 +140,10 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(44,49,83,0.09);
   padding: 2rem 2vw 2.5rem 2vw;
-  /* The padding leaves a little space on sides for desktop */
   position: relative;
   margin-bottom: 32px;
-  margin-top: 62px; /* Extra margin so box above doesn't clip into tabs */
+  margin-top: 62px;
 }
-/* Tabs pop out above leaderboard box */
 .leaderboard-tabs {
   position: absolute;
   top: -44px;
@@ -205,10 +200,13 @@
   border-bottom: none;
 }
 
-/* ---- QUESTION BOX QUESTION/TEXT ---- */
+/* QUESTION BOX TEXT */
 .question-box {
   margin-top: 12px;
   margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 .question-text {
   font-size: 1.2rem;
@@ -253,8 +251,6 @@
 }
 .qotd-feedback.correct { color: #43a047; }
 .qotd-feedback.incorrect { color: #e65100; }
-
-/* Make the submit button match box/answer button border style */
 #qotdSubmitBtn {
   border: 1.8px solid var(--box-border, #cacde8);
   border-radius: 8px;
@@ -265,7 +261,6 @@
   margin-top: 1.2em;
   margin-bottom: 0.5em;
   display: inline-block;
-  /* Optional: for hover effect */
   transition: background 0.13s;
 }
 #qotdSubmitBtn:hover,
@@ -273,13 +268,34 @@
   background: var(--box-border, #e0e3f9);
 }
 
-/* Center the submit button in the question box */
-.question-box {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* Accessibility: Focus ring for buttons */
+.qotd-answer-btn:focus, .sign-in-btn:focus, .leaderboard-tab:focus {
+  outline: 2px solid #3949ab;
+  outline-offset: 2px;
 }
-/* ---- Responsive for Mobile ---- */
+
+/* Leaderboard table active user row (deeper blue highlight) */
+.leaderboard-table tr.active-user td {
+  background: #2745a8 !important;
+  color: #fff !important;
+  font-weight: bold;
+  border-top: 2px solid #3949ab;
+  border-bottom: 2px solid #3949ab;
+}
+.leaderboard-table tr.active-user td .active-user-label {
+  font-size: 0.92em;
+  color: #ffd700;
+  font-weight: normal;
+  margin-left: 7px;
+}
+.leaderboard-table tr.active-user-bottom td {
+  background: #193080 !important;
+  color: #fff !important;
+  font-weight: bold;
+  border-top: 2px solid #3949ab;
+}
+
+/* Mobile responsive for main content only */
 @media (max-width: 900px) {
   .qotd-layout {
     flex-direction: column;
@@ -300,7 +316,6 @@
     padding-left: 4vw;
     padding-right: 4vw;
   }
-  /* On mobile, render stats below question */
   .qotd-question-box {
     order: 1;
     margin-top: 16px;
@@ -309,7 +324,6 @@
     order: 2;
     margin-top: 12px;
   }
-  /* Leaderboard at very bottom, full width */
   .leaderboard-section {
     order: 3;
     width: 98vw;
@@ -329,7 +343,7 @@
   }
 }
 
-/* Small screens: reduce padding and font size a bit */
+/* Small screens: reduce padding and font size for main boxes ONLY */
 @media (max-width: 600px) {
   .qotd-question-box, .qotd-stats-box, .leaderboard-section {
     padding-left: 2vw;
@@ -343,95 +357,4 @@
   .leaderboard-section { padding: 1.4rem 2vw 2rem 2vw; }
 }
 
-/* Accessibility: Focus ring for buttons */
-.qotd-answer-btn:focus, .sign-in-btn:focus, .leaderboard-tab:focus {
-  outline: 2px solid #3949ab;
-  outline-offset: 2px;
-}
-
-/* Leaderboard table active user row (deeper blue highlight) */
-.leaderboard-table tr.active-user td {
-  background: #2745a8 !important; /* Deeper blue */
-  color: #fff !important;
-  font-weight: bold;
-  border-top: 2px solid #3949ab;
-  border-bottom: 2px solid #3949ab;
-}
-.leaderboard-table tr.active-user td .active-user-label {
-  font-size: 0.92em;
-  color: #ffd700;
-  font-weight: normal;
-  margin-left: 7px;
-}
-
-/* Bottom stats line for active user */
-.leaderboard-table tr.active-user-bottom td {
-  background: #193080 !important; /* Even deeper blue for bottom row */
-  color: #fff !important;
-  font-weight: bold;
-  border-top: 2px solid #3949ab;
-}
-
-
-@media (max-width: 600px) {
-  /* Top bar */
-  #topbar-container,
-  .topbar {
-    min-height: 56px !important;
-    font-size: 1.18rem !important;
-    padding: 0 1em !important;
-  }
-
-  /* Sidebar */
-  #sidebar-container,
-  .sidebar {
-    width: 98vw !important;
-    font-size: 1.12rem !important;
-    padding: 1.2em 1em !important;
-  }
-
-  /* Bottom bar */
-  #indexBottomBar,
-  .bottom-bar {
-    font-size: 1.15rem !important;
-    padding: 1em 2vw !important;
-    min-height: 54px !important;
-  }
-
-  /* Main content boxes stacked and larger */
-  .qotd-layout {
-    flex-direction: column !important;
-    gap: 18px !important;
-  }
-  .qotd-question-box,
-  .qotd-stats-box {
-    width: 98vw !important;
-    max-width: 98vw !important;
-    padding: 1.5em 3vw !important;
-    font-size: 1.09em !important;
-  }
-
-  /* Modals: full screen, stacked content */
-  .modal, .leaderboard-section, #userStatsModal {
-    width: 99vw !important;
-    max-width: 99vw !important;
-    left: 0 !important;
-    right: 0 !important;
-    border-radius: 16px !important;
-    padding: 1.8em 2vw !important;
-    box-sizing: border-box;
-  }
-  .modal-content, .leaderboard-section {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 14px !important;
-  }
-
-  /* Table font size for readability */
-  .leaderboard-table th,
-  .leaderboard-table td {
-    font-size: 1.07rem !important;
-    padding: 0.7em 0.2em !important;
-  }
-}
+/* --- Removed mobile overrides for topbar, sidebar, bottom bar --- */
