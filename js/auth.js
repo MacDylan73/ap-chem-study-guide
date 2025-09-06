@@ -328,10 +328,10 @@ export function updateIndexBarAuthButtons() {
     // --- Account button with SVG icon ---
     const accountBtn = document.createElement("button");
     accountBtn.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="21" height="21" style="vertical-align:middle; margin-right:6px; fill:none;stroke:#3949ab;stroke-width:2;">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6"/>
-      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="21" height="21" style="vertical-align:middle; margin-right:6px; fill:none;stroke:currentColor;stroke-width:2;">
+  <circle cx="12" cy="8" r="4"/>
+  <path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6"/>
+</svg>
       Account
     `;
     accountBtn.onclick = async () => {
@@ -397,10 +397,10 @@ export function updateUnitBottomBarAuthButtons() {
     // --- Account button with SVG icon ---
     const accountBtn = document.createElement("button");
     accountBtn.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="21" height="21" style="vertical-align:middle; margin-right:6px; fill:none;stroke:#3949ab;stroke-width:2;">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6"/>
-      </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="21" height="21" style="vertical-align:middle; margin-right:6px; fill:none;stroke:currentColor;stroke-width:2;">
+  <circle cx="12" cy="8" r="4"/>
+  <path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6"/>
+</svg>
       Account
     `;
     accountBtn.onclick = async () => {
