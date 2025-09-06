@@ -223,6 +223,7 @@
     import { setupUsernameModal } from './js/username-modal.js';
     import './js/qotd.js';
     import './js/progress.js';
+    import { injectAccountModal, setupAccountModalEvents } from './js/account-modal.js';
 
     async function loadAuthModal() {
       const resp = await fetch('auth-modal.html');
@@ -237,12 +238,14 @@
     
     // Render all elements
     document.addEventListener('DOMContentLoaded', async () => {
-      await loadAuthModal(); 
+      await AuthModal(); 
       await loadUsernameModal();
       
       setupAuthModalEvents();
       setupUsernameModal();
-      
+      injectAccountModal(); // Inject modal HTML into DOM
+      setupAccountModalEvents();  // Set up listeners, ESC key, overlay click, etc
+      await load
       await loadTopbar("AP Chemistry Course Guide and Practice Tests");
       applySavedTheme();
       loadSidebar();
