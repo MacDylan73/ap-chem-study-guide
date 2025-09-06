@@ -1,5 +1,3 @@
-// Account Modal JS 
-
 import { getUsername, isUsernameTaken, saveUsername, getUser } from './auth.js';
 import { getProgress } from './progress.js';
 import { db } from './auth.js';
@@ -28,6 +26,14 @@ const totalSubunitsByUnit = {
   "unit-8": 11,
   "unit-9": 11
 };
+
+// --- Modal Injection ---
+export async function injectAccountModal() {
+  if (document.getElementById('accountModal')) return;
+  const resp = await fetch('account-modal.html');
+  const html = await resp.text();
+  document.body.insertAdjacentHTML('beforeend', html);
+}
 
 // --- Modal Logic ---
 export function showAccountModal() {
@@ -255,7 +261,7 @@ async function loadAccountModalData() {
 }
 
 // --- Attach event handlers every time modal is shown ---
-function setupAccountModalEvents() {
+export function setupAccountModalEvents() {
   const modal = document.getElementById('accountModal');
   if (!modal) return;
 
