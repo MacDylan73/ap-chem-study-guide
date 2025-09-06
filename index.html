@@ -237,19 +237,21 @@
     }
     
     // Render all elements
-    document.addEventListener('DOMContentLoaded', async () => {
-      await loadAuthModal(); 
-      await loadUsernameModal();
-      
-      setupAuthModalEvents();
-      setupUsernameModal();
-      injectAccountModal(); // Inject modal HTML into DOM
-      setupAccountModalEvents();  // Set up listeners, ESC key, overlay click, etc
-      await loadTopbar("AP Chemistry Course Guide and Practice Tests");
-      applySavedTheme();
-      loadSidebar();
-      updateIndexBarAuthButtons();
-    });
+   document.addEventListener('DOMContentLoaded', async () => {
+  await loadAuthModal();           // 1. Inject HTML for Auth modal
+  setupAuthModalEvents();          // 2. Setup events for Auth modal
+
+  await loadUsernameModal();       // 3. Inject HTML for Username modal
+  setupUsernameModal();            // 4. Setup events for Username modal
+
+  await injectAccountModal();      // 5. Inject HTML for Account modal
+  setupAccountModalEvents();       // 6. Setup events for Account modal
+
+  await loadTopbar("AP Chemistry Course Guide and Practice Tests");
+  applySavedTheme();
+  loadSidebar();
+  updateIndexBarAuthButtons();
+});
 
     // Redirect QOTD Box 
     // Make QOTD question area clickable, except for sign-in button
