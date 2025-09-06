@@ -313,6 +313,7 @@ export function updateIndexBarAuthButtons() {
   const leftDiv = document.getElementById("bottomBarLeft");
   leftDiv.innerHTML = "";
   if (window.isSignedIn) {
+    // Sign Out button
     const signOutBtn = document.createElement("button");
     signOutBtn.textContent = "Sign Out";
     signOutBtn.onclick = () => {
@@ -324,20 +325,36 @@ export function updateIndexBarAuthButtons() {
     };
     leftDiv.appendChild(signOutBtn);
 
-    const changeUsernameBtn = document.createElement("button");
-    changeUsernameBtn.textContent = "Change Username";
-    changeUsernameBtn.onclick = async () => {
-      document.getElementById("usernameModal").style.display = "block";
-      const input = document.getElementById("usernameInput");
-      if (input) {
-        // Fetch and set the current username
-        const username = await getUsername();
-        input.value = username || "";
-        input.focus();
+    // --- Account button with SVG icon ---
+    const accountBtn = document.createElement("button");
+    accountBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="21" height="21" style="vertical-align:middle; margin-right:6px; fill:none;stroke:#3949ab;stroke-width:2;">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6"/>
+      </svg>
+      Account
+    `;
+    accountBtn.onclick = async () => {
+      // Only fetch if modal not present
+      if (!document.getElementById("accountModal")) {
+        try {
+          const resp = await fetch("account-modal.html");
+          const html = await resp.text();
+          document.body.insertAdjacentHTML("beforeend", html);
+        } catch (err) {
+          alert("Could not load account modal.");
+          return;
+        }
       }
+      // Show the modal
+      const modal = document.getElementById("accountModal");
+      if (modal) modal.style.display = "block";
+      // Future: load stats, progress, badges, etc.
     };
-    leftDiv.appendChild(changeUsernameBtn);
+    leftDiv.appendChild(accountBtn);
+
   } else {
+    // Sign In button
     const signUpBtn = document.createElement("button");
     signUpBtn.textContent = "Sign In";
     signUpBtn.onclick = () => {
@@ -356,6 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
   updateIndexBarAuthButtons();
 });
 
+
 // --- Dynamic Bottom Bar for Units Pages ---
 export function updateUnitBottomBarAuthButtons() {
   const bottomBarLeft = document.getElementById("bottomBarLeft");
@@ -366,6 +384,7 @@ export function updateUnitBottomBarAuthButtons() {
   bottomBarLeft.innerHTML = "";
 
   if (window.isSignedIn) {
+    // Sign Out button
     const signOutBtn = document.createElement("button");
     signOutBtn.textContent = "Sign Out";
     signOutBtn.onclick = async () => {
@@ -375,24 +394,36 @@ export function updateUnitBottomBarAuthButtons() {
     };
     bottomBarLeft.appendChild(signOutBtn);
 
-    const changeUsernameBtn = document.createElement("button");
-    changeUsernameBtn.textContent = "Change Username";
-    changeUsernameBtn.onclick = async () => {
-      if (!window.isSignedIn || !window.currentUser) {
-        alert("Please sign in first.");
-        return;
-      }
-      if (usernameModal) {
-        usernameModal.style.display = "block";
-        if (usernameInput) {
-          const username = await getUsername();
-          usernameInput.value = username || "";
-          usernameInput.focus();
+    // --- Account button with SVG icon ---
+    const accountBtn = document.createElement("button");
+    accountBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="21" height="21" style="vertical-align:middle; margin-right:6px; fill:none;stroke:#3949ab;stroke-width:2;">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6"/>
+      </svg>
+      Account
+    `;
+    accountBtn.onclick = async () => {
+      // Only fetch if modal not present
+      if (!document.getElementById("accountModal")) {
+        try {
+          const resp = await fetch("account-modal.html");
+          const html = await resp.text();
+          document.body.insertAdjacentHTML("beforeend", html);
+        } catch (err) {
+          alert("Could not load account modal.");
+          return;
         }
       }
+      // Show the modal
+      const modal = document.getElementById("accountModal");
+      if (modal) modal.style.display = "block";
+      // Future: load stats, progress, badges, etc.
     };
-    bottomBarLeft.appendChild(changeUsernameBtn);
+    bottomBarLeft.appendChild(accountBtn);
+
   } else {
+    // Sign In button
     const signInBtn = document.createElement("button");
     signInBtn.textContent = "Sign In";
     signInBtn.onclick = () => {
