@@ -1818,3 +1818,8 @@ body.dark-mode .unit-progress-bar {
     padding: 0.23em 0.36em 0.2em 0.36em;
   }
 }
+
+.calc-full-link {
+  margin-top: 1em; /* or 16px, or whatever spacing you like */
+  text-align: center;
+}
