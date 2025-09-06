@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // --- Dynamic Bottom Bar for Units Pages ---
 export function updateUnitBottomBarAuthButtons() {
   const bottomBarLeft = document.getElementById("bottomBarLeft");
-  const signInModal = document.getElementById("signInModal"); // use correct modal ID
+  const signInModal = document.getElementById("signInModal");
   const usernameModal = document.getElementById("usernameModal");
   const usernameInput = document.getElementById("usernameInput");
 
@@ -386,21 +386,32 @@ export function updateUnitBottomBarAuthButtons() {
 
     // --- Account button with SVG icon ---
     const accountBtn = document.createElement("button");
-accountBtn.innerHTML = `
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="21" height="21" style="vertical-align:middle; margin-right:6px; fill:none;stroke:currentColor;stroke-width:2;">
-    <circle cx="12" cy="8" r="4"/>
-    <path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6"/>
-  </svg>
-  Account
-`;
-accountBtn.onclick = () => {
-  if (typeof showAccountModal === "function") {
-    showAccountModal();
+    accountBtn.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="21" height="21" style="vertical-align:middle; margin-right:6px; fill:none;stroke:currentColor;stroke-width:2;">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6"/>
+      </svg>
+      Account
+    `;
+    accountBtn.onclick = () => {
+      if (typeof showAccountModal === "function") {
+        showAccountModal();
+      } else {
+        alert("Account modal not loaded. Try refreshing.");
+      }
+    };
+    bottomBarLeft.appendChild(accountBtn); // <-- fixed!
   } else {
-    alert("Account modal not loaded. Try refreshing.");
+    // Sign In button
+    const signInBtn = document.createElement("button");
+    signInBtn.textContent = "Sign In";
+    signInBtn.onclick = () => {
+      if (signInModal) signInModal.style.display = "block";
+      else console.warn("Sign-in modal not found");
+    };
+    bottomBarLeft.appendChild(signInBtn);
   }
-};
-leftDiv.appendChild(accountBtn);
+}
 
   } else {
     // Sign In button
