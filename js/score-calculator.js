@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (scoreResult) {
             const linkDiv = document.createElement("div");
             linkDiv.className = "calc-full-link";
-            linkDiv.innerHTML = '<a href="ap-chem-score-calculator.html" target="_blank">Go to full score calculator page →</a>';
+            linkDiv.innerHTML = '<a href="ap-chem-score-calculator.html">Go to full score calculator page →</a>';
             scoreResult.appendChild(linkDiv);
           }
         }
