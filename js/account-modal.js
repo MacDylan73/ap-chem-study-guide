@@ -1,7 +1,4 @@
-// Account Modal JS -- Make sure your modal HTML includes the following IDs:
-// 'accountModal', 'accountUsernameDisplay', 'accountUsernameInput', 'editUsernameBtn',
-// 'accountUsernameEditSection', 'accountUsernameErrorMsg', 'saveEditUsernameBtn', 'cancelEditUsernameBtn',
-// 'unitProgressList', 'finalQuizBestScore', 'qotdStatsBox', 'closeAccountModal'
+// Account Modal JS 
 
 import { getUsername, isUsernameTaken, saveUsername, getUser } from './auth.js';
 import { getProgress } from './progress.js';
@@ -268,9 +265,13 @@ function setupAccountModalEvents() {
     // Close logic
     const closeBtn = document.getElementById('closeAccountModal');
     if (closeBtn) closeBtn.onclick = closeAccountModal;
-    modal.onclick = (e) => { if (e.target === modal) closeAccountModal(); };
+    // ESC key
     document.addEventListener('keydown', (e) => {
       if (modal.style.display === 'block' && e.key === 'Escape') closeAccountModal();
+    });
+    // Click outside modal content to close
+    modal.addEventListener('mousedown', (e) => {
+      if (e.target === modal) closeAccountModal();
     });
 
     setupUsernameEditLogic();
