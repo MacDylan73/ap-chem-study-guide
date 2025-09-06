@@ -214,12 +214,7 @@
   font-weight: 500;
   color: #3949ab;
 }
-.answer-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 10px;
-}
+
 .qotd-answer-btn {
   padding: 0.7em 2em;
   font-size: 1.06rem;
