@@ -1,3 +1,8 @@
+// Account Modal JS -- Make sure your modal HTML includes the following IDs:
+// 'accountModal', 'accountUsernameDisplay', 'accountUsernameInput', 'editUsernameBtn',
+// 'accountUsernameEditSection', 'accountUsernameErrorMsg', 'saveEditUsernameBtn', 'cancelEditUsernameBtn',
+// 'unitProgressList', 'finalQuizBestScore', 'qotdStatsBox', 'closeAccountModal'
+
 import { getUsername, isUsernameTaken, saveUsername, getUser } from './auth.js';
 import { getProgress } from './progress.js';
 import { db } from './auth.js';
@@ -32,7 +37,6 @@ function showAccountModal() {
   const modal = document.getElementById('accountModal');
   if (modal) {
     modal.style.display = 'block';
-    // Use custom event to trigger data reload
     modal.dispatchEvent(new Event('show'));
   }
 }
@@ -45,21 +49,30 @@ function closeAccountModal() {
 // --- Username Logic ---
 async function loadUsername() {
   const usernameDisplay = document.getElementById('accountUsernameDisplay');
-  if (!getUser()) {
+  const usernameInput = document.getElementById('accountUsernameInput');
+  if (!usernameDisplay || !usernameInput) return;
+
+  const user = getUser();
+  if (!user) {
     usernameDisplay.textContent = '[unknown]';
+    usernameInput.value = '';
     return;
   }
   const username = await getUsername();
   usernameDisplay.textContent = username || '[unknown]';
-  document.getElementById('accountUsernameInput').value = username || '';
+  usernameInput.value = username || '';
 }
 
 // --- Username Edit Logic ---
 function resetUsernameEdit() {
-  document.getElementById('accountUsernameEditSection').style.display = 'none';
-  document.getElementById('accountUsernameDisplay').style.display = '';
-  document.getElementById('editUsernameBtn').style.display = '';
-  document.getElementById('accountUsernameErrorMsg').textContent = '';
+  const editSection = document.getElementById('accountUsernameEditSection');
+  const usernameDisplay = document.getElementById('accountUsernameDisplay');
+  const editBtn = document.getElementById('editUsernameBtn');
+  const errorMsg = document.getElementById('accountUsernameErrorMsg');
+  if (editSection) editSection.style.display = 'none';
+  if (usernameDisplay) usernameDisplay.style.display = '';
+  if (editBtn) editBtn.style.display = '';
+  if (errorMsg) errorMsg.textContent = '';
 }
 
 function setupUsernameEditLogic() {
@@ -73,6 +86,7 @@ function setupUsernameEditLogic() {
 
   if (editBtn) {
     editBtn.onclick = () => {
+      if (!editSection || !usernameDisplay || !usernameInput || !errorMsg) return;
       editSection.style.display = 'flex';
       usernameDisplay.style.display = 'none';
       editBtn.style.display = 'none';
@@ -85,6 +99,7 @@ function setupUsernameEditLogic() {
 
   if (saveBtn) {
     saveBtn.onclick = async () => {
+      if (!usernameInput || !errorMsg) return;
       const newUsername = usernameInput.value.trim();
       if (!/^[a-zA-Z0-9_]{3,20}$/.test(newUsername)) {
         errorMsg.textContent = "Username must be 3–20 characters, letters/numbers/underscores only.";
@@ -107,14 +122,15 @@ function setupUsernameEditLogic() {
 
 // --- Progress Bars & Final Quiz ---
 async function loadProgressBars() {
-  const progressData = await getProgress();
   const container = document.getElementById('unitProgressList');
-  if (!container) return;
+  const bestScoreElem = document.getElementById('finalQuizBestScore');
+  if (!container || !bestScoreElem) return;
   container.innerHTML = '';
 
+  const progressData = await getProgress();
   if (!progressData || !progressData.units) {
     container.innerHTML = '<div style="color:#666;">No progress data. Start learning!</div>';
-    document.getElementById('finalQuizBestScore').textContent = "N/A";
+    bestScoreElem.textContent = "N/A";
     return;
   }
 
@@ -146,8 +162,7 @@ async function loadProgressBars() {
     `;
   });
 
-  // Final quiz score
-  document.getElementById('finalQuizBestScore').textContent = bestQuizScore !== null ? bestQuizScore : "N/A";
+  bestScoreElem.textContent = bestQuizScore !== null ? bestQuizScore : "N/A";
 }
 
 // --- QOTD Stats (modular, not using old modal logic) ---
@@ -164,7 +179,13 @@ async function loadQotdStats() {
   // Fetch all attempts for this user
   const attemptsRef = collection(db, "qotd_attempts");
   const q = query(attemptsRef, where("uid", "==", user.uid));
-  const snap = await getDocs(q);
+  let snap;
+  try {
+    snap = await getDocs(q);
+  } catch (e) {
+    qotdStatsBox.innerHTML = `<div style="color:red;">Error loading QOTD stats.</div>`;
+    return;
+  }
   const attempts = [];
   snap.forEach(doc => attempts.push(doc.data()));
 
@@ -236,31 +257,41 @@ async function loadAccountModalData() {
   loadBadges();
 }
 
-// --- Attach event handlers on first modal open ---
+// --- Attach event handlers every time modal is shown ---
 function setupAccountModalEvents() {
   const modal = document.getElementById('accountModal');
   if (!modal) return;
 
-  // Close logic
-  const closeBtn = document.getElementById('closeAccountModal');
-  if (closeBtn) closeBtn.onclick = closeAccountModal;
-  modal.onclick = (e) => { if (e.target === modal) closeAccountModal(); };
-  document.addEventListener('keydown', (e) => {
-    if (modal.style.display === 'block' && e.key === 'Escape') closeAccountModal();
+  let initialized = false;
+
+  function attachHandlers() {
+    // Close logic
+    const closeBtn = document.getElementById('closeAccountModal');
+    if (closeBtn) closeBtn.onclick = closeAccountModal;
+    modal.onclick = (e) => { if (e.target === modal) closeAccountModal(); };
+    document.addEventListener('keydown', (e) => {
+      if (modal.style.display === 'block' && e.key === 'Escape') closeAccountModal();
+    });
+
+    setupUsernameEditLogic();
+  }
+
+  // Load (refresh) data and events each time modal is shown
+  modal.addEventListener('show', () => {
+    loadAccountModalData();
+    attachHandlers();
   });
 
-  setupUsernameEditLogic();
-
-  // Load (refresh) data each time modal is shown
-  modal.addEventListener('show', loadAccountModalData);
+  // On first page load, attach handlers if modal already exists
+  if (!initialized) {
+    attachHandlers();
+    initialized = true;
+  }
 }
 
 // --- Initialize logic on DOM ready ---
 document.addEventListener('DOMContentLoaded', () => {
   setupAccountModalEvents();
-  if (document.getElementById('accountModal')) {
-    setupAccountModalEvents();
-  }
 });
 
 // --- If modal is shown via Account button, trigger data reload ---
