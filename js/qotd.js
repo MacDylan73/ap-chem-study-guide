@@ -90,8 +90,19 @@ function startEasternCountdown() {
 // ------------------ QOTD Display Logic (index page) -------------------
 
 export async function loadQOTD() {
-  const res = await fetch('questions.json');
-  const questions = await res.json();
+  let questions;
+  try {
+    const res = await fetch('questions.json');
+    questions = await res.json();
+  } catch (e) {
+    console.error("[QOTD] Error loading questions.json:", e);
+    return;
+  }
+  if (!Array.isArray(questions) || !questions.length) {
+    console.error("[QOTD] No questions found");
+    return;
+  }
+
   const idx = getQOTDIndexEastern(questions.length);
   const q = questions[idx];
 
@@ -99,20 +110,18 @@ export async function loadQOTD() {
   if (!container) return;
 
   // Render the question UI
-  // Determine if we're on the QOTD page
   const isQotdPage = window.location.pathname.includes("ap-chem-question-of-the-day");
 
-  // Render the question UI
   container.innerHTML = `
-  <div class="question-box">
-    <div class="question-text">${q.question}</div>
-    <div class="answer-options">
-      ${q.answers.map((ans, i) => `<button class="qotd-answer-btn" data-idx="${i}">${ans}</button>`).join('')}
+    <div class="question-box">
+      <div class="question-text">${q.question}</div>
+      <div class="answer-options">
+        ${q.answers.map((ans, i) => `<button class="qotd-answer-btn" data-idx="${i}">${ans}</button>`).join('')}
+      </div>
+      ${isQotdPage ? `<button id="qotdSubmitBtn" style="display:none;margin-top:12px;">Submit</button>` : ""}
+      <div class="qotd-feedback" style="display:none;margin-top:14px;"></div>
+      <div id="qotdCountdown" style="margin-top:16px; font-size:1rem; color:gray;"></div>
     </div>
-    ${isQotdPage ? `<button id="qotdSubmitBtn" style="display:none;margin-top:12px;">Submit</button>` : ""}
-    <div class="qotd-feedback" style="display:none;margin-top:14px;"></div>
-    <div id="qotdCountdown" style="margin-top:16px; font-size:1rem; color:gray;"></div>
-  </div>
   `;
 
   // ------- Check for previous attempt ------
@@ -122,17 +131,36 @@ export async function loadQOTD() {
 async function checkQOTDAttempt(q) {
   const today = getTodayStrEastern();
   const container = document.getElementById('qotdQuestionContent');
+  if (!container) return; // Guard container
+
   const feedbackDiv = container.querySelector('.qotd-feedback');
   const submitBtn = container.querySelector('#qotdSubmitBtn');
   const answerBtns = container.querySelectorAll('.qotd-answer-btn');
 
+  // Guard child elements for feedback/answer/submit
+  if (!feedbackDiv || !answerBtns || answerBtns.length === 0) {
+    // It's possible to proceed to setup handlers if user isn't logged in
+    // but no feedback/answer buttons means nothing to show or disable
+    setupQOTDHandlers(q);
+    return;
+  }
+
   const lsKey = "qotd_attempt_" + today;
   const local = localStorage.getItem(lsKey);
   if (local) {
-    const { answerIndex, correct } = JSON.parse(local);
-    showQOTDFeedback(correct, q, answerIndex);
-    disableQOTDButtons(answerBtns, submitBtn);
-    return;
+    let parsed;
+    try {
+      parsed = JSON.parse(local);
+    } catch (e) {
+      parsed = null;
+    }
+    if (parsed && typeof parsed.answerIndex === "number" && typeof parsed.correct === "boolean") {
+      showQOTDFeedback(parsed.correct, q, parsed.answerIndex);
+      disableQOTDButtons(answerBtns, submitBtn);
+      return;
+    }
+    // If local storage is corrupted, clear it and proceed.
+    localStorage.removeItem(lsKey);
   }
 
   const user = getUser();
@@ -161,10 +189,15 @@ async function checkQOTDAttempt(q) {
 
 function setupQOTDHandlers(q) {
   const container = document.getElementById('qotdQuestionContent');
+  if (!container) return; // Guard container
+
   let selectedIdx = null;
   const answerBtns = container.querySelectorAll('.qotd-answer-btn');
   const submitBtn = container.querySelector('#qotdSubmitBtn');
   const feedbackDiv = container.querySelector('.qotd-feedback');
+
+  // Guard all required elements
+  if (!answerBtns || answerBtns.length === 0 || !submitBtn || !feedbackDiv) return;
 
   answerBtns.forEach(btn => {
     btn.onclick = function() {
@@ -210,7 +243,7 @@ function setupQOTDHandlers(q) {
           correct
         });
         renderUserStreakAlways();
-        updateStatsBox(); // <-- Add this
+        updateStatsBox();
         loadLeaderboard("total", db);
       } catch (err) {
         console.error("[QOTD] Error saving Firestore attempt doc:", err);
@@ -221,9 +254,14 @@ function setupQOTDHandlers(q) {
 
 function showQOTDFeedback(correct, q, selectedIdx) {
   const container = document.getElementById('qotdQuestionContent');
+  if (!container) return; // Guard container
+
   const feedbackDiv = container.querySelector('.qotd-feedback');
   const answerBtns = container.querySelectorAll('.qotd-answer-btn');
   const submitBtn = container.querySelector('#qotdSubmitBtn');
+
+  // Guard all required elements
+  if (!feedbackDiv || !answerBtns || answerBtns.length === 0 || !submitBtn) return;
 
   answerBtns.forEach((b, i) => {
     b.disabled = true;
@@ -243,11 +281,11 @@ function showQOTDFeedback(correct, q, selectedIdx) {
     feedbackDiv.classList.remove('correct');
   }
 
-  // Show countdown for next QOTD
   startEasternCountdown();
 }
 
 function disableQOTDButtons(answerBtns, submitBtn) {
+  if (!answerBtns || answerBtns.length === 0 || !submitBtn) return;
   answerBtns.forEach(b => b.disabled = true);
   submitBtn.disabled = true;
   submitBtn.style.display = 'none';
@@ -260,6 +298,7 @@ function updateQOTDGating() {
   const signedIn = window.isSignedIn;
   console.log("[QOTD] updateQOTDGating, window.isSignedIn:", signedIn);
 
+  // Guard DOM elements
   if (!blurOverlay || !questionContent) return;
 
   if (signedIn) {
@@ -279,7 +318,10 @@ function showAppSignInModal() {
     if (tabSignIn) tabSignIn.onclick();
     return true;
   }
-  alert("Sign-in modal could not be triggered. Please check your modal integration.");
+  // Extra guard: only show alert if document.body exists
+  if (document.body) {
+    alert("Sign-in modal could not be triggered. Please check your modal integration.");
+  }
   return false;
 }
 
@@ -287,6 +329,7 @@ function showAppSignInModal() {
 export async function renderUserStreakAlways() {
   const qotdStreak = document.getElementById('qotdStreak');
   const streakTooltip = document.getElementById('streakTooltip');
+  // Guard DOM elements
   if (!qotdStreak || !streakTooltip) return;
 
   const user = getUser();
@@ -311,7 +354,6 @@ export async function renderUserStreakAlways() {
     const todayStr = getTodayStrEastern();
     const yesterdayStr = (() => {
       const now = new Date();
-      // Eastern time string for yesterday
       now.setDate(now.getDate() - 1);
       const yyyy = now.getFullYear();
       const mm = String(now.getMonth() + 1).padStart(2, '0');
@@ -358,19 +400,23 @@ export async function renderUserStreakAlways() {
     if (fireIcon) {
       // Tooltip logic
       function showStreakTooltip(e) {
+        if (!streakTooltip) return;
         streakTooltip.textContent = `Current Streak: ${currentStreak}`;
         streakTooltip.style.display = 'block';
         streakTooltip.style.opacity = '1';
         setTimeout(() => {
+          if (!fireIcon || !streakTooltip) return;
           const rect = fireIcon.getBoundingClientRect();
           let parent = fireIcon.closest('.qotd-actions');
           if (!parent) parent = qotdStreak.parentElement;
+          if (!parent) return;
           const parentRect = parent.getBoundingClientRect();
           streakTooltip.style.left = `${rect.left - parentRect.left + rect.width / 2 - streakTooltip.offsetWidth / 2}px`;
           streakTooltip.style.top = `${rect.top - parentRect.top - streakTooltip.offsetHeight - 10}px`;
         }, 1);
       }
       function hideStreakTooltip() {
+        if (!streakTooltip) return;
         streakTooltip.style.display = 'none';
         streakTooltip.style.opacity = '0';
       }
@@ -388,7 +434,9 @@ export async function renderUserStreakAlways() {
       });
     }
   } catch (err) {
-    qotdStreak.innerHTML = `<span class="streak-number">0</span> <span class="fire-icon">🔥</span>`;
+    if (qotdStreak) {
+      qotdStreak.innerHTML = `<span class="streak-number">0</span> <span class="fire-icon">🔥</span>`;
+    }
   }
 }
 
@@ -406,7 +454,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Import modals if modal container exists
-  if (document.getElementById('qotdModalContainer')) {
+  const modalContainer = document.getElementById('qotdModalContainer');
+  if (modalContainer) {
     importQOTDModals();
   }
 
@@ -418,11 +467,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Guarded clearLocalQOTDAttempt
 function clearLocalQOTDAttempt() {
-  const today = getTodayStrEastern();
-  localStorage.removeItem("qotd_attempt_" + today);
+  try {
+    const today = getTodayStrEastern();
+    localStorage.removeItem("qotd_attempt_" + today);
+  } catch (e) {
+    console.warn("[QOTD] Could not clear local QOTD attempt:", e);
+  }
 }
 
+// Guarded auth event listeners
 document.addEventListener('authstatechanged', function(e) {
   window.isSignedIn = !!(e.detail && e.detail.user);
   authReady = true;
@@ -466,10 +521,12 @@ function attachStreakTooltip(qotdStreak, streakTooltip, currentStreak) {
   }
 
   function showStreakTooltip(e) {
+    if (!streakTooltip || !fireIcon) return;
     streakTooltip.textContent = `Current Streak: ${currentStreak}`;
     streakTooltip.style.display = 'block';
     streakTooltip.style.opacity = '1';
     setTimeout(() => {
+      if (!fireIcon || !streakTooltip) return;
       const rect = fireIcon.getBoundingClientRect();
       const modalRect = modal ? modal.getBoundingClientRect() : { left: 0, top: 0 };
       streakTooltip.style.left = `${rect.left - modalRect.left + rect.width/2 - streakTooltip.offsetWidth/2}px`;
@@ -477,6 +534,7 @@ function attachStreakTooltip(qotdStreak, streakTooltip, currentStreak) {
     }, 1);
   }
   function hideStreakTooltip() {
+    if (!streakTooltip) return;
     streakTooltip.style.display = 'none';
     streakTooltip.style.opacity = '0';
   }
@@ -495,6 +553,7 @@ function attachStreakTooltip(qotdStreak, streakTooltip, currentStreak) {
 }
 
 // Loads and populates user stats modal
+// Guarded loadUserStatsModal
 async function loadUserStatsModal() {
   const statsUserInfo = document.getElementById('statsUserInfo');
   const statsTotalAttempted = document.getElementById('statsTotalAttempted');
@@ -502,11 +561,12 @@ async function loadUserStatsModal() {
   const statsCurrentStreak = document.getElementById('statsCurrentStreak');
   const statsLongestStreak = document.getElementById('statsLongestStreak');
   const statsErrorMsg = document.getElementById('statsErrorMsg');
-  // *** USE MODAL IDs HERE ***
   const qotdStreak = document.getElementById('modalQotdStreak');
   const streakTooltip = document.getElementById('modalStreakTooltip');
 
-  // Clear previous
+  // Guard all required elements
+  if (!statsUserInfo || !statsTotalAttempted || !statsTotalCorrect || !statsCurrentStreak || !statsLongestStreak || !statsErrorMsg) return;
+
   statsErrorMsg.style.display = "none";
   statsUserInfo.textContent = "";
   statsTotalAttempted.textContent = "...";
@@ -523,12 +583,10 @@ async function loadUserStatsModal() {
     return;
   }
 
-  // Show username/email if available
   statsUserInfo.textContent = user.displayName
     ? `Username: ${user.displayName}`
     : `User: ${user.email}`;
 
-  // Fetch all attempts for this user
   const attemptsRef = collection(db, "qotd_attempts");
   const q = query(attemptsRef, where("uid", "==", user.uid));
   try {
@@ -536,14 +594,11 @@ async function loadUserStatsModal() {
     const attempts = [];
     snap.forEach(doc => attempts.push(doc.data()));
 
-    // Compute stats
     const totalAttempted = attempts.length;
     const totalCorrect = attempts.filter(a => a.correct).length;
 
-    // Sort attempts by date ascending
     attempts.sort((a, b) => a.date.localeCompare(b.date));
 
-    // Streak calculations
     let currentStreak = 0, longestStreak = 0;
     let prevDate = null;
     let streak = 0;
@@ -556,8 +611,8 @@ async function loadUserStatsModal() {
       if (prevDate) {
         const prev = new Date(prevDate);
         const curr = new Date(thisDate);
-        const daysDiff = (curr - prev) / (1000*60*60*24);
-        if (daysDiff === 1) streak++; // consecutive day
+        const daysDiff = (curr - prev) / (1000 * 60 * 60 * 24);
+        if (daysDiff === 1) streak++;
         else streak = 1;
       } else {
         streak = 1;
@@ -565,8 +620,7 @@ async function loadUserStatsModal() {
       prevDate = thisDate;
       if (streak > longestStreak) longestStreak = streak;
     }
-    // Compute current streak (last attempt date = today and correct)
-    if (attempts.length && attempts[attempts.length-1].date === getTodayStrEastern() && attempts[attempts.length-1].correct) {
+    if (attempts.length && attempts[attempts.length - 1].date === getTodayStrEastern() && attempts[attempts.length - 1].correct) {
       currentStreak = streak;
     } else {
       currentStreak = 0;
@@ -577,7 +631,6 @@ async function loadUserStatsModal() {
     statsCurrentStreak.textContent = currentStreak;
     statsLongestStreak.textContent = longestStreak;
 
-    // ---- Inject streak number and fire icon, with robust tooltip logic ----
     attachStreakTooltip(qotdStreak, streakTooltip, currentStreak);
 
   } catch (err) {
@@ -587,23 +640,24 @@ async function loadUserStatsModal() {
   }
 }
 
-// Loads and populates leaderboard modal
+// Guarded loadLeaderboardModal
 async function loadLeaderboardModal() {
   const leaderboardList = document.getElementById('leaderboardList');
   const leaderboardErrorMsg = document.getElementById('leaderboardErrorMsg');
   const leaderboardLoadingMsg = document.getElementById('leaderboardLoadingMsg');
+
+  // Guard required elements
+  if (!leaderboardList || !leaderboardErrorMsg || !leaderboardLoadingMsg) return;
 
   leaderboardErrorMsg.style.display = "none";
   leaderboardLoadingMsg.style.display = "block";
   leaderboardList.innerHTML = "";
 
   try {
-    // Fetch all attempts
     const attemptsRef = collection(db, "qotd_attempts");
     const snap = await getDocs(attemptsRef);
 
-    // Aggregate correct counts by user
-    const userStats = {}; // uid -> { correct: int, attempted: int }
+    const userStats = {};
     snap.forEach(doc => {
       const d = doc.data();
       if (!userStats[d.uid]) userStats[d.uid] = { correct: 0, attempted: 0, username: null };
@@ -611,24 +665,19 @@ async function loadLeaderboardModal() {
       if (d.correct) userStats[d.uid].correct++;
     });
 
-    // Fetch usernames for leaderboard display
     const userEntries = Object.entries(userStats);
-    // Sort by correct desc, attempted desc
     userEntries.sort((a, b) => b[1].correct - a[1].correct || b[1].attempted - a[1].attempted);
 
-    // Try to get usernames from "users" collection
     for (let i = 0; i < userEntries.length; ++i) {
       const uid = userEntries[i][0];
       try {
         const userDoc = await getDoc(doc(db, "users", uid));
-        if (userDoc.exists()) userEntries[i][1].username = userDoc.data().username || uid;
-        else userEntries[i][1].username = uid;
+        userEntries[i][1].username = userDoc.exists() ? (userDoc.data().username || uid) : uid;
       } catch {
         userEntries[i][1].username = uid;
       }
     }
 
-    // Render top 10 leaderboard
     leaderboardList.innerHTML = "";
     userEntries.slice(0, 10).forEach(([uid, data], idx) => {
       const li = document.createElement('li');
@@ -647,25 +696,26 @@ async function loadLeaderboardModal() {
   }
 }
 
-// ---- Modular modal import logic for QOTD Stats & Leaderboard ----
-// This allows you to keep modal HTML in qotd-stats.html and inject it into index.html dynamically.
-
+// Guarded importQOTDModals
 async function importQOTDModals() {
-  // Fetch modal HTML from qotd-stats.html
-  const res = await fetch('qotd-stats.html');
-  const text = await res.text();
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(text, 'text/html');
+  let res, text, parser, doc;
+  try {
+    res = await fetch('qotd-stats.html');
+    text = await res.text();
+    parser = new DOMParser();
+    doc = parser.parseFromString(text, 'text/html');
+  } catch (err) {
+    console.error("[QOTD] Error importing stat modals:", err);
+    return;
+  }
   const modalContainer = document.getElementById('qotdModalContainer');
   if (!modalContainer) return;
 
-  // Extract modals by their IDs
   const statsModal = doc.getElementById('userStatsModal');
   const leaderboardModal = doc.getElementById('leaderboardModal');
   if (statsModal) modalContainer.appendChild(statsModal);
   if (leaderboardModal) modalContainer.appendChild(leaderboardModal);
 
-  // Attach event handlers to buttons
   const statsBtn = document.getElementById('qotdStatsBtn');
   const leaderboardBtn = document.getElementById('qotdLeaderboardBtn');
   if (statsBtn && statsModal) {
@@ -681,7 +731,6 @@ async function importQOTDModals() {
     };
   }
 
-  // Attach modal close & ESC logic
   const closeStatsBtn = document.getElementById('closeStatsModalBtn');
   const closeLeaderboardBtn = document.getElementById('closeLeaderboardModalBtn');
   if (closeStatsBtn && statsModal) closeStatsBtn.onclick = () => statsModal.style.display = 'none';
@@ -696,24 +745,22 @@ async function importQOTDModals() {
   });
 }
 
-// --- Automatically refresh QOTD at midnight (local time) ---
+// Guarded scheduleMidnightQOTDRefresh
 function scheduleMidnightQOTDRefresh() {
   const now = new Date();
-  // Calculate milliseconds until next midnight + 1 second
   const msUntilMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 1) - now;
   setTimeout(() => {
-    loadQOTD();           // refresh the question
-    renderUserStreakAlways(); // update streak display
-    scheduleMidnightQOTDRefresh(); // schedule for next midnight
+    loadQOTD();
+    renderUserStreakAlways();
+    scheduleMidnightQOTDRefresh();
   }, msUntilMidnight);
 }
 
-// Start midnight refresh when DOM and auth are ready
-if (domReady && authReady) {
+if (typeof domReady !== "undefined" && typeof authReady !== "undefined" && domReady && authReady) {
   scheduleMidnightQOTDRefresh();
 }
 
-// Confetti Overlay on Correct Answer
+// Guarded showConfetti
 function showConfetti() {
   const overlay = document.getElementById('confettiOverlay');
   if (!overlay) return;
@@ -721,20 +768,19 @@ function showConfetti() {
   overlay.innerHTML = '';
   for (let i = 0; i < 80; i++) {
     const particle = document.createElement('div');
-    const startLeft = Math.random() * 100; // Start position in vw
-    const endLeft = startLeft + (Math.random() * 20 - 10); // Move left or right up to ±10vw
+    const startLeft = Math.random() * 100;
+    const endLeft = startLeft + (Math.random() * 20 - 10);
 
     particle.style.position = 'absolute';
     particle.style.left = startLeft + 'vw';
     particle.style.top = '-20px';
     particle.style.width = '10px';
     particle.style.height = '18px';
-    particle.style.background = `hsl(${Math.random()*360},80%,60%)`;
+    particle.style.background = `hsl(${Math.random() * 360},80%,60%)`;
     particle.style.opacity = 0.7;
     particle.style.borderRadius = '3px';
-    particle.style.transform = `rotate(${Math.random()*360}deg)`;
+    particle.style.transform = `rotate(${Math.random() * 360}deg)`;
     const duration = 1.7 + Math.random() * (3.5 - 1.7);
-    // Animate both top and left
     particle.style.transition = `top ${duration}s cubic-bezier(.2,.7,.3,1), left ${duration}s cubic-bezier(.2,.7,.3,1)`;
     overlay.appendChild(particle);
 
@@ -745,18 +791,22 @@ function showConfetti() {
   }
 
   setTimeout(() => {
-    overlay.style.display = 'none';
-    overlay.innerHTML = '';
+    if (overlay) {
+      overlay.style.display = 'none';
+      overlay.innerHTML = '';
+    }
   }, 3500);
 }
 
-// Extra Stat Box for QOTD Page 
+// Guarded updateStatsBox
 export async function updateStatsBox() {
   const statsTotalCorrect = document.getElementById('statsTotalCorrect');
   const statsCurrentStreak = document.getElementById('statsCurrentStreak');
   const statsLongestStreak = document.getElementById('statsLongestStreak');
   const statsPercentCorrect = document.getElementById('statsPercentCorrect');
   const statsErrorMsg = document.getElementById('statsErrorMsg');
+
+  if (!statsTotalCorrect || !statsCurrentStreak || !statsLongestStreak || !statsPercentCorrect || !statsErrorMsg) return;
 
   statsErrorMsg.style.display = "none";
   statsTotalCorrect.textContent = "...";
@@ -782,12 +832,10 @@ export async function updateStatsBox() {
     const attempts = [];
     snap.forEach(doc => attempts.push(doc.data()));
 
-    // Compute stats
     const totalAttempted = attempts.length;
     const totalCorrect = attempts.filter(a => a.correct).length;
     attempts.sort((a, b) => a.date.localeCompare(b.date));
 
-    // Streak calculations
     let currentStreak = 0, longestStreak = 0;
     let prevDate = null;
     let streak = 0;
@@ -800,7 +848,7 @@ export async function updateStatsBox() {
       if (prevDate) {
         const prev = new Date(prevDate);
         const curr = new Date(thisDate);
-        const daysDiff = (curr - prev) / (1000*60*60*24);
+        const daysDiff = (curr - prev) / (1000 * 60 * 60 * 24);
         if (daysDiff === 1) streak++;
         else streak = 1;
       } else {
@@ -809,8 +857,7 @@ export async function updateStatsBox() {
       prevDate = thisDate;
       if (streak > longestStreak) longestStreak = streak;
     }
-    // Current streak: last attempt date = today and correct
-    if (attempts.length && attempts[attempts.length-1].date === getTodayStrEastern() && attempts[attempts.length-1].correct) {
+    if (attempts.length && attempts[attempts.length - 1].date === getTodayStrEastern() && attempts[attempts.length - 1].correct) {
       currentStreak = streak;
     } else {
       currentStreak = 0;
@@ -832,4 +879,4 @@ export async function updateStatsBox() {
   }
 }
 
-// ---- End of AP Chem QOTD logic ----
+// End of Logic
