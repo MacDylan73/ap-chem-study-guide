@@ -759,12 +759,16 @@ async function loadUsernameModal() {
 
 // Render all elements after DOM is ready
 document.addEventListener('DOMContentLoaded', async () => {
-  await loadAuthModal();
-  await loadUsernameModal();
-  await loadGatingModal();
+  await loadAuthModal();           // 1. Inject HTML for Auth modal
+  setupAuthModalEvents();          // 2. Setup events for Auth modal
 
-  setupAuthModalEvents();
-  setupUsernameModal();
+  await loadUsernameModal();       // 3. Inject HTML for Username modal
+  setupUsernameModal();            // 4. Setup events for Username modal
+
+  await injectAccountModal();      // 5. Inject HTML for Account modal
+  setupAccountModalEvents();       // 6. Setup events for Account modal
+
+  await loadGatingModal();
 
   await loadTopbar("Unit 1: Atomic Structure");
   applySavedTheme();
