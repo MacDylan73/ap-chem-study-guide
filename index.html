@@ -238,14 +238,13 @@
     
     // Render all elements
     document.addEventListener('DOMContentLoaded', async () => {
-      await AuthModal(); 
+      await loadAuthModal(); 
       await loadUsernameModal();
       
       setupAuthModalEvents();
       setupUsernameModal();
       injectAccountModal(); // Inject modal HTML into DOM
       setupAccountModalEvents();  // Set up listeners, ESC key, overlay click, etc
-      await load
       await loadTopbar("AP Chemistry Course Guide and Practice Tests");
       applySavedTheme();
       loadSidebar();
