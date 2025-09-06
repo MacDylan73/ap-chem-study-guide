@@ -1,1 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP Chemistry Score Calculator</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/topbar.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/bottombar.css" /> 
+</head>
+<body>
+  <!-- Top Navigation Bar will be rendered here -->
+  <div id="topbar-container"></div>
+  <!-- Sidebar will be rendered here -->
+  <div id="sidebar-container"></div>
+  <!-- Page Content -->
+  <div class="container">
+    <!-- Header Box (styled like QOTD page) -->
+    <div class="box">
+      <h2>AP Chemistry Score Calculator</h2>
+      <div class="qotd-subheader">
+        Estimate your AP Chemistry exam score and set goals for your practice. Adjust the sliders and see how your section scores impact your predicted AP score.
+      </div>
+    </div>
 
+    <!-- Calculator Box -->
+    <div class="box" id="score-calculator-container">
+      <!-- The calculator UI will be injected here by JS -->
+    </div>
+    
+    <!-- Scoring Information Box -->
+    <div class="box">
+      <h2>How AP Chemistry Scoring Works</h2>
+      <hr>
+      <ul>
+        <li>The exam has two main sections:
+          <ul>
+            <li><strong>Multiple Choice (MCQ):</strong> 60 questions, 90 minutes, 50% of total score</li>
+            <li><strong>Free Response (FRQ):</strong> 7 questions (3 long, 4 short), 105 minutes, 50% of total score</li>
+          </ul>
+        </li>
+        <li>Raw scores are converted to a scale from 1 to 5.</li>
+        <li>There is no penalty for guessing in MCQ.</li>
+        <li>Partial credit is awarded on FRQs if you show your work.</li>
+        <li>Check the College Board website for official scoring guidelines and recent cutoffs.</li>
+      </ul>
+    </div>
+
+    <!-- Countdown Box -->
+    <div class="box">
+      <div class="countdown" id="countdownText">
+        Loading countdown...
+      </div>
+    </div>
+  </div>
+  <!-- Bottom Bar for Page -->
+  <div id="indexBottomBar" class="bottom-bar">
+    <div class="bottom-bar-left" id="bottomBarLeft"></div>
+    <div class="bottom-bar-center">
+      <button id="returnHomeBtn" onclick="window.location.href='index.html'">Return to Home</button>
+    </div>
+    <div class="bottom-bar-right">
+      <button id="futureFeatureBtn" disabled>Future Feature</button>
+    </div>
+  </div>
+  <!-- Modal and Overlay Box -->
+  <div id="qotdModalContainer"></div>
+  <div id="confettiOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:2000;"></div>
+  <!-- JavaScript -->
+  <!-- Utility scripts -->
+  <script src="js/util.js" defer></script>
+  <script src="js/score-calculator.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      renderCountdown("countdownText", "May 5, 2026");
+    });
+  </script>
+  <!-- Modular JS imports for all UI and authentication logic -->
+  <script type="module">
+    import { loadTopbar } from './js/topbar.js';
+    import { loadSidebar } from './js/sidebar.js';
+    import {
+      onAuthChange,
+      signInHandler,
+      signOutHandler,
+      setupAuthModalEvents,
+      ensureUsernameOnLogin,
+      updateIndexBarAuthButtons
+    } from './js/auth.js';
+    import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
+    window.toggleTheme = toggleTheme;
+    import { setupUsernameModal } from './js/username-modal.js';
+    import './js/qotd.js';
+    import './js/progress.js';
+
+    async function loadAuthModal() {
+      const resp = await fetch('auth-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+    async function loadUsernameModal() {
+      const resp = await fetch('username-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadAuthModal(); 
+      await loadUsernameModal();
+      setupAuthModalEvents();
+      setupUsernameModal();
+      await loadTopbar("AP Chemistry Score Calculator");
+      applySavedTheme();
+      loadSidebar();
+      updateIndexBarAuthButtons();
+    });
+
+    onAuthChange(async user => {
+      if (user && user.providerData.some(p => p.providerId === "google.com")) {
+        await ensureUsernameOnLogin();
+      }
+      updateIndexBarAuthButtons();
+    });
+  </script>
+</body>
+</html>
