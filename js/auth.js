@@ -413,18 +413,6 @@ export function updateUnitBottomBarAuthButtons() {
   }
 }
 
-  } else {
-    // Sign In button
-    const signInBtn = document.createElement("button");
-    signInBtn.textContent = "Sign In";
-    signInBtn.onclick = () => {
-      if (signInModal) signInModal.style.display = "block";
-      else console.warn("Sign-in modal not found");
-    };
-    bottomBarLeft.appendChild(signInBtn);
-  }
-}
-
 // Sets up navigation for bottom bar buttons on unit pages
 export function setupUnitBottomBarButtons() {
   const returnHomeBtn = document.getElementById("returnHomeBtn");
