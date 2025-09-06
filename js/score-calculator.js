@@ -14,6 +14,22 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(html => {
         container.innerHTML = html;
         initScoreCalculator();
+
+        // OPTION 2: Inject link only on index page (or where you want)
+        // You can check via pathname, or look for a unique element/class on the index page
+        // Example: Only add if on index.html
+        if (
+          window.location.pathname.endsWith("index.html") ||
+          window.location.pathname === "/" // also home
+        ) {
+          const scoreResult = container.querySelector(".calc-score-result");
+          if (scoreResult) {
+            const linkDiv = document.createElement("div");
+            linkDiv.className = "calc-full-link";
+            linkDiv.innerHTML = '<a href="score-calculator.html" target="_blank">Go to full score calculator page →</a>';
+            scoreResult.appendChild(linkDiv);
+          }
+        }
       })
       .catch(err => {
         container.innerHTML = '<p style="color:red">Score calculator could not be loaded.</p>';
