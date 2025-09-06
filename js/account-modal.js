@@ -32,7 +32,8 @@ function showAccountModal() {
   const modal = document.getElementById('accountModal');
   if (modal) {
     modal.style.display = 'block';
-    loadAccountModalData();
+    // Use custom event to trigger data reload
+    modal.dispatchEvent(new Event('show'));
   }
 }
 function closeAccountModal() {
@@ -94,7 +95,7 @@ function setupUsernameEditLogic() {
         return;
       }
       try {
-        await saveUsername(newUsername); // This already calls hideUsernameModal; we don't want that, so just update Firestore directly:
+        await saveUsername(newUsername);
         await loadUsername();
         resetUsernameEdit();
       } catch (e) {
@@ -149,10 +150,12 @@ async function loadProgressBars() {
   document.getElementById('finalQuizBestScore').textContent = bestQuizScore !== null ? bestQuizScore : "N/A";
 }
 
-// --- QOTD Stats ---
+// --- QOTD Stats (modular, not using old modal logic) ---
 async function loadQotdStats() {
   const user = getUser();
   const qotdStatsBox = document.getElementById('qotdStatsBox');
+  if (!qotdStatsBox) return;
+
   if (!user) {
     qotdStatsBox.innerHTML = '<div style="color:#666;">Sign in to view QOTD stats.</div>';
     return;
@@ -169,7 +172,7 @@ async function loadQotdStats() {
   const totalAttempted = attempts.length;
   const totalCorrect = attempts.filter(a => a.correct).length;
 
-  // Streak and best streak
+  // Streak & Best streak calculation
   attempts.sort((a, b) => a.date.localeCompare(b.date));
   let currentStreak = 0, longestStreak = 0;
   let prevDate = null, streak = 0;
@@ -191,9 +194,8 @@ async function loadQotdStats() {
     prevDate = thisDate;
     if (streak > longestStreak) longestStreak = streak;
   }
-  // Current streak: last attempt date = today and correct
+  // Compute current streak (last attempt date = today and correct)
   const todayStr = (() => {
-    // Get current date in Eastern Time
     const easternNow = new Date(
       new Date().toLocaleString('en-US', { timeZone: 'America/New_York' })
     );
@@ -213,7 +215,6 @@ async function loadQotdStats() {
     currentStreak = 0;
   }
 
-  // Stats box
   qotdStatsBox.innerHTML = `
     <div>Attempted: ${totalAttempted}</div>
     <div>Correct: ${totalCorrect}</div>
@@ -224,7 +225,7 @@ async function loadQotdStats() {
 
 // --- Badges (placeholder outlines) ---
 function loadBadges() {
-  // Nothing needed for now, the outlines are in HTML
+  // Outlines are already present in HTML; nothing needed yet.
 }
 
 // --- Main loader ---
@@ -237,7 +238,6 @@ async function loadAccountModalData() {
 
 // --- Attach event handlers on first modal open ---
 function setupAccountModalEvents() {
-  // Only once per modal injection
   const modal = document.getElementById('accountModal');
   if (!modal) return;
 
@@ -252,15 +252,12 @@ function setupAccountModalEvents() {
   setupUsernameEditLogic();
 
   // Load (refresh) data each time modal is shown
-  // Add a custom event for modal show, or trigger when opening
   modal.addEventListener('show', loadAccountModalData);
 }
 
 // --- Initialize logic on DOM ready ---
 document.addEventListener('DOMContentLoaded', () => {
   setupAccountModalEvents();
-
-  // If modal is already present (injected), setup events
   if (document.getElementById('accountModal')) {
     setupAccountModalEvents();
   }
