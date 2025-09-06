@@ -30,7 +30,7 @@ const totalSubunitsByUnit = {
 };
 
 // --- Modal Logic ---
-function showAccountModal() {
+export function showAccountModal() {
   const modal = document.getElementById('accountModal');
   if (modal) {
     modal.style.display = 'block';
