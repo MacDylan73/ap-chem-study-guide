@@ -139,7 +139,7 @@ body.dark-mode #futureFeatureBtn {
   width: 100%;
   font-size: 0.89em;
   text-align: center;
-  margin-top: 8px;
+  margin-top: 0px;
   color: #666;
   background: #1a237e;   /* matches bottom bar */
   color: #fff;           /* matches bottom bar text */
