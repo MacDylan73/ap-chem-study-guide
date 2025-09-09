@@ -82,6 +82,9 @@ img {
 html {
   scroll-behavior: smooth;
 }
+.section-anchor {
+  scroll-margin-top: 100px; /* adjust based on your header height */
+}
 /* ===========================
    LINK STYLES
    =========================== */
