@@ -133,3 +133,34 @@ body.dark-mode #futureFeatureBtn {
   background: #444444;
   color: #757575;
 }
+
+/* === BOTTOM BAR LOWER TEXT ========= */
+.footer-info {
+  width: 100%;
+  font-size: 0.89em;
+  text-align: center;
+  margin-top: 8px;
+  color: #666;
+  background: #1a237e;   /* matches bottom bar */
+  color: #fff;           /* matches bottom bar text */
+  padding: 0.25em 0;
+}
+
+.footer-dot {
+  margin: 0 7px;
+}
+
+.tm-symbol {
+  font-size: 0.7em;
+  vertical-align: super;
+}
+
+.footer-copyright {
+  margin-left: 10px;
+}
+
+/* Dark mode support */
+body.dark-mode .footer-info {
+  background: var(--bar-bg);
+  color: var(--bar-text);
+}
