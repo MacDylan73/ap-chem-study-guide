@@ -7,18 +7,19 @@
       "98.43 g/mol",
       "119.11 g/mol"
     ],
-    "correct": 2,
+    "correct": 1,
     "explanation": "To find the molar mass, add up the atomimc masses of each element in the compound: Each Na has a mass of 22.99 g/mol, so 45.98 g/mol of Na. The one S has a mass of 32.07 g/mol. The four oxygens each have masses of 16.00 g/mol, so 64.00 g/mol of O.  When we add these masses up, we get 45.98 + 32.07 + 64.00 = 142.05 g/mol"
   },
   {
-    "question": "Which of the following is a strong acid?",
+    "question": "How many moles are in 32g of Oxygen gas (O₂)?",
     "answers": [
-      "HCl",
-      "CH3COOH",
-      "NH3"
+      ".5 mol",
+      "1 mol",
+      "1.5 mol",
+      "2 mol"
     ],
-    "correct": 0,
-    "explanation": "HCl is a strong acid."
+    "correct": 1,
+    "explanation": "First find the molar mass of Oxygen gas - note it is diatomic, so there are two oxygens.  16.00 g/mol x 2 = 32.00 g/mol.  Now to find the moles, we divide the mass provided by the molar mass (32g / 32 g/mol = 1 mol of O₂)"
   },
   {
     "question": "How many valence electrons are in a nitrogen atom?",
