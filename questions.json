@@ -1,13 +1,14 @@
 [
   {
-    "question": "What is the electron configuration of a sulfur atom?",
+    "question": "What is the molar mass of Sodium Sulfate (Na₂SO₄)?",
     "answers": [
-      "1s2 2s2 2p6 3s2 3p4",
-      "1s2 2s2 2p6 3s2 3p6",
-      "1s2 2s2 2p6 3s2 3p2"
+      "109.97 g/mol",
+      "142.05 g/mol",
+      "98.43 g/mol",
+      "119.11 g/mol"
     ],
-    "correct": 0,
-    "explanation": "Sulfur has 16 electrons, so its electron configuration is 1s2 2s2 2p6 3s2 3p4."
+    "correct": 2,
+    "explanation": "To find the molar mass, add up the atomimc masses of each element in the compound: Each Na has a mass of 22.99 g/mol, so 45.98 g/mol of Na. The one S has a mass of 32.07 g/mol. The four oxygens each have masses of 16.00 g/mol, so 64.00 g/mol of O.  When we add these masses up, we get 45.98 + 32.07 + 64.00 = 142.05 g/mol"
   },
   {
     "question": "Which of the following is a strong acid?",
