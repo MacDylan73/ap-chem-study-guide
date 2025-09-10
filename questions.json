@@ -55,15 +55,15 @@
     "explanation": "First, calculate the molar mass of calcium phosphate. Keep in mind the number of each element: 3 Ca, 2 P, and 8 O (dont miss the subscript 2 after the phosphate!). Multiplying the numbner of each element by their atomic masses on the periodic table yields 120.24g of Ca, 61.94g of P, and 128.00g of O - so the molar mass of Calcium Phosphate is 310.18 g/mol. Now just divide the 125g in the problem by the molar mass to find the total number of moles of Ca₃(PO₄)₂ present: about .40 mol"
   }
   {
-    "question": "",
+    "question": "What percentage of mass does oxygen make up in a water (H₂O) molecule?",
     "answers": [
-      "",
-      "",
-      "",
-      ""
+      "11.1%",
+      "33.3%",
+      "66.7%",
+      "88.8%"
     ],
-    "correct": ,
-    "explanation": ""
+    "correct": 3,
+    "explanation": "First, we find the molar mass of water (2 Hydrogen atoms and 1 Oxygen atom) to be about 18g/mol. From here, we know that oxygen has an atomic mass of roughly 16 g/mol, so we can divide this by the total mass of water to find the percentage that is made up by just oxygen: 16g/mol / 18g/mol = .888, or 88.8%"
   }
   {
     "question": "",
