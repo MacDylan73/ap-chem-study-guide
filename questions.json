@@ -22,14 +22,69 @@
     "explanation": "First find the molar mass of Oxygen gas - note it is diatomic, so there are two oxygens.  16.00 g/mol x 2 = 32.00 g/mol.  Now to find the moles, we divide the mass provided by the molar mass (32g / 32 g/mol = 1 mol of O₂)"
   },
   {
-    "question": "How many valence electrons are in a nitrogen atom?",
+    "question": "A sample contains .250 mol of Aluminum. How many atoms are present in this sample?",
     "answers": [
-      "3",
-      "5",
-      "7",
-      "8"
+      "6.022 x 10²²",
+      "2.409 x 10²³",
+      "3.011 x 10²²",
+      "1.506 x 10²³"
     ],
-    "correct": 1,
-    "explanation": "Nitrogen is in Group 15 and has 5 valence electrons."
+    "correct": 3,
+    "explanation": "Recall Avagadro's Number: 6.022 x 10²³ atoms/particles in each mol of any element. Given this, we can multiply the .250 mol of Al by Avagadro's Number to get about 1.506 x 10²³ atoms in the sample of Al."
+  }
+  {
+    "question": "An isotope of Carbon has a mass number of 14. Determine the number of neutrons in a single atom of this isotope",
+    "answers": [
+      "8",
+      "7",
+      "6",
+      "14"
+    ],
+    "correct": 0,
+    "explanation": "The mass number of an element or isotope is roughly the number of protons and neutrons added together. So in this case, we have a mass number of 14, and we know carbon has 6 protons because 6 is it's atomic number. This means it has (14 - 6 = 8) 8 neutrons in an atom of this particular isotope"
+  }
+  {
+    "question": "A sealed container holds 125g of Calcium Phosphate (Ca₃(PO₄)₂). How many moles of Calcium Phosphate are present inside the container?",
+    "answers": [
+      ".40 mol",
+      ".60 mol",
+      ".80 mol",
+      "1.00 mol"
+    ],
+    "correct": 0,
+    "explanation": "First, calculate the molar mass of calcium phosphate. Keep in mind the number of each element: 3 Ca, 2 P, and 8 O (dont miss the subscript 2 after the phosphate!). Multiplying the numbner of each element by their atomic masses on the periodic table yields 120.24g of Ca, 61.94g of P, and 128.00g of O - so the molar mass of Calcium Phosphate is 310.18 g/mol. Now just divide the 125g in the problem by the molar mass to find the total number of moles of Ca₃(PO₄)₂ present: about .40 mol"
+  }
+  {
+    "question": "",
+    "answers": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "correct": ,
+    "explanation": ""
+  }
+  {
+    "question": "",
+    "answers": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "correct": ,
+    "explanation": ""
+  }
+  {
+    "question": "",
+    "answers": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "correct": ,
+    "explanation": ""
   }
 ]
