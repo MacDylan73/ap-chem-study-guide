@@ -207,7 +207,7 @@ export function setupAuthModalEvents() {
         await ensureUsernameOnLogin(); // Only for Google sign-in
         signInModal.style.display = "none";
       } catch (err) {
-        if (authError) authError.textContent = "Google Sign-In Window closed, please try again;
+        if (authError) authError.textContent = "Google Sign-In Window closed, please try again";
       }
     };
   }
