@@ -8,7 +8,7 @@
       "119.11 g/mol"
     ],
     "correct": 1,
-    "explanation": "To find the molar mass, add up the atomimc masses of each element in the compound: Each Na has a mass of 22.99 g/mol, so 45.98 g/mol of Na. The one S has a mass of 32.07 g/mol. The four oxygens each have masses of 16.00 g/mol, so 64.00 g/mol of O.  When we add these masses up, we get 45.98 + 32.07 + 64.00 = 142.05 g/mol"
+    "explanation": "(1.1) To find the molar mass, add up the atomimc masses of each element in the compound: Each Na has a mass of 22.99 g/mol, so 45.98 g/mol of Na. The one S has a mass of 32.07 g/mol. The four oxygens each have masses of 16.00 g/mol, so 64.00 g/mol of O.  When we add these masses up, we get 45.98 + 32.07 + 64.00 = 142.05 g/mol"
   },
   {
     "question": "How many moles are in 32g of Oxygen gas (O₂)?",
@@ -19,7 +19,7 @@
       "2 mol"
     ],
     "correct": 1,
-    "explanation": "First find the molar mass of Oxygen gas - note it is diatomic, so there are two oxygens.  16.00 g/mol x 2 = 32.00 g/mol.  Now to find the moles, we divide the mass provided by the molar mass (32g / 32 g/mol = 1 mol of O₂)"
+    "explanation": "(1.1) First find the molar mass of Oxygen gas - note it is diatomic, so there are two oxygens.  16.00 g/mol x 2 = 32.00 g/mol.  Now to find the moles, we divide the mass provided by the molar mass (32g / 32 g/mol = 1 mol of O₂)"
   },
   {
     "question": "A sample contains .250 mol of Aluminum. How many atoms are present in this sample?",
@@ -30,7 +30,7 @@
       "1.506 x 10²³"
     ],
     "correct": 3,
-    "explanation": "Recall Avagadro's Number: 6.022 x 10²³ atoms/particles in each mol of any element. Given this, we can multiply the .250 mol of Al by Avagadro's Number to get about 1.506 x 10²³ atoms in the sample of Al."
+    "explanation": "(1.1) Recall Avagadro's Number: 6.022 x 10²³ atoms/particles in each mol of any element. Given this, we can multiply the .250 mol of Al by Avagadro's Number to get about 1.506 x 10²³ atoms in the sample of Al."
   },
   {
     "question": "An isotope of Carbon has a mass number of 14. Determine the number of neutrons in a single atom of this isotope",
@@ -52,7 +52,7 @@
       "1.00 mol"
     ],
     "correct": 0,
-    "explanation": "First, calculate the molar mass of calcium phosphate. Keep in mind the number of each element: 3 Ca, 2 P, and 8 O (dont miss the subscript 2 after the phosphate!). Multiplying the numbner of each element by their atomic masses on the periodic table yields 120.24g of Ca, 61.94g of P, and 128.00g of O - so the molar mass of Calcium Phosphate is 310.18 g/mol. Now just divide the 125g in the problem by the molar mass to find the total number of moles of Ca₃(PO₄)₂ present: about .40 mol"
+    "explanation": "(1.1) First, calculate the molar mass of calcium phosphate. Keep in mind the number of each element: 3 Ca, 2 P, and 8 O (dont miss the subscript 2 after the phosphate!). Multiplying the numbner of each element by their atomic masses on the periodic table yields 120.24g of Ca, 61.94g of P, and 128.00g of O - so the molar mass of Calcium Phosphate is 310.18 g/mol. Now just divide the 125g in the problem by the molar mass to find the total number of moles of Ca₃(PO₄)₂ present: about .40 mol"
   },
   {
     "question": "What percentage of mass does oxygen make up in a water (H₂O) molecule?",
@@ -63,7 +63,84 @@
       "88.8%"
     ],
     "correct": 3,
-    "explanation": "First, we find the molar mass of water (2 Hydrogen atoms and 1 Oxygen atom) to be about 18g/mol. From here, we know that oxygen has an atomic mass of roughly 16 g/mol, so we can divide this by the total mass of water to find the percentage that is made up by just oxygen: 16g/mol / 18g/mol = .888, or 88.8%"
+    "explanation": "(1.3) First, we find the molar mass of water (2 Hydrogen atoms and 1 Oxygen atom) to be about 18g/mol. From here, we know that oxygen has an atomic mass of roughly 16 g/mol, so we can divide this by the total mass of water to find the percentage that is made up by just oxygen: 16g/mol / 18g/mol = .888, or 88.8%"
+  },
+  {
+    "question": "A chemist analyzes a 15.4g mixture containing BaCl₂ and NaCl.  If the sample contains 3.44g of Ba (assuming all Ba comes from BaCl₂), what percent by mass of the mixture is NaCl",
+    "answers": [
+      "44.7%",
+      "55.3%",
+      "66.2%",
+      "81.3%"
+    ],
+    "correct": 2,
+    "explanation": "(1.4) To determine the percent of NaCl in the mixture, we need to determine the amount of BaCl₂ by using the given mass of Ba. Given 3.44g, we divide by the molar mass of Ba (137.33) to get moles, and 1 mole of Ba is in every mol of BaCl₂ (so in this case, we multiply by 1/1 and there is no effect).  3.44 / 137.33 x 1 / 1 = 0.0250 mol of BaCl₂. Now we find the mass of BaCl₂ by multiplying by it's molar mass (208.23g/mol - remember unit 1.1!), 0.025 / 208.23 = 5.21g of BaCl₂.  From here, we know the rest of the mixture is NaCl, so NaCl weight 10.19g, and finally we can divide the mass of NaCl by the mass of the entire mixture to determine the percent of NaCl in the mixture: 10.19g / 15.4g = 66.2%"
+  },
+  {
+    "question": "Copper(II) Sulfate Pentahydrate (CuSO₄·5H₂O) is analyzed and found to have a molar mass of 249.70g/mol. A scientist then decides to analyze the compound to determine what percent of it's mass is made up of oxygen. What result most closely matches what the scientist should determine?",
+    "answers": [
+      "52%",
+      "57%",
+      "62%",
+      "67%"
+    ],
+    "correct": 1,
+    "explanation": "(1.3) This question may seem tricky at first because of the complex compound used, but remember you may encounter a similar situation on the AP Exam and it is important to maintain focus on what the question is asking. In this case, all we need to do to find the percent of mass made up by oxygen is fist determine how many mols of oxygen are in each molecule and then convert this to grams. There are 9 mol of oxygen (4 from Copper Sulfate, 5 from water), so we multiply this oxygens molar mass of 16 to find a total of 144g of O in this compound. We were given the molar mass of the entire compound, so 144g / 249.7g = 57.7%"
+  },
+  {
+    "question": "",
+    "answers": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "correct": 0,
+    "explanation": ""
+  },
+  {
+    "question": "",
+    "answers": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "correct": 0,
+    "explanation": ""
+  },
+  {
+    "question": "",
+    "answers": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "correct": 0,
+    "explanation": ""
+  },
+  {
+    "question": "",
+    "answers": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "correct": 0,
+    "explanation": ""
+  },
+  {
+    "question": "",
+    "answers": [
+      "",
+      "",
+      "",
+      ""
+    ],
+    "correct": 0,
+    "explanation": ""
   },
   {
     "question": "",
