@@ -75,7 +75,7 @@ export function signInHandler() {
       return result.user;
     })
     .catch(error => {
-      alert("Sign-in failed: " + error.message);
+      // alert("Sign-in failed: " + error.message);
       throw error;
     });
 }
@@ -207,7 +207,7 @@ export function setupAuthModalEvents() {
         await ensureUsernameOnLogin(); // Only for Google sign-in
         signInModal.style.display = "none";
       } catch (err) {
-        if (authError) authError.textContent = err.message;
+        // if (authError) authError.textContent = err.message;
       }
     };
   }
@@ -249,7 +249,7 @@ export function setupAuthModalEvents() {
           }
           // Modal stays open, user can log in after verifying
         } catch (err) {
-          if (authError) authError.textContent = err.message;
+          if (authError) authError.textContent = "Invalid Email or Password, please try again;
         }
       } else {
         try {
