@@ -1,1 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP Chemistry Course Guide</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/topbar.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/bottombar.css" /> 
+</head>
+<body>
+  <!-- Top Navigation Bar will be rendered here -->
+  <div id="topbar-container"></div>
 
+  <!-- Sidebar will be rendered here -->
+  <div id="sidebar-container"></div>
+
+  <!-- Page Content -->
+  <div class="container">
+    <!-- Intro Box -->
+    <div class="box">
+      <h1>Welcome to AP Prep Hub – Your Ultimate AP Chemistry Study Guide!</h1>
+      <hr>
+      <p>
+        Struggling with AP Chemistry or aiming for a top score? AP Prep Hub is built by a former AP Chem student who scored a 5, and designed for students who want to truly master the course.<br><br>
+        You’ll find <b>College Board-aligned notes</b>, <b>practice quizzes for every subunit</b>, <b>unit tests</b>, a daily challenge question, progress tracking, a score calculator, and competitive leaderboards – <span class="index-highlight">all 100% free and focused on what you really need for the AP exam.</span><br><br>
+        Whether you're reviewing material or tackling new topics, AP Prep Hub offers clear explanations, instant feedback, and smart study tools to help you learn faster and retain more.
+      </p>
+    </div>
+
+    <div class="box">
+      <p>
+        This is info
+      </p>
+    </div>
+
+  
+
+  <!-- Bottom Bar for Index Page -->
+  <div id="indexBottomBar" class="bottom-bar">
+    <div class="bottom-bar-left" id="bottomBarLeft"></div>
+    <div class="bottom-bar-center"></div>
+    <div class="bottom-bar-right">
+      <button id="futureFeatureBtn" disabled>Future Feature</button>
+    </div>
+  </div>
+  <!-- Footer text, FULL WIDTH, BELOW the button bar -->
+<div class="footer-info">
+  <span id="Contact/About">Contact/About</span>
+  <span class="footer-dot">&middot;</span>
+  <span>AP Prep Hub <sup class="tm-symbol">&#8482;</sup></span>
+  <span class="footer-copyright">&copy; 2024 AP Prep Hub</span>
+</div>
+
+  <!-- Modal and Overlay Box -->
+  <div id="qotdModalContainer"></div>
+  <div id="confettiOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:2000;"></div>
+
+  <!-- JavaScript -->
+  <!-- Utility scripts -->
+  <script src="js/util.js" defer></script>
+  <script src="js/score-calculator.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      renderCountdown("countdownText", "May 5, 2026");
+    });
+  </script>
+
+  <!-- Modular JS imports for all UI and authentication logic -->
+  <script type="module">
+    // Import shared modules for UI, authentication, and modal logic
+    import { loadTopbar } from './js/topbar.js';
+    import { loadSidebar } from './js/sidebar.js';
+    import {
+      onAuthChange,
+      signInHandler,
+      signOutHandler,
+      setupAuthModalEvents,
+      ensureUsernameOnLogin,
+      updateIndexBarAuthButtons
+    } from './js/auth.js';
+    import { toggleTheme,
+             applySavedTheme
+    } from './js/theme-toggle.js';
+    window.toggleTheme = toggleTheme;
+    import { setupUsernameModal } from './js/username-modal.js';
+    import './js/qotd.js';
+    import './js/progress.js';
+    import { injectAccountModal, setupAccountModalEvents } from './js/account-modal.js';
+
+    async function loadAuthModal() {
+      const resp = await fetch('auth-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+    async function loadUsernameModal() {
+      const resp = await fetch('username-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+    
+    // Render all elements
+   document.addEventListener('DOMContentLoaded', async () => {
+  await loadAuthModal();           // 1. Inject HTML for Auth modal
+  setupAuthModalEvents();          // 2. Setup events for Auth modal
+
+  await loadUsernameModal();       // 3. Inject HTML for Username modal
+  setupUsernameModal();            // 4. Setup events for Username modal
+
+  await injectAccountModal();      // 5. Inject HTML for Account modal
+  setupAccountModalEvents();       // 6. Setup events for Account modal
+
+  await loadTopbar("AP Chemistry Course Guide and Practice Tests");
+  applySavedTheme();
+  loadSidebar();
+  updateIndexBarAuthButtons();
+});
+
+    // Redirect QOTD Box 
+    // Make QOTD question area clickable, except for sign-in button
+    document.addEventListener('DOMContentLoaded', () => {
+      const qotdArea = document.querySelector('.qotd-question-area');
+      const signInBtn = document.getElementById('qotdSignInBtn');
+      if (qotdArea) {
+        qotdArea.addEventListener('click', function(e) {
+          if (signInBtn && signInBtn.contains(e.target)) return;
+          window.location.href = 'ap-chem-question-of-the-day';
+        });
+      }
+    });
+
+    
+    // Listen for auth state changes, update UI, and ensure username modal is shown if needed
+    onAuthChange(async user => {
+      // Only show username modal for Google sign-in
+      if (user && user.providerData.some(p => p.providerId === "google.com")) {
+        await ensureUsernameOnLogin();
+      }
+      updateIndexBarAuthButtons();
+      // Any additional UI updates can go here
+    });
+  </script>
+</body>
+</html>
