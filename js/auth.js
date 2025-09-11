@@ -278,7 +278,7 @@ export function setupAuthModalEvents() {
           await ensureUsernameOnLogin(); // If somehow username not set, prompt (shouldn't happen for email/pass)
           signInModal.style.display = "none";
         } catch (err) {
-          if (authError) authError.textContent = err.message;
+          if (authError) authError.textContent = "Error. Please ensure your email is correct and try again";
         }
       }
     };
