@@ -47,10 +47,25 @@ function getEasternTimeDate() {
 
 function getQOTDIndexEastern(numQuestions) {
   const easternToday = getTodayStrEastern();
-  // Days since epoch in Eastern Time
   const easternDate = new Date(easternToday);
-  const daysSinceEpoch = Math.floor(easternDate.getTime() / (1000 * 60 * 60 * 24));
-  return daysSinceEpoch % numQuestions;
+  
+  // QOTD season starts September 15, 2025 at midnight Eastern Time
+  const seasonStartDate = new Date('2025-09-15');
+  
+  // Check if before season start
+  if (easternDate < seasonStartDate) {
+    return null;
+  }
+  
+  // Calculate days since season start
+  const daysSinceStart = Math.floor((easternDate.getTime() - seasonStartDate.getTime()) / (1000 * 60 * 60 * 24));
+  
+  // Check if after all questions are shown
+  if (daysSinceStart >= numQuestions) {
+    return 'ended';
+  }
+  
+  return daysSinceStart;
 }
 
 // Countdown for new QOTD
@@ -104,12 +119,37 @@ export async function loadQOTD() {
   }
 
   const idx = getQOTDIndexEastern(questions.length);
-  const q = questions[idx];
-
+  
   const container = document.getElementById('qotdQuestionContent');
   if (!container) return;
 
-  // Render the question UI
+  // Handle season start and end cases
+  if (idx === null) {
+    // Before season start
+    container.innerHTML = `
+      <div class="question-box">
+        <div class="question-text" style="text-align: center; font-size: 1.1em; color: #666;">
+          AP Chemistry Question of the Day season begins on September 15, 2025! Check back then for daily practice questions.
+        </div>
+      </div>
+    `;
+    return;
+  }
+  
+  if (idx === 'ended') {
+    // After all questions shown
+    container.innerHTML = `
+      <div class="question-box">
+        <div class="question-text" style="text-align: center; font-size: 1.1em; color: #666;">
+          AP Chemistry Question of the Day season has ended! Check back next year for more questions.
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // Normal case - show the question
+  const q = questions[idx];
   const isQotdPage = window.location.pathname.includes("ap-chem-question-of-the-day");
 
   container.innerHTML = `
