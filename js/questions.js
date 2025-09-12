@@ -75,6 +75,13 @@ export async function updateSubunitCheckmarks() {
   }
 
   document.querySelectorAll('.subunit').forEach(subunitDiv => {
+    // Skip subunits marked as no-progress
+    if (subunitDiv.dataset.noprogress === "true") {
+      let subunitHeader = subunitDiv.querySelector('.subunit-header');
+      if (subunitHeader) subunitHeader.classList.remove('completed');
+      return;
+    }
+
     let subunitHeader = subunitDiv.querySelector('.subunit-header');
     if (!subunitHeader) return;
     let subunitKey = subunitHeader.textContent.trim();
