@@ -215,19 +215,30 @@ closeSignInModal.onclick = () => {
 };
 
   // Google sign-in
-  if (googleSignInBtn) {
-    googleSignInBtn.onclick = async () => {
-      if (authError) authError.textContent = '';
-      try {
-        await signInWithPopup(auth, provider);
-        await ensureUsernameOnLogin(); // Only for Google sign-in
-        signInModal.style.display = "none";
-      } catch (err) {
-        if (authError) authError.textContent = "Google Sign-In Window closed, please try again";
+if (googleSignInBtn) {
+  googleSignInBtn.onclick = async (e) => {
+    if (authError) authError.textContent = '';
+    // Only require checkbox in Register mode
+    if (isRegister) {
+      const agreeTerms = document.getElementById('agreeTerms');
+      if (!agreeTerms || !agreeTerms.checked) {
+        // Prevent sign-in and show error
+        e.preventDefault();
+        if (authError) authError.textContent = "You must agree to the Terms and Conditions & Privacy Policy before registering with Google.";
+        agreeTerms && agreeTerms.focus();
+        return false;
       }
-    };
-  }
-
+    }
+    try {
+      await signInWithPopup(auth, provider);
+      await ensureUsernameOnLogin(); // Only for Google sign-in
+      signInModal.style.display = "none";
+    } catch (err) {
+      if (authError) authError.textContent = "Google Sign-In Window closed, please try again";
+    }
+  };
+}
+  
   // Email/Password form submit
   if (authForm) {
     authForm.onsubmit = async (e) => {
