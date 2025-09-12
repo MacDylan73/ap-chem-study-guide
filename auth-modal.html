@@ -20,7 +20,7 @@
       <!-- Terms and Privacy Checkbox, only visible for Register -->
       <div class="form-group" id="termsGroup" style="display: none;">
         <label style="font-size: 0.98em;">
-          <input type="checkbox" id="agreeTerms" required>
+          <input type="checkbox" id="agreeTerms" name="agreeTerms">
           I agree to the <a href="terms-and-privacy.html" target="_blank">Terms and Conditions & Privacy Policy</a>
         </label>
       </div>
@@ -44,14 +44,16 @@
   </div>
 </div>
 <script>
-// Show/hide terms checkbox when switching tabs
+// Show/hide terms checkbox and toggle required attribute for Register/Sign In
 document.getElementById('tabRegister').addEventListener('click', function() {
   document.getElementById('termsGroup').style.display = 'block';
+  document.getElementById('agreeTerms').setAttribute('required', 'required');
   document.getElementById('submitAuthBtn').textContent = 'Register';
   document.getElementById('authModalTitle').textContent = 'Register a New Account';
 });
 document.getElementById('tabSignIn').addEventListener('click', function() {
   document.getElementById('termsGroup').style.display = 'none';
+  document.getElementById('agreeTerms').removeAttribute('required');
   document.getElementById('submitAuthBtn').textContent = 'Sign In';
   document.getElementById('authModalTitle').textContent = 'Sign In to Your Account';
 });
