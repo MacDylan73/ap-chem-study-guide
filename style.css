@@ -971,11 +971,6 @@ body.dark-mode #futureFeatureBtn {
 #indexBottomBar button:hover:not(:disabled) {
   background: #303f9f;
 }
-#indexBottomBar #futureFeatureBtn {
-  background: #757575;
-  cursor: not-allowed;
-  color: #eaeaea;
-}
 
 /* Mobile fix */
 @media (max-width: 600px) {
@@ -1025,10 +1020,6 @@ body.dark-mode #indexBottomBar button:hover:not(:disabled) {
   background: #44445a;
   color: #fff;
   border-color: #5d5d7a;
-}
-body.dark-mode #indexBottomBar #futureFeatureBtn {
-  background: #444444;
-  color: #757575;
 }
 /* ===========================
    MODAL TAB BUTTONS (Register / Sign In)
