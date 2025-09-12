@@ -64,11 +64,13 @@
   background: #303f9f;
 }
 
+/*
 #futureFeatureBtn {
   background: #757575;
   cursor: not-allowed;
   color: #eaeaea;
 }
+*/
 
 /* mobile fix */
 @media (max-width: 600px) {
