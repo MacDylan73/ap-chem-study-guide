@@ -162,41 +162,57 @@ export function setupAuthModalEvents() {
     }, 1000);
   }
 
-  // Tab switching logic
-  tabSignIn.onclick = () => {
-    isRegister = false;
-    tabSignIn.classList.add('active');
-    tabRegister.classList.remove('active');
-    if (usernameGroup) usernameGroup.style.display = 'none';
-    submitAuthBtn.textContent = 'Sign In';
-    authModalTitle.textContent = 'Sign In to Your Account';
-    if (authError) authError.textContent = '';
-    // Hide resend button if it exists
-    let resendBtn = document.getElementById("resendVerificationBtn");
-    if (resendBtn) resendBtn.style.display = "none";
-  };
-  tabRegister.onclick = () => {
-    isRegister = true;
-    tabRegister.classList.add('active');
-    tabSignIn.classList.remove('active');
-    if (usernameGroup) usernameGroup.style.display = 'block';
-    submitAuthBtn.textContent = 'Register';
-    authModalTitle.textContent = 'Register a New Account';
-    if (authError) authError.textContent = '';
-    // Hide resend button if it exists
-    let resendBtn = document.getElementById("resendVerificationBtn");
-    if (resendBtn) resendBtn.style.display = "none";
-  };
+ // Tab switching logic
+tabSignIn.onclick = () => {
+  isRegister = false;
+  tabSignIn.classList.add('active');
+  tabRegister.classList.remove('active');
+  if (usernameGroup) usernameGroup.style.display = 'none';
+  submitAuthBtn.textContent = 'Sign In';
+  authModalTitle.textContent = 'Sign In to Your Account';
+  if (authError) authError.textContent = '';
+  // Hide resend button if it exists
+  let resendBtn = document.getElementById("resendVerificationBtn");
+  if (resendBtn) resendBtn.style.display = "none";
+  // Hide terms and privacy checkbox and remove required
+  let termsGroup = document.getElementById('termsGroup');
+  let agreeTerms = document.getElementById('agreeTerms');
+  if (termsGroup) termsGroup.style.display = 'none';
+  if (agreeTerms) agreeTerms.removeAttribute('required');
+};
 
-  closeSignInModal.onclick = () => {
-    signInModal.style.display = 'none';
-    if (authError) authError.textContent = '';
-    if (authForm) authForm.reset();
-    tabSignIn.onclick(); // Reset to sign-in tab
-    // Hide resend button if it exists
-    let resendBtn = document.getElementById("resendVerificationBtn");
-    if (resendBtn) resendBtn.style.display = "none";
-  };
+tabRegister.onclick = () => {
+  isRegister = true;
+  tabRegister.classList.add('active');
+  tabSignIn.classList.remove('active');
+  if (usernameGroup) usernameGroup.style.display = 'block';
+  submitAuthBtn.textContent = 'Register';
+  authModalTitle.textContent = 'Register a New Account';
+  if (authError) authError.textContent = '';
+  // Hide resend button if it exists
+  let resendBtn = document.getElementById("resendVerificationBtn");
+  if (resendBtn) resendBtn.style.display = "none";
+  // Show terms and privacy checkbox and set required
+  let termsGroup = document.getElementById('termsGroup');
+  let agreeTerms = document.getElementById('agreeTerms');
+  if (termsGroup) termsGroup.style.display = 'block';
+  if (agreeTerms) agreeTerms.setAttribute('required', 'required');
+};
+
+closeSignInModal.onclick = () => {
+  signInModal.style.display = 'none';
+  if (authError) authError.textContent = '';
+  if (authForm) authForm.reset();
+  tabSignIn.onclick(); // Reset to sign-in tab
+  // Hide resend button if it exists
+  let resendBtn = document.getElementById("resendVerificationBtn");
+  if (resendBtn) resendBtn.style.display = "none";
+  // Hide terms and privacy checkbox and remove required
+  let termsGroup = document.getElementById('termsGroup');
+  let agreeTerms = document.getElementById('agreeTerms');
+  if (termsGroup) termsGroup.style.display = 'none';
+  if (agreeTerms) agreeTerms.removeAttribute('required');
+};
 
   // Google sign-in
   if (googleSignInBtn) {
