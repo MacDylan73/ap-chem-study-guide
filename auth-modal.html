@@ -43,18 +43,3 @@
     </button>
   </div>
 </div>
-<script>
-// Show/hide terms checkbox and toggle required attribute for Register/Sign In
-document.getElementById('tabRegister').addEventListener('click', function() {
-  document.getElementById('termsGroup').style.display = 'block';
-  document.getElementById('agreeTerms').setAttribute('required', 'required');
-  document.getElementById('submitAuthBtn').textContent = 'Register';
-  document.getElementById('authModalTitle').textContent = 'Register a New Account';
-});
-document.getElementById('tabSignIn').addEventListener('click', function() {
-  document.getElementById('termsGroup').style.display = 'none';
-  document.getElementById('agreeTerms').removeAttribute('required');
-  document.getElementById('submitAuthBtn').textContent = 'Sign In';
-  document.getElementById('authModalTitle').textContent = 'Sign In to Your Account';
-});
-</script>
