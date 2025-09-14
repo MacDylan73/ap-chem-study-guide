@@ -443,7 +443,7 @@ export function updateUnitBottomBarAuthButtons() {
 // Sets up navigation for bottom bar buttons on unit pages
 export function setupUnitBottomBarButtons() {
   const returnHomeBtn = document.getElementById("returnHomeBtn");
-  if (returnHomeBtn) returnHomeBtn.onclick = () => window.location.href = "/ap-chem-study-guide/";
+  if (returnHomeBtn) returnHomeBtn.onclick = () => window.location.href = "ap-chem-course-guide.html";
   // const nextUnitBtn = document.getElementById("nextUnitBtn");
   // if (nextUnitBtn) nextUnitBtn.onclick = () => window.location.href = "/unit-2-compound-structure-and-properties.html";
 }
