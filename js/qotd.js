@@ -49,7 +49,7 @@ function getQOTDIndexEastern(numQuestions) {
   const easternToday = getTodayStrEastern();
   const easternDate = new Date(easternToday);
   
-  // QOTD season starts September 15, 2025 at midnight Eastern Time
+  // QOTD season starts September 22, 2025 at midnight Eastern Time
   const seasonStartDate = new Date('2025-09-22');
   
   // Check if before season start
@@ -129,7 +129,7 @@ export async function loadQOTD() {
     container.innerHTML = `
       <div class="question-box">
         <div class="question-text" style="text-align: center; font-size: 1.1em; color: #666;">
-          AP Chemistry Question of the Day season begins on September 15, 2025! Check back then for daily practice questions.
+          AP Chemistry Question of the Day season begins on September 22, 2025! Check back then for daily practice questions.
         </div>
       </div>
     `;
