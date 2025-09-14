@@ -11,11 +11,11 @@ window.toggleSidebar = toggleSidebar;
 function highlightActiveSidebarLink() {
   // Normalize pathname for root to index.html
   let current = window.location.pathname;
-  if (current.endsWith('/')) current += 'index.html';
+  if (current.endsWith('/')) current += 'ap-chem-course-guide.html';
 
   document.querySelectorAll('.sidebar a').forEach(link => {
     let linkPath = new URL(link.href, window.location.origin).pathname;
-    if (linkPath.endsWith('/')) linkPath += 'index.html';
+    if (linkPath.endsWith('/')) linkPath += 'ap-chem-course-guide.html';
     if (linkPath === current) {
       link.classList.add('active');
     } else {
