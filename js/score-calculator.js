@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // You can check via pathname, or look for a unique element/class on the index page
         // Example: Only add if on index.html
         if (
-          window.location.pathname.endsWith("index.html") ||
+          window.location.pathname.endsWith("ap-chem-course-guide.html") ||
           window.location.pathname === "/" // also home
         ) {
           const scoreResult = container.querySelector(".calc-score-result");
