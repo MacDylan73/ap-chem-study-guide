@@ -50,7 +50,7 @@ function getQOTDIndexEastern(numQuestions) {
   const easternDate = new Date(easternToday);
   
   // QOTD season starts September 15, 2025 at midnight Eastern Time
-  const seasonStartDate = new Date('2025-09-15');
+  const seasonStartDate = new Date('2025-09-22');
   
   // Check if before season start
   if (easternDate < seasonStartDate) {
