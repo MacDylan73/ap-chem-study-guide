@@ -1,1 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP Chemistry Course Guide</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/topbar.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/bottombar.css" /> 
+</head>
+<body>
+  <!-- Top Navigation Bar will be rendered here -->
+  <div id="topbar-container"></div>
 
+  <!-- Sidebar will be rendered here -->
+  <div id="sidebar-container"></div>
+
+  <!-- Page Content -->
+  <div class="container">
+    <!-- Intro Box -->
+    <div class="box index-intro-box">
+  <h1>Welcome to AP Prep Hub – Your Ultimate AP Chemistry Study Guide!</h1>
+  <p>
+    Struggling with AP Chemistry or aiming for a top score? AP Prep Hub is built by a former AP Chem student who scored a 5, and designed for students who want to truly master the course.<br><br>
+    You’ll find <b>College Board-aligned notes</b>, <b>practice quizzes for every subunit</b>, <b>unit tests</b>, a daily challenge question, progress tracking, a score calculator, and competitive leaderboards – <span class="index-highlight">all 100% free and focused on what you really need for the AP exam.</span><br><br>
+    Whether you're reviewing material or tackling new topics, AP Prep Hub offers clear explanations, instant feedback, and smart study tools to help you learn faster and retain more.
+  </p>
+  <hr class="index-intro-divider">
+  <div class="index-page-contents">
+    <h3>What’s on this page?</h3>
+    <ul>
+      <li>📅 <a href="#qotdAnchor">AP Chem Question of the Day:</a> Daily practice boosts recall and long-term memory.</li>
+      <li>📚 <a href="#UnitPageLinks">Units Page Links:</a> Progress tracker, notes, and practice tests for every unit.</li>
+      <li>📝 <a href="#formatAnchor">AP Chem Exam Format and Information:</a> Know what to expect on test day.</li>
+      <li>🧮 <a href="#score-calculator-container">AP Chem Score Calculator: </a> Estimate your score and set smart goals.</li>
+      <li>💬 <a href="#Contact/About">About & Contact:</a> This site is in the beta phase! Help improve this site with feedback.</li>
+      <li>🌟 <a href="#futureFeatureBtn">Premium Content:</a> Looking for a full study guide, practice exam, or step by step FRQ guide? Check here for extra content</li>
+    </ul>
+    <p class="tip-note"><em>Click any section name above to jump to it and start learning!</em></p>
+  </div>
+</div>
+
+    <!-- QOTD -->
+<div class="box">
+  <h2 class="section-anchor" id="qotdAnchor">AP Chemistry Question of the Day</h2>
+  <div class="qotd-actions">
+    <span class="qotd-streak" id="qotdStreak"></span>
+    <div id="streakTooltip" class="streak-tooltip" style="display:none;position:absolute;"></div>
+    <!-- 
+    <button id="qotdLeaderboardBtn">View Leaderboard</button>
+    <button id="qotdStatsBtn">Stats</button>
+    -->
+  </div>
+  <div class="qotd-question-area">
+    <div class="qotd-blur-overlay" id="qotdBlurOverlay">
+      <button id="qotdSignInBtn">Sign In to Answer</button>
+    </div>
+    
+    <div class="qotd-question-content" id="qotdQuestionContent"></div>
+  </div>
+  <div class="qotd-feedback" id="qotdFeedback" style="display:none;"></div>
+  <a href="ap-chem-question-of-the-day">Go to Question of the Day →</a>
+</div>
+    
+    <!-- Unit Links Box -->
+    <div class="box">
+  <h2 class="section-anchor" id="UnitPageLinks">AP Chem Unit Notes and Practice Tests</h2>
+  <hr>
+  <button class="unit-btn" data-unit-id="unit-1">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 1: Atomic Structure and Properties</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-2">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 2: Compound Structure and Properties</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-3">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 3: Properties of Substances and Mixtures</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-4">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 4: Chemical Reactions</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-5">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 5: Kinetics</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-6">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 6: Thermochemistry</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-7">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 7: Equilibrium</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-8">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 8: Acids and Bases</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+  <button class="unit-btn" data-unit-id="unit-9">
+    <div class="unit-btn-content">
+        <div class="unit-title">Unit 9: Thermodynamics and Electrochemistry</div>
+        <div class="unit-progress-bar">
+          <div class="unit-progress-fill"></div>
+        </div>
+      </div>
+    <div class="unit-btn-divider"></div>
+    <div class="unit-percent">0%</div>
+  </button>
+</div>
+
+    <!-- Format Box -->
+    <div class="box">
+      <h2 class="section-anchor" id="formatAnchor">AP Chemistry Course Exam Format</h2>
+      <ul>
+        <li><strong>Section I: Multiple Choice (MCQ)</strong>
+          <ul>
+            <li>60 questions</li>
+            <li>90 minutes</li>
+            <li>50% of exam score</li>
+          </ul>
+        </li>
+        <li><strong>Section II: Free Response (FRQ)</strong>
+          <ul>
+            <li>7 questions (3 long, 4 short)</li>
+            <li>105 minutes</li>
+            <li>50% of exam score</li>
+          </ul>
+        </li>
+      </ul>
+      <p>
+        <strong><a href="ap-chem-exam-format">Go to exam format and info page →</a></strong>
+      </p>
+    </div>
+
+    <!-- Score Calculator will render here -->
+    <div class="section anchor" id="score-calculator-container"></div>
+
+    <!-- Countdown Box -->
+    <div class="box">
+      <div class="countdown" id="countdownText">
+        Loading countdown...
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar for Index Page -->
+  <div id="indexBottomBar" class="bottom-bar">
+    <div class="bottom-bar-left" id="bottomBarLeft"></div>
+    <div class="bottom-bar-center"></div>
+    <div class="bottom-bar-right">
+      <button id="futureFeatureBtn" onclick="window.open('https://forms.gle/CTyDuLatR2WVnKLs9', '_blank')">Future Feature (Premium Content Waitlist)</button>
+    </div>
+  </div>
+  <!-- Footer text, FULL WIDTH, BELOW the button bar -->
+<div class="footer-info">
+  <a href="about.html" id="Contact/About">Contact/About</a>
+  <span class="footer-dot">&middot;</span>
+  <span>AP Prep Hub <sup class="tm-symbol">&#8482;</sup></span>
+  <span class="footer-copyright">&copy; 2024 AP Prep Hub</span>
+</div>
+
+  <!-- Modal and Overlay Box -->
+  <div id="qotdModalContainer"></div>
+  <div id="confettiOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:2000;"></div>
+
+  <!-- JavaScript -->
+  <!-- Utility scripts -->
+  <script src="js/util.js" defer></script>
+  <script src="js/score-calculator.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      renderCountdown("countdownText", "May 5, 2026");
+    });
+  </script>
+
+  <!-- Modular JS imports for all UI and authentication logic -->
+  <script type="module">
+    // Import shared modules for UI, authentication, and modal logic
+    import { loadTopbar } from './js/topbar.js';
+    import { loadSidebar } from './js/sidebar.js';
+    import {
+      onAuthChange,
+      signInHandler,
+      signOutHandler,
+      setupAuthModalEvents,
+      ensureUsernameOnLogin,
+      updateIndexBarAuthButtons
+    } from './js/auth.js';
+    import { toggleTheme,
+             applySavedTheme
+    } from './js/theme-toggle.js';
+    window.toggleTheme = toggleTheme;
+    import { setupUsernameModal } from './js/username-modal.js';
+    import './js/qotd.js';
+    import './js/progress.js';
+    import { injectAccountModal, setupAccountModalEvents } from './js/account-modal.js';
+
+    async function loadAuthModal() {
+      const resp = await fetch('auth-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+    async function loadUsernameModal() {
+      const resp = await fetch('username-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+    
+    // Render all elements
+   document.addEventListener('DOMContentLoaded', async () => {
+  await loadAuthModal();           // 1. Inject HTML for Auth modal
+  setupAuthModalEvents();          // 2. Setup events for Auth modal
+
+  await loadUsernameModal();       // 3. Inject HTML for Username modal
+  setupUsernameModal();            // 4. Setup events for Username modal
+
+  await injectAccountModal();      // 5. Inject HTML for Account modal
+  setupAccountModalEvents();       // 6. Setup events for Account modal
+
+  await loadTopbar("AP Chemistry Course Guide and Practice Tests");
+  applySavedTheme();
+  loadSidebar();
+  updateIndexBarAuthButtons();
+});
+
+    // Redirect QOTD Box 
+    // Make QOTD question area clickable, except for sign-in button
+    document.addEventListener('DOMContentLoaded', () => {
+      const qotdArea = document.querySelector('.qotd-question-area');
+      const signInBtn = document.getElementById('qotdSignInBtn');
+      if (qotdArea) {
+        qotdArea.addEventListener('click', function(e) {
+          if (signInBtn && signInBtn.contains(e.target)) return;
+          window.location.href = 'ap-chem-question-of-the-day';
+        });
+      }
+    });
+
+    
+    // Listen for auth state changes, update UI, and ensure username modal is shown if needed
+    onAuthChange(async user => {
+      // Only show username modal for Google sign-in
+      if (user && user.providerData.some(p => p.providerId === "google.com")) {
+        await ensureUsernameOnLogin();
+      }
+      updateIndexBarAuthButtons();
+      // Any additional UI updates can go here
+    });
+  </script>
+</body>
+</html>
