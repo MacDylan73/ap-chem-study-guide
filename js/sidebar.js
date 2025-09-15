@@ -9,20 +9,17 @@ window.toggleSidebar = toggleSidebar;
 
 // Highlight the active sidebar link for the current page
 function highlightActiveSidebarLink() {
-  // Normalize pathname for root to index.html
-  let current = window.location.pathname;
-  if (current.endsWith('/')) current += 'ap-chem-course-guide.html';
-
+  const currentPath = window.location.pathname.replace(/\/$/, ''); // remove trailing slash
   document.querySelectorAll('.sidebar a').forEach(link => {
-    let linkPath = new URL(link.href, window.location.origin).pathname;
-    if (linkPath.endsWith('/')) linkPath += 'ap-chem-course-guide.html';
-    if (linkPath === current) {
+    const linkPath = new URL(link.getAttribute('href'), window.location.origin).pathname.replace(/\/$/, '');
+    if (linkPath === currentPath) {
       link.classList.add('active');
     } else {
       link.classList.remove('active');
     }
   });
 }
+
 
 // If sidebar is dynamically loaded, run after it's in the DOM
 document.addEventListener('DOMContentLoaded', highlightActiveSidebarLink);
