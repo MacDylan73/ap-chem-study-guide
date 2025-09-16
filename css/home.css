@@ -2,7 +2,8 @@
 .homepage-hero {
   position: relative;
   height: 340px;
-  max-width: 100%;
+  width: 100%;
+  max-width: 900px;
   margin: 0 auto 2.5rem auto;
   display: flex;
   align-items: center;
@@ -11,6 +12,7 @@
   box-shadow: 0 6px 32px rgba(30,136,229,0.13);
   overflow: hidden;
   text-align: center;
+  background: linear-gradient(120deg, #e3f2fd 60%, #bbdefb 100%);
 }
 
 /* Logo as faded background image */
@@ -19,35 +21,37 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* Try 'cover' for full fill, 'contain' for all visible */
-  opacity: 0.25; /* Faded effect, adjust as needed */
+  object-fit: contain; /* Or 'cover' if you want full fill */
+  opacity: 0.42; /* Higher opacity for clarity, adjust as needed */
   z-index: 1;
   pointer-events: none;
+  transition: opacity 0.2s;
 }
 
-/* Overlay for gradient and better text readability */
+/* Overlay for better text readability */
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(120deg, #e3f2fd 60%, #bbdefb 100%);
-  background-color: rgba(255,255,255,0.7); /* semi-transparent white over gradient */
+  background: rgba(255,255,255,0.29); /* Lighter overlay for more logo visibility */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(2.5px);
+  backdrop-filter: blur(1.5px); /* Subtle blur */
   z-index: 2;
 }
 
+/* Title and subtitle with strong contrast/shadow */
 .homepage-title {
   font-size: 2.7rem;
   font-weight: bold;
   color: var(--primary, #1976d2);
   margin-bottom: 0.5em;
   letter-spacing: 2px;
-  text-shadow: 0 8px 24px rgba(30,136,229,0.10);
-  z-index: 3; /* Make sure it's above overlay */
+  text-shadow:
+    0 2px 16px rgba(30,136,229,0.17),
+    0 1px 1px #fff;
+  z-index: 3;
 }
 
 .homepage-subtitle {
@@ -57,6 +61,9 @@
   max-width: 540px;
   text-align: center;
   font-weight: 500;
+  text-shadow:
+    0 2px 16px rgba(30,136,229,0.11),
+    0 1px 1px #fff;
   z-index: 3;
 }
 
