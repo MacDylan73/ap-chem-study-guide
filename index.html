@@ -4,50 +4,131 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AP Prep Hub</title>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <meta name="description" content="Your one-stop hub for AP exam preparation. Practice, review, and track your progress for AP Chemistry and more.">
+  <meta name="author" content="MacDylan73">
+  <meta property="og:title" content="AP Prep Hub">
+  <meta property="og:description" content="Prep smarter for your AP exams. Practice tests, guides, daily questions, and progress tracking for AP Chemistry and more.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://YOUR_SITE_URL/">
+  <meta property="og:image" content="https://YOUR_SITE_URL/assets/logo.png">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="stylesheet" href="style.css" />
   <link rel="stylesheet" href="css/variables.css" />
   <link rel="stylesheet" href="css/topbar.css" />
   <link rel="stylesheet" href="css/sidebar.css" />
-  <link rel="stylesheet" href="css/bottombar.css" /> 
+  <link rel="stylesheet" href="css/bottombar.css" />
+  <link rel="stylesheet" href="css/home.css" />
 </head>
 <body>
-  <!-- Top Navigation Bar will be rendered here -->
+  <!-- Top Navigation Bar -->
   <div id="topbar-container"></div>
 
-  <!-- Sidebar will be rendered here -->
+  <!-- Sidebar -->
   <div id="sidebar-container"></div>
 
-  <!-- Page Content -->
+  <!-- Main Page Content -->
   <div class="container">
-    <!-- Intro Box -->
-    <div class="box index-intro-box">
-  <h1>Welcome to AP Prep Hub!</h1>
-</div>
 
+    <!-- Hero Section with Logo -->
+    <div class="homepage-hero">
+      <img src="assets/logo.png" alt="AP Prep Hub Logo" class="homepage-logo" />
+      <div class="homepage-title">AP Prep Hub</div>
+      <div class="homepage-subtitle">
+        Your central resource for mastering AP exams.<br>
+        Practice, review, and track your progress for AP Chemistry and more subjects coming soon.
+      </div>
+    </div>
 
+    <!-- Search Bar / Quick Links -->
+    <form class="homepage-search-bar" action="#" autocomplete="off" role="search">
+      <input type="search" placeholder="Search resources, guides, or questions…" aria-label="Search AP Prep Hub">
+      <button type="submit">Search</button>
+    </form>
+    <!-- Example quick links (update these as needed) -->
+    <div class="homepage-quick-links">
+      <span>Quick links: </span>
+      <a href="ap-chem-course-guide.html">AP Chem Guide</a> | 
+      <a href="ap-chem-question-of-the-day.html">Question of the Day</a> | 
+      <a href="about.html">About</a>
+    </div>
+
+    <!-- Announcements / What's New -->
+    <section class="announcements-section" aria-labelledby="announcements-title">
+      <div class="announcements-title" id="announcements-title">What's New</div>
+      <ul class="announcements-list">
+        <li>🚀 <strong>New resource:</strong> AP Chemistry Lightning Review video added!</li>
+        <li>🆕 <strong>Update:</strong> Daily QOTD feature improved for more personalized practice.</li>
+        <!-- Add more news or updates here -->
+      </ul>
+      <div class="announcements-placeholder">
+        [Add your announcements or news here]
+      </div>
+    </section>
+
+    <!-- Class Selector Box -->
+    <div class="class-select-box">
+      <h2>Select a Class Homepage</h2>
+      <div class="class-list">
+        <!-- AP Chemistry Card -->
+        <div class="class-card">
+          <div class="class-title">AP Chemistry</div>
+          <div class="class-desc">Course guide, practice tests, daily questions, and review resources.</div>
+          <a href="ap-chem-course-guide.html" class="class-btn">Go to AP Chem</a>
+        </div>
+        <!-- Future classes can be added here by duplicating the card -->
+        <!-- Example for expansion:
+        <div class="class-card">
+          <div class="class-title">AP Biology</div>
+          <div class="class-desc">Practice, guides, and progress for AP Biology (coming soon).</div>
+          <a href="ap-bio-course-guide.html" class="class-btn">Go to AP Bio</a>
+        </div>
+        -->
+      </div>
+    </div>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials-section" aria-labelledby="testimonials-title">
+      <div class="testimonials-title" id="testimonials-title">Testimonials</div>
+      <div class="testimonial-quote">
+        "AP Prep Hub helped me boost my score by 2 points! The daily practice and guides made all the difference."
+      </div>
+      <div class="testimonial-author">– [Student Name], AP Chemistry Student</div>
+      <div class="testimonial-quote">
+        "The organized resources and QOTD challenge kept me motivated all semester."
+      </div>
+      <div class="testimonial-author">– [Student Name], AP Chemistry Student</div>
+      <div class="testimonials-placeholder">
+        [Add your testimonials here]
+      </div>
+    </section>
+
+    <!-- Clear Call to Action / Guidance for New Users -->
+    <div class="homepage-cta">
+      <strong>New?</strong> Start by selecting your class above. Sign in to track your scores, save your progress, and get personalized daily questions!
+    </div>
+
+  </div>
 
   <!-- Bottom Bar for Index Page -->
   <div id="indexBottomBar" class="bottom-bar">
     <div class="bottom-bar-left" id="bottomBarLeft"></div>
     <div class="bottom-bar-center"></div>
-    <div class="bottom-bar-right">
-    </div>
+    <div class="bottom-bar-right"></div>
   </div>
+
   <!-- Footer text, FULL WIDTH, BELOW the button bar -->
-<div class="footer-info">
-  <a href="about.html" id="Contact/About">Contact/About</a>
-  <span class="footer-dot">&middot;</span>
-  <span>AP Prep Hub <sup class="tm-symbol">&#8482;</sup></span>
-  <span class="footer-copyright">&copy; 2024 AP Prep Hub</span>
-</div>
+  <div class="footer-info">
+    <a href="about.html" id="Contact/About">Contact/About</a>
+    <span class="footer-dot">&middot;</span>
+    <span>AP Prep Hub <sup class="tm-symbol">&#8482;</sup></span>
+    <span class="footer-copyright">&copy; 2024 AP Prep Hub</span>
+  </div>
 
   <!-- Modal and Overlay Box -->
   <div id="qotdModalContainer"></div>
   <div id="confettiOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:2000;"></div>
 
-  <!-- JavaScript -->
-  <!-- Utility scripts -->
+  <!-- JavaScript and Modular Imports -->
   <script src="js/util.js" defer></script>
   <script src="js/score-calculator.js"></script>
   <script>
@@ -55,10 +136,7 @@
       renderCountdown("countdownText", "May 5, 2026");
     });
   </script>
-
-  <!-- Modular JS imports for all UI and authentication logic -->
   <script type="module">
-    // Import shared modules for UI, authentication, and modal logic
     import { loadTopbar } from './js/topbar.js';
     import { loadSidebar } from './js/sidebar.js';
     import {
@@ -69,9 +147,7 @@
       ensureUsernameOnLogin,
       updateIndexBarAuthButtons
     } from './js/auth.js';
-    import { toggleTheme,
-             applySavedTheme
-    } from './js/theme-toggle.js';
+    import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
     import { setupUsernameModal } from './js/username-modal.js';
     import './js/qotd.js';
@@ -88,26 +164,16 @@
       const html = await resp.text();
       document.body.insertAdjacentHTML('beforeend', html);
     }
-    
-    // Render all elements
-   document.addEventListener('DOMContentLoaded', async () => {
-  await loadAuthModal();           // 1. Inject HTML for Auth modal
-  setupAuthModalEvents();          // 2. Setup events for Auth modal
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadAuthModal(); setupAuthModalEvents();
+      await loadUsernameModal(); setupUsernameModal();
+      await injectAccountModal(); setupAccountModalEvents();
+      await loadTopbar("AP Chemistry Course Guide and Practice Tests");
+      applySavedTheme();
+      loadSidebar();
+      updateIndexBarAuthButtons();
+    });
 
-  await loadUsernameModal();       // 3. Inject HTML for Username modal
-  setupUsernameModal();            // 4. Setup events for Username modal
-
-  await injectAccountModal();      // 5. Inject HTML for Account modal
-  setupAccountModalEvents();       // 6. Setup events for Account modal
-
-  await loadTopbar("AP Chemistry Course Guide and Practice Tests");
-  applySavedTheme();
-  loadSidebar();
-  updateIndexBarAuthButtons();
-});
-
-    // Redirect QOTD Box 
-    // Make QOTD question area clickable, except for sign-in button
     document.addEventListener('DOMContentLoaded', () => {
       const qotdArea = document.querySelector('.qotd-question-area');
       const signInBtn = document.getElementById('qotdSignInBtn');
@@ -119,15 +185,11 @@
       }
     });
 
-    
-    // Listen for auth state changes, update UI, and ensure username modal is shown if needed
     onAuthChange(async user => {
-      // Only show username modal for Google sign-in
       if (user && user.providerData.some(p => p.providerId === "google.com")) {
         await ensureUsernameOnLogin();
       }
       updateIndexBarAuthButtons();
-      // Any additional UI updates can go here
     });
   </script>
 </body>
