@@ -1,4 +1,4 @@
-/* HERO SECTION: logo as faded background, overlay text */
+/* HERO SECTION: logo right, text left, clean gradient background */
 .homepage-hero {
   position: relative;
   height: 340px;
@@ -7,51 +7,42 @@
   margin: 0 auto 2.5rem auto;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   border-radius: 22px;
   box-shadow: 0 6px 32px rgba(30,136,229,0.13);
   overflow: hidden;
-  text-align: center;
   background: linear-gradient(120deg, #e3f2fd 60%, #bbdefb 100%);
+  padding: 2em 2.5em;
 }
 
-/* Logo as faded background image */
-.hero-logo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Or 'cover' if you want full fill */
-  opacity: 0.42; /* Higher opacity for clarity, adjust as needed */
-  z-index: 1;
-  pointer-events: none;
-  transition: opacity 0.2s;
-}
-
-/* Overlay for better text readability */
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(255,255,255,0.29); /* Lighter overlay for more logo visibility */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  backdrop-filter: blur(1.5px); /* Subtle blur */
+/* Text area: left side */
+.hero-text {
+  flex: 1;
+  text-align: left;
   z-index: 2;
 }
 
-/* Title and subtitle with strong contrast/shadow */
+/* Logo: right side, crisp and sized */
+.hero-logo-foreground {
+  width: 170px;
+  height: auto;
+  max-width: 38vw;
+  margin-left: 2.5em;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(30,136,229,0.12);
+  z-index: 2;
+  background: none;
+  object-fit: contain;
+}
+
+/* Title and subtitle styling */
 .homepage-title {
   font-size: 2.7rem;
   font-weight: bold;
   color: var(--primary, #1976d2);
   margin-bottom: 0.5em;
   letter-spacing: 2px;
-  text-shadow:
-    0 2px 16px rgba(30,136,229,0.17),
-    0 1px 1px #fff;
-  z-index: 3;
+  text-shadow: 0 8px 24px rgba(30,136,229,0.10);
 }
 
 .homepage-subtitle {
@@ -59,12 +50,27 @@
   color: #414a5a;
   margin-bottom: 0.7em;
   max-width: 540px;
-  text-align: center;
   font-weight: 500;
-  text-shadow:
-    0 2px 16px rgba(30,136,229,0.11),
-    0 1px 1px #fff;
-  z-index: 3;
+  text-shadow: 0 2px 16px rgba(30,136,229,0.11), 0 1px 1px #fff;
+}
+
+/* Responsive: stack logo below text on mobile */
+@media (max-width: 700px) {
+  .homepage-hero {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5em 1em;
+    height: auto;
+  }
+  .hero-logo-foreground {
+    margin-left: 0;
+    margin-top: 1.2em;
+    width: 120px;
+  }
+  .hero-text {
+    text-align: center;
+  }
 }
 
 /* REMOVE the old .homepage-logo styles and <img> from HTML if using logo as background */
