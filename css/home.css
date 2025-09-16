@@ -7,21 +7,31 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Layered backgrounds: logo and gradient */
-  background:
-    url('../images/logo.png') center/320px 320px no-repeat,
-    linear-gradient(120deg, #e3f2fd 60%, #bbdefb 100%);
-  background-blend-mode: lighten;
   border-radius: 22px;
   box-shadow: 0 6px 32px rgba(30,136,229,0.13);
   overflow: hidden;
   text-align: center;
 }
-/* Overlay for better text readability */
+
+/* Logo as faded background image */
+.hero-logo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Try 'cover' for full fill, 'contain' for all visible */
+  opacity: 0.25; /* Faded effect, adjust as needed */
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Overlay for gradient and better text readability */
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(255,255,255,0.83);
+  background:
+    linear-gradient(120deg, #e3f2fd 60%, #bbdefb 100%);
+  background-color: rgba(255,255,255,0.7); /* semi-transparent white over gradient */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -29,6 +39,7 @@
   backdrop-filter: blur(2.5px);
   z-index: 2;
 }
+
 .homepage-title {
   font-size: 2.7rem;
   font-weight: bold;
@@ -36,7 +47,9 @@
   margin-bottom: 0.5em;
   letter-spacing: 2px;
   text-shadow: 0 8px 24px rgba(30,136,229,0.10);
+  z-index: 3; /* Make sure it's above overlay */
 }
+
 .homepage-subtitle {
   font-size: 1.2rem;
   color: #414a5a;
@@ -44,6 +57,7 @@
   max-width: 540px;
   text-align: center;
   font-weight: 500;
+  z-index: 3;
 }
 
 /* REMOVE the old .homepage-logo styles and <img> from HTML if using logo as background */
