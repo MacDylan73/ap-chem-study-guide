@@ -1,4 +1,12 @@
-/* HERO SECTION: logo right, text left, clean gradient background */
+/* ===========================
+   ROOT VARIABLES
+   =========================== */
+/* (These should be in style.css, but included here for reference) */
+/* :root and .dark-mode variable definitions as provided */
+
+/* ===========================
+   HERO SECTION: logo right, text left, gradient background, FULL DARK MODE SUPPORT
+   =========================== */
 .homepage-hero {
   position: relative;
   height: 340px;
@@ -11,8 +19,13 @@
   border-radius: 22px;
   box-shadow: 0 6px 32px rgba(30,136,229,0.13);
   overflow: hidden;
-  background: linear-gradient(120deg, #e3f2fd 60%, #bbdefb 100%);
   padding: 2em 2.5em;
+  background: linear-gradient(120deg, var(--box-bg) 60%, var(--choice-bg) 100%);
+}
+
+.dark-mode .homepage-hero {
+  background: linear-gradient(120deg, var(--box-bg) 60%, var(--choice-bg) 100%);
+  box-shadow: 0 6px 32px rgba(68,68,68,0.30);
 }
 
 /* Text area: left side */
@@ -35,23 +48,30 @@
   object-fit: contain;
 }
 
-/* Title and subtitle styling */
 .homepage-title {
   font-size: 2.7rem;
   font-weight: bold;
-  color: var(--primary, #1976d2);
+  color: var(--link-color);
   margin-bottom: 0.5em;
   letter-spacing: 2px;
   text-shadow: 0 8px 24px rgba(30,136,229,0.10);
 }
+.dark-mode .homepage-title {
+  color: var(--link-color);
+  text-shadow: 0 8px 24px rgba(102,178,255,0.17), 0 2px 2px #222;
+}
 
 .homepage-subtitle {
   font-size: 1.2rem;
-  color: #414a5a;
+  color: var(--sidebar-text, #414a5a);
   margin-bottom: 0.7em;
   max-width: 540px;
   font-weight: 500;
   text-shadow: 0 2px 16px rgba(30,136,229,0.11), 0 1px 1px #fff;
+}
+.dark-mode .homepage-subtitle {
+  color: var(--sidebar-text, #f0f0f0);
+  text-shadow: 0 2px 16px rgba(102,178,255,0.22), 0 1px 1px #222;
 }
 
 /* Responsive: stack logo below text on mobile */
@@ -62,6 +82,7 @@
     justify-content: center;
     padding: 1.5em 1em;
     height: auto;
+    border-radius: 14px;
   }
   .hero-logo-foreground {
     margin-left: 0;
@@ -71,11 +92,12 @@
   .hero-text {
     text-align: center;
   }
+  .homepage-title { font-size: 2.1rem; }
 }
 
-/* REMOVE the old .homepage-logo styles and <img> from HTML if using logo as background */
-
-/* SEARCH BAR & QUICK LINKS (unchanged) */
+/* ===========================
+   SEARCH BAR & QUICK LINKS (dark mode supported)
+   =========================== */
 .homepage-search-bar {
   display: flex;
   justify-content: center;
@@ -88,13 +110,15 @@
   flex: 1;
   padding: 0.7em 1em;
   border-radius: 6px;
-  border: 1px solid #b0bec5;
+  border: 1px solid var(--box-border);
   font-size: 1rem;
+  background: var(--bar-bg);
+  color: var(--bar-text);
 }
 .homepage-search-bar button {
   padding: 0.7em 1.3em;
   border-radius: 6px;
-  background: var(--primary, #1976d2);
+  background: var(--link-color);
   color: white;
   border: none;
   font-weight: 600;
@@ -102,24 +126,31 @@
   transition: background 0.2s;
 }
 .homepage-search-bar button:hover {
-  background: var(--secondary, #1565c0);
+  background: var(--link-hover);
 }
 .homepage-quick-links {
-  text-align:center;
-  margin-bottom:1.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
   font-size: 1rem;
-  color: #414a5a;
+  color: var(--sidebar-text, #414a5a);
 }
 
-/* CLASS SELECTOR/CARDS: larger, clearer, stylish */
+/* ===========================
+   CLASS SELECTOR/CARDS (dark mode supported)
+   =========================== */
 .class-select-box {
-  background: var(--background-secondary, #f7fafc);
+  background: var(--box-bg);
   border-radius: 16px;
   padding: 2.2rem 1.2rem;
   max-width: 850px;
   margin: 0 auto 2rem auto;
   box-shadow: 0 4px 16px rgba(30,136,229,0.07);
 }
+.dark-mode .class-select-box {
+  background: var(--box-bg);
+  box-shadow: 0 4px 16px rgba(68,68,68,0.20);
+}
+
 .class-list {
   display: flex;
   flex-wrap: wrap;
@@ -127,8 +158,9 @@
   justify-content: center;
   margin-top: 1.6rem;
 }
+
 .class-card {
-  background: linear-gradient(130deg, #e3f2fd 70%, #ffffff 100%);
+  background: linear-gradient(130deg, var(--choice-bg) 70%, var(--box-bg) 100%);
   border-radius: 16px;
   padding: 2.1rem 2.3rem;
   width: 330px;
@@ -136,16 +168,28 @@
   box-shadow: 0 5px 28px rgba(30,136,229,0.15);
   text-align: center;
   transition: transform 0.21s, box-shadow 0.21s;
-  border: 2.5px solid var(--primary, #1976d2);
+  border: 2.5px solid var(--link-color);
   position: relative;
   overflow: hidden;
 }
+.dark-mode .class-card {
+  background: linear-gradient(130deg, var(--choice-bg) 70%, var(--box-bg) 100%);
+  box-shadow: 0 5px 28px rgba(68,68,68,0.20);
+  border-color: var(--link-color);
+}
+
 .class-card:hover {
   transform: translateY(-6px) scale(1.04);
   box-shadow: 0 12px 32px rgba(30,136,229,0.19);
-  border-color: #1565c0;
-  background: linear-gradient(130deg, #bbdefb 70%, #ffffff 100%);
+  border-color: var(--link-hover);
+  background: linear-gradient(130deg, var(--link-hover) 70%, var(--box-bg) 100%);
 }
+.dark-mode .class-card:hover {
+  box-shadow: 0 12px 32px rgba(68,68,68,0.30);
+  border-color: var(--link-hover);
+  background: linear-gradient(130deg, var(--link-hover) 70%, var(--box-bg) 100%);
+}
+
 .class-card-content {
   display: flex;
   flex-direction: column;
@@ -159,19 +203,25 @@
   font-size: 1.6rem;
   font-weight: 700;
   margin-bottom: 0.6em;
-  color: var(--primary, #1976d2);
+  color: var(--link-color);
   letter-spacing: 1.2px;
+}
+.dark-mode .class-card .class-title {
+  color: var(--link-color);
 }
 .class-card .class-desc {
   font-size: 1.17rem;
-  color: #414a5a;
+  color: var(--sidebar-text, #414a5a);
   margin-bottom: 1.2em;
   font-weight: 500;
+}
+.dark-mode .class-card .class-desc {
+  color: var(--sidebar-text, #f0f0f0);
 }
 .class-card .class-btn {
   display: inline-block;
   padding: 0.7em 1.5em;
-  background: var(--primary, #1976d2);
+  background: var(--link-color);
   color: white;
   border: none;
   border-radius: 7px;
@@ -184,10 +234,12 @@
   box-shadow: 0 1px 6px rgba(30,136,229,0.10);
 }
 .class-card .class-btn:hover {
-  background: #1565c0;
+  background: var(--link-hover);
 }
 
-/* What’s New / Announcements (unchanged) */
+/* ===========================
+   ANNOUNCEMENTS (dark mode supported)
+   =========================== */
 .announcements-section {
   background: #fffbe7;
   border: 1px solid #ffe082;
@@ -197,11 +249,20 @@
   margin: 2rem auto 2rem auto;
   padding: 1.2rem 1.5rem;
 }
+.dark-mode .announcements-section {
+  background: #332d1a;
+  border: 1px solid #c2a84a;
+  box-shadow: 0 2px 8px rgba(194,168,74,0.10);
+}
+
 .announcements-title {
   font-weight: bold;
   color: #ffb300;
   font-size: 1.15rem;
   margin-bottom: 0.5em;
+}
+.dark-mode .announcements-title {
+  color: #ffe082;
 }
 .announcements-list {
   list-style: disc inside;
@@ -209,13 +270,22 @@
   font-size: 1rem;
   margin-bottom: 0.4em;
 }
-.announcements-placeholder {
-  color:#795548; 
-  font-size:0.95rem;
+.dark-mode .announcements-list {
+  color: #e3c98a;
 }
-/* Testimonials (unchanged) */
+.announcements-placeholder {
+  color: #795548; 
+  font-size: 0.95rem;
+}
+.dark-mode .announcements-placeholder {
+  color: #e3c98a;
+}
+
+/* ===========================
+   TESTIMONIALS (dark mode supported)
+   =========================== */
 .testimonials-section {
-  background: var(--background-secondary, #f7fafc);
+  background: var(--box-bg);
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(30,136,229,0.04);
   max-width: 700px;
@@ -223,29 +293,49 @@
   padding: 1.2rem 1.5rem;
   text-align: center;
 }
+.dark-mode .testimonials-section {
+  background: var(--box-bg);
+  box-shadow: 0 2px 8px rgba(68,68,68,0.12);
+}
+
 .testimonials-title {
   font-weight: bold;
-  color: var(--primary, #1976d2);
+  color: var(--link-color);
   font-size: 1.15rem;
   margin-bottom: 0.6em;
 }
+.dark-mode .testimonials-title {
+  color: var(--link-color);
+}
 .testimonial-quote {
   font-style: italic;
-  color: #414a5a;
+  color: var(--sidebar-text, #414a5a);
   margin-bottom: 1.2em;
   font-size: 1.02rem;
 }
+.dark-mode .testimonial-quote {
+  color: var(--sidebar-text, #f0f0f0);
+}
 .testimonial-author {
   font-weight: 600;
-  color: #1976d2;
+  color: var(--link-color);
   font-size: 1rem;
   margin-bottom: 0.2em;
 }
-.testimonials-placeholder {
-  color:#414a5a; 
-  font-size:0.95rem;
+.dark-mode .testimonial-author {
+  color: var(--link-color);
 }
-/* Mobile responsiveness: cards and hero */
+.testimonials-placeholder {
+  color: var(--sidebar-text, #414a5a); 
+  font-size: 0.95rem;
+}
+.dark-mode .testimonials-placeholder {
+  color: var(--sidebar-text, #f0f0f0);
+}
+
+/* ===========================
+   MOBILE RESPONSIVENESS
+   =========================== */
 @media (max-width: 700px) {
   .homepage-hero {
     height: 220px;
@@ -256,13 +346,21 @@
   .class-card { width: 98%; min-height: 160px; padding: 1.2rem 0.7rem; }
   .class-select-box { padding: 1.2rem 0.5rem; }
 }
+
+/* ===========================
+   CTA & CONTAINER (dark mode supported)
+   =========================== */
 .homepage-cta {
   font-size: 1.1rem;
   margin: 2rem auto 0 auto;
   max-width: 600px;
   text-align: center;
-  color: #414a5a;
+  color: var(--sidebar-text, #414a5a);
 }
+.dark-mode .homepage-cta {
+  color: var(--sidebar-text, #f0f0f0);
+}
+
 .container {
   max-width: 900px;
   margin: 0 auto;
