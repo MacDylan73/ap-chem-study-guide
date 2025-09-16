@@ -63,14 +63,13 @@ export async function loadSidebar() {
   if (rootPages.includes(currentPage)) {
     sidebarContainer.innerHTML = `
       <div id="sidebar" class="sidebar">
-        <div class="sidebar-header">Courses</div>
+        <div class="sidebar-header">Courses<hr></div>
         <nav class="sidebar-links">
           <a href="ap-chem-course-guide.html">AP Chemistry</a>
         </nav>
         <div class="sidebar-footer" style="margin-top:2.5em; font-size:0.93em; color:#8a8a8a; text-align:center;">
-          Want more AP courses? 
-          <a href="about.html" style="color:#6c7a89;text-decoration:underline;">Reach out</a>
-          and let me know what you are taking!
+          Want more AP courses or have feedback? Please reach out to me on the page below! 
+          <a href="about.html" style="color:#6c7a89;text-decoration:underline;">Contact</a>
         </div>
       </div>
       <div id="sidebar-overlay" class="sidebar-overlay"></div>
