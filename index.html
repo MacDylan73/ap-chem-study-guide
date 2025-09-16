@@ -29,13 +29,14 @@
   <!-- Main Page Content -->
   <div class="container">
 
-    <!-- Hero Section with Logo -->
+    <!-- Hero Section with Logo as Background and Overlay Text -->
     <div class="homepage-hero">
-      <img src="images/logo.jpeg" alt="AP Prep Hub Logo" class="homepage-logo" />
-      <div class="homepage-title">AP Prep Hub</div>
-      <div class="homepage-subtitle">
-        Your central resource for mastering AP exams.<br>
-        Practice, review, and track your progress for AP Chemistry and more subjects coming soon.
+      <div class="hero-overlay">
+        <div class="homepage-title">AP Prep Hub</div>
+        <div class="homepage-subtitle">
+          Your central resource for mastering AP exams.<br>
+          Practice, review, and track your progress for AP Chemistry and more subjects coming soon.
+        </div>
       </div>
     </div>
 
@@ -69,18 +70,29 @@
     <div class="class-select-box">
       <h2>Select a Class Homepage</h2>
       <div class="class-list">
-        <!-- AP Chemistry Card -->
+        <!-- AP Chemistry Card (updated structure for more clarity and style) -->
         <div class="class-card">
-          <div class="class-title">AP Chemistry</div>
-          <div class="class-desc">Course guide, practice tests, daily questions, and review resources.</div>
-          <a href="ap-chem-course-guide.html" class="class-btn">Go to AP Chem</a>
+          <div class="class-card-content">
+            <div class="class-icon">
+              <!-- Optional: Add an icon here, e.g., flask for chemistry -->
+              <img src="images/chem-flask.svg" alt="Chemistry Icon" style="height:48px;width:48px;" />
+            </div>
+            <div class="class-title">AP Chemistry</div>
+            <div class="class-desc">Course guide, practice tests, daily questions, and review resources.</div>
+            <a href="ap-chem-course-guide.html" class="class-btn">Go to AP Chem</a>
+          </div>
         </div>
         <!-- Future classes can be added here by duplicating the card -->
         <!-- Example for expansion:
         <div class="class-card">
-          <div class="class-title">AP Biology</div>
-          <div class="class-desc">Practice, guides, and progress for AP Biology (coming soon).</div>
-          <a href="ap-bio-course-guide.html" class="class-btn">Go to AP Bio</a>
+          <div class="class-card-content">
+            <div class="class-icon">
+              <img src="images/bio-leaf.svg" alt="Biology Icon" style="height:48px;width:48px;" />
+            </div>
+            <div class="class-title">AP Biology</div>
+            <div class="class-desc">Practice, guides, and progress for AP Biology (coming soon).</div>
+            <a href="ap-bio-course-guide.html" class="class-btn">Go to AP Bio</a>
+          </div>
         </div>
         -->
       </div>
