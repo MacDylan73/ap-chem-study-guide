@@ -74,50 +74,52 @@
   text-shadow: 0 2px 16px rgba(102,178,255,0.22), 0 1px 1px #222;
 }
 
-/* Responsive: stack logo below text on mobile */
+/* Desktop styles remain unchanged above... */
+
+/* MOBILE HERO IMPROVEMENTS */
 @media (max-width: 700px) {
   .homepage-hero {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 1.7em 1em 1.7em 1em;
-    min-height: unset;
-    height: auto;
-    border-radius: 16px;
-    margin-top: 70px; /* Add top margin to prevent overlap with top bar */
+    padding: 2.7em 1em 2em 1em;   /* More top padding */
+    margin-top: 70px;              /* Push hero below header (adjust 70px to your header height) */
     margin-bottom: 1.3rem;
     width: 98vw;
     max-width: 98vw;
+    min-height: 340px;             /* Ensure hero box is tall enough for logo */
+    box-sizing: border-box;
   }
   .hero-text {
     text-align: center;
     width: 100%;
+    margin-bottom: 1.4em;          /* Space below text before logo */
   }
   .hero-logo-foreground {
-    margin-left: 0;
-    margin-top: 2em; /* More space between text and logo */
-    margin-bottom: 1em;
+    display: block;
+    margin: 0 auto 1em auto;       /* Center horizontally and space below logo */
     width: 36vw;
     max-width: 120px;
-    min-width: 64px;
-    display: block;
+    min-width: 72px;
+    object-fit: contain;
   }
   .homepage-title { font-size: 1.5rem; }
   .homepage-subtitle { font-size: 1rem; }
 }
 @media (max-width: 480px) {
   .homepage-hero {
-    padding: 1em 0.3em;
+    padding: 2.5em 0.3em 1.5em 0.3em; /* Extra top padding for smaller screens */
     margin-top: 60px;
     margin-bottom: 1rem;
     border-radius: 10px;
+    min-height: 280px;
   }
   .hero-logo-foreground {
     width: 50vw;
     max-width: 90px;
     min-width: 48px;
-    margin-top: 1.2em;
-    margin-bottom: 0.7em;
+    margin: 0 auto 0.7em auto;
+    object-fit: contain;
   }
   .homepage-title { font-size: 1.1rem; }
   .homepage-subtitle { font-size: 0.93rem; }
