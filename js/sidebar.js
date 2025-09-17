@@ -9,10 +9,16 @@ window.toggleSidebar = toggleSidebar;
 
 // Highlight the active sidebar link for the current page
 function highlightActiveSidebarLink() {
-  const currentPage = window.location.pathname.split('/').pop();
+  const currentPath = window.location.pathname.replace(/^\/+/, ''); // Remove leading slash(es)
   document.querySelectorAll('.sidebar a').forEach(link => {
-    const linkPage = link.getAttribute('href');
-    if (linkPage === currentPage) {
+    // Normalize link href to pathname
+    let linkHref = link.getAttribute('href').replace(/^\/+/, '');
+    // Get only the path part (strip domain if present)
+    if (linkHref.startsWith('http')) {
+      const url = new URL(linkHref);
+      linkHref = url.pathname.replace(/^\/+/, '');
+    }
+    if (linkHref === currentPath) {
       link.classList.add('active');
     } else {
       link.classList.remove('active');
