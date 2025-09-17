@@ -81,25 +81,26 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    padding: 2.7em 1em 2em 1em;   /* More top padding */
+    padding: 2em 1em 2.5em 1em;  /* More bottom padding */
     margin-top: 70px;
     margin-bottom: 1.3rem;
-    width: 96vw;
-    max-width: 480px;
+    width: 92vw;                 /* Slightly narrower */
+    max-width: 410px;            /* Prevents it from getting too wide */
     min-height: 340px;
     box-sizing: border-box;
+    position: relative;
     left: 50%;
     transform: translateX(-50%);
-    position: relative;
+    background: linear-gradient(120deg, var(--box-bg) 40%, var(--choice-bg) 85%, #2196f3 100%);
   }
   .hero-text {
     text-align: center;
     width: 100%;
-    margin-bottom: 1.4em;
+    margin-bottom: 1.1em;
   }
   .hero-logo-foreground {
     display: block;
-    margin: 0 auto 1.5em auto;       /* More space below logo */
+    margin: 0 auto 2em auto;     /* Big margin below logo */
     width: 36vw;
     max-width: 120px;
     min-width: 72px;
@@ -110,22 +111,22 @@
 }
 @media (max-width: 480px) {
   .homepage-hero {
-    padding: 2.5em 0.3em 1.8em 0.3em; /* Extra bottom padding for smaller screens */
+    padding: 1.8em 0.6em 2.2em 0.6em;  /* More bottom padding */
     margin-top: 60px;
     margin-bottom: 1rem;
     border-radius: 10px;
     min-height: 280px;
-    width: 98vw;
-    max-width: 98vw;
+    width: 97vw;
+    max-width: 97vw;
     left: 50%;
     transform: translateX(-50%);
     position: relative;
   }
   .hero-logo-foreground {
-    width: 50vw;
+    width: 48vw;
     max-width: 90px;
     min-width: 48px;
-    margin: 0 auto 1.2em auto;      /* More space below logo */
+    margin: 0 auto 2em auto;      /* Big margin below logo */
     object-fit: contain;
   }
   .homepage-title { font-size: 1.1rem; }
