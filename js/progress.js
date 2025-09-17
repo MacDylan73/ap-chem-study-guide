@@ -109,15 +109,15 @@ export async function updateUnitButtonProgress() {
     // Enable navigation on button click
     btn.onclick = () => {
       let pageMap = {
-        'unit-1': 'unit-1-atomic-structure.html',
-        'unit-2': 'unit-2-compound-structure-and-properties.html',
-        'unit-3': 'unit-3-properties-of-substances-and-mixtures.html',
-        'unit-4': 'unit-4-chemical-reactions.html',
-        'unit-5': 'unit-5-kinetics.html',
-        'unit-6': 'unit-6-thermochemistry.html',
-        'unit-7': 'unit-7-equilibrium.html',
-        'unit-8': 'unit-8-acids-and-bases.html',
-        'unit-9': 'unit-9-thermodynamics-and-electrochemistry.html'
+        'unit-1': 'ap-chem-unit-1-atomic-structure.html',
+        'unit-2': 'ap-chem-unit-2-compound-structure-and-properties.html',
+        'unit-3': 'ap-chem-unit-3-properties-of-substances-and-mixtures.html',
+        'unit-4': 'ap-chem-unit-4-chemical-reactions.html',
+        'unit-5': 'ap-chem-unit-5-kinetics.html',
+        'unit-6': 'ap-chem-unit-6-thermochemistry.html',
+        'unit-7': 'ap-chem-unit-7-equilibrium.html',
+        'unit-8': 'ap-chem-unit-8-acids-and-bases.html',
+        'unit-9': 'ap-chem-unit-9-thermodynamics-and-electrochemistry.html'
       };
       const url = pageMap[unitId] || `${unitId}.html`;
       window.location.href = url;
