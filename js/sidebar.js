@@ -9,16 +9,20 @@ window.toggleSidebar = toggleSidebar;
 
 // Highlight the active sidebar link for the current page
 function highlightActiveSidebarLink() {
-  const currentPath = window.location.pathname.replace(/^\/+/, ''); // Remove leading slash(es)
+  // Get current page filename (without any query/hash)
+  const currentPage = window.location.pathname.split('/').pop().split('?')[0].split('#')[0];
   document.querySelectorAll('.sidebar a').forEach(link => {
-    // Normalize link href to pathname
-    let linkHref = link.getAttribute('href').replace(/^\/+/, '');
-    // Get only the path part (strip domain if present)
+    // Get link's filename (ignore any hash/query)
+    let linkHref = link.getAttribute('href');
+    if (!linkHref) return;
+    // If absolute URL, get pathname
     if (linkHref.startsWith('http')) {
-      const url = new URL(linkHref);
-      linkHref = url.pathname.replace(/^\/+/, '');
+      try {
+        linkHref = new URL(linkHref).pathname;
+      } catch (e) { /* ignore */ }
     }
-    if (linkHref === currentPath) {
+    let linkPage = linkHref.split('/').pop().split('?')[0].split('#')[0];
+    if (linkPage === currentPage) {
       link.classList.add('active');
     } else {
       link.classList.remove('active');
