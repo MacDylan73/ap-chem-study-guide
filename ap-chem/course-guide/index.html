@@ -250,8 +250,8 @@
   <!-- Modular JS imports for all UI and authentication logic -->
   <script type="module">
     // Import shared modules for UI, authentication, and modal logic
-    import { loadTopbar } from './js/topbar.js';
-    import { loadSidebar } from './js/sidebar.js';
+    import { loadTopbar } from '/js/topbar.js';
+    import { loadSidebar } from '/js/sidebar.js';
     import {
       onAuthChange,
       signInHandler,
@@ -259,23 +259,23 @@
       setupAuthModalEvents,
       ensureUsernameOnLogin,
       updateIndexBarAuthButtons
-    } from './js/auth.js';
+    } from '/js/auth.js';
     import { toggleTheme,
              applySavedTheme
-    } from './js/theme-toggle.js';
+    } from '/js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
-    import { setupUsernameModal } from './js/username-modal.js';
-    import './js/qotd.js';
-    import './js/progress.js';
-    import { injectAccountModal, setupAccountModalEvents } from './js/account-modal.js';
+    import { setupUsernameModal } from '/js/username-modal.js';
+    import '/js/qotd.js';
+    import '/js/progress.js';
+    import { injectAccountModal, setupAccountModalEvents } from '/js/account-modal.js';
 
     async function loadAuthModal() {
-      const resp = await fetch('auth-modal.html');
+      const resp = await fetch('/auth-modal.html');
       const html = await resp.text();
       document.body.insertAdjacentHTML('beforeend', html);
     }
     async function loadUsernameModal() {
-      const resp = await fetch('username-modal.html');
+      const resp = await fetch('/username-modal.html');
       const html = await resp.text();
       document.body.insertAdjacentHTML('beforeend', html);
     }
