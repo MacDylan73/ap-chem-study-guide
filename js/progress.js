@@ -124,8 +124,9 @@ export async function updateUnitButtonProgress() {
         window.location.href = BASE + unitPaths[unitId];
       } else {
         // Optionally, show an error or do nothing for unknown unitId
-        // window.location.href = `${BASE}${unitId}/`;
         alert('Unknown unit. Navigation cancelled.');
+        // Optionally, display a custom notification to the user here
+        // showNotification('Unknown unit. Navigation cancelled.');
       }
     };
   });
