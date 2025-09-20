@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AP Chemistry Score Calculator | AP Prep Hub</title>
+  <meta name="description" content="Estimate your AP Chemistry exam score with our calculator. Input your practice test results and set smart goals for test day.">
+  <meta name="keywords" content="AP Chemistry, Score Calculator, AP Chem, Exam Score, Practice Test, College Board, Study Guide, AP Prep Hub">
+  <meta name="author" content="AP Prep Hub">
+  <meta name="robots" content="index, follow">
+  <meta http-equiv="Content-Language" content="en">
+  <meta name="theme-color" content="#1976d2">
+  <link rel="canonical" href="https://apprephub.com/ap-chem/score-calculator">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <!-- Open Graph / Social Preview -->
+  <meta property="og:title" content="AP Chemistry Score Calculator | AP Prep Hub">
+  <meta property="og:description" content="Estimate your AP Chemistry exam score and set smart goals for test day. Use practice results to predict your score.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://apprephub.com/ap-chem/score-calculator/">
+  <meta property="og:image" content="https://apprephub.com/images/logo.png">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AP Chemistry Score Calculator | AP Prep Hub">
+  <meta name="twitter:description" content="Estimate your AP Chemistry exam score and set smart goals for test day.">
+  <meta name="twitter:image" content="https://apprephub.com/images/logo.png">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/topbar.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/bottombar.css" /> 
+</head>
+<body>
+  <!-- Top Navigation Bar will be rendered here -->
+  <div id="topbar-container"></div>
+  <!-- Sidebar will be rendered here -->
+  <div id="sidebar-container"></div>
+  <!-- Page Content -->
+  <div class="container">
+    <!-- Header Box (styled like QOTD page) -->
+    <div class="box">
+      <h2>AP Chemistry Score Calculator</h2>
+      <div class="qotd-subheader">
+        Estimate your AP Chemistry exam score and set goals for your practice. Adjust the sliders and see how your section scores impact your predicted AP score. 
+      </div>
+    </div>
+
+    <!-- Calculator Box -->
+    <div class="box" id="score-calculator-container">
+      <!-- The calculator UI will be injected here by JS -->
+    </div>
+    
+    <!-- Scoring Information Box -->
+    <div class="box">
+      <h2>How AP Chemistry Scoring Works</h2>
+      <hr>
+      <ul>
+        <li>The exam has two main sections:
+          <ul>
+            <li><strong>Multiple Choice (MCQ):</strong> 60 questions, 50% of total score</li>
+            <li><strong>Free Response (FRQ):</strong> 7 questions (3 long, 4 short), 50% of total score</li>
+          </ul>
+        </li>
+        <li>Composite scores (100 total points) are converted to your ap score</li>
+        <li>There is no official composite score to ap score conversion - this calculator uses the following estimates:</li>
+        <li>72 or higher = 5, 71-60 = 4, 59-48 = 3, 47-35 = 2, 35 or below = 1</li>
+        <li>See AP Chem Score distributions on the college board site <a href="https://apstudents.collegeboard.org/about-ap-scores/score-distributions/ap-chemistry">here</a></li>
+      </ul>
+    </div>
+
+    <!-- Countdown Box -->
+    <div class="box">
+      <div class="countdown" id="countdownText">
+        Loading countdown...
+      </div>
+    </div>
+  </div>
+  <!-- Bottom Bar for Page -->
+  <div id="indexBottomBar" class="bottom-bar">
+    <div class="bottom-bar-left" id="bottomBarLeft"></div>
+    <div class="bottom-bar-center">
+      <button id="returnHomeBtn" onclick="window.location.href='ap-chem-course-guide.html'">Return to Home</button>
+    </div>
+    <div class="bottom-bar-right">
+      <button id="futureFeatureBtn" onclick="window.open('https://forms.gle/CTyDuLatR2WVnKLs9', '_blank')">Future Feature (Premium Content Waitlist)</button>
+    </div>
+  </div>
+  <!-- Footer text, FULL WIDTH, BELOW the button bar -->
+<div class="footer-info">
+  <a href="about.html">Contact/About</a>
+  <span class="footer-dot">&middot;</span>
+  <span>AP Prep Hub <sup class="tm-symbol">&#8482;</sup></span>
+  <span class="footer-copyright">&copy; 2024 AP Prep Hub</span>
+</div>
+  <!-- Modal and Overlay Box -->
+  <div id="qotdModalContainer"></div>
+  <div id="confettiOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:2000;"></div>
+  <!-- JavaScript -->
+  <!-- Utility scripts -->
+  <script src="js/util.js" defer></script>
+  <script src="js/score-calculator.js"></script>
+  <script>
+    window.addEventListener('DOMContentLoaded', function() {
+      renderCountdown("countdownText", "May 5, 2026");
+    });
+  </script>
+  <!-- Modular JS imports for all UI and authentication logic -->
+  <script type="module">
+    import { loadTopbar } from './js/topbar.js';
+    import { loadSidebar } from './js/sidebar.js';
+    import {
+      onAuthChange,
+      signInHandler,
+      signOutHandler,
+      setupAuthModalEvents,
+      ensureUsernameOnLogin,
+      updateIndexBarAuthButtons
+    } from './js/auth.js';
+    import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
+    window.toggleTheme = toggleTheme;
+    import { setupUsernameModal } from './js/username-modal.js';
+    import './js/qotd.js';
+    import './js/progress.js';
+    import { injectAccountModal, setupAccountModalEvents } from './js/account-modal.js';
+
+    async function loadAuthModal() {
+      const resp = await fetch('auth-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+    async function loadUsernameModal() {
+      const resp = await fetch('username-modal.html');
+      const html = await resp.text();
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadAuthModal();           // 1. Inject HTML for Auth modal
+  setupAuthModalEvents();          // 2. Setup events for Auth modal
+
+  await loadUsernameModal();       // 3. Inject HTML for Username modal
+  setupUsernameModal();            // 4. Setup events for Username modal
+
+  await injectAccountModal();      // 5. Inject HTML for Account modal
+  setupAccountModalEvents();       // 6. Setup events for Account modal
+      await loadTopbar("AP Chemistry Score Calculator");
+      applySavedTheme();
+      loadSidebar();
+      updateIndexBarAuthButtons();
+    });
+
+    onAuthChange(async user => {
+      if (user && user.providerData.some(p => p.providerId === "google.com")) {
+        await ensureUsernameOnLogin();
+      }
+      updateIndexBarAuthButtons();
+    });
+  </script>
+</body>
+</html>
