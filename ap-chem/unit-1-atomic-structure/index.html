@@ -11,13 +11,13 @@
   <meta name="robots" content="index, follow">
   <meta http-equiv="Content-Language" content="en">
   <meta name="theme-color" content="#1976d2">
-  <link rel="canonical" href="https://apprephub.com/ap-chem-unit-1-atomic-structure.html">
+  <link rel="canonical" href="https://apprephub.com/ap-chem-unit-1-atomic-structure/">
   <link rel="icon" href="/favicon.ico" type="image/x-icon">
   <!-- Open Graph / Social Preview -->
   <meta property="og:title" content="AP Chemistry Unit 1: Atomic Structure & Properties | AP Prep Hub">
   <meta property="og:description" content="Learn AP Chemistry Unit 1: Atomic Structure & Properties with expert notes, quizzes, and progress tracking.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://apprephub.com/ap-chem-unit-1-atomic-structure.html">
+  <meta property="og:url" content="https://apprephub.com/ap-chem-unit-1-atomic-structure/">
   <meta property="og:image" content="https://apprephub.com/images/logo.png">
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
@@ -25,11 +25,11 @@
   <meta name="twitter:description" content="College Board-aligned notes, quizzes, and study tools for AP Chemistry Unit 1: Atomic Structure.">
   <meta name="twitter:image" content="https://apprephub.com/images/logo.png">
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="css/variables.css" />
-  <link rel="stylesheet" href="css/topbar.css" />
-  <link rel="stylesheet" href="css/sidebar.css" />
-  <link rel="stylesheet" href="css/bottombar.css" />
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/topbar.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+  <link rel="stylesheet" href="/css/bottombar.css" />
 </head>
 <body>
   <!-- Top Navigation Bar -->
@@ -757,7 +757,7 @@
   </div>
   <div class="bottom-bar-center">
     <button id="returnHomeBtn">Return to Home</button>
-    <button id="nextUnitBtn" onclick="window.location.href='ap-chem-unit-2-compound-structure-and-properties.html'">Next unit: Unit 2</button>
+    <button id="nextUnitBtn" onclick="window.location.href='/ap-chem/unit-2-compound-structure-and-properties/'">Next unit: Unit 2</button>
   </div>
   <div class="bottom-bar-right">
     <button id="futureFeatureBtn" onclick="window.open('https://forms.gle/CTyDuLatR2WVnKLs9', '_blank')">Future Feature (Premium Content Waitlist)</button>
@@ -765,15 +765,15 @@
 </div>
   <!-- Footer text, FULL WIDTH, BELOW the button bar -->
 <div class="footer-info">
-  <a href="about.html">Contact/About</a>
+  <a href="/about/">Contact/About</a>
   <span class="footer-dot">&middot;</span>
   <span>AP Prep Hub <sup class="tm-symbol">&#8482;</sup></span>
   <span class="footer-copyright">&copy; 2024 AP Prep Hub</span>
 </div>
 
 <script type="module">
-import { loadTopbar } from './js/topbar.js';
-import { loadSidebar } from './js/sidebar.js';
+import { loadTopbar } from '/js/topbar.js';
+import { loadSidebar } from '/js/sidebar.js';
 import {
   onAuthChange,
   signInHandler,
@@ -783,28 +783,28 @@ import {
   updateUnitBottomBarAuthButtons,
   setupUnitBottomBarButtons,
   setupUnitBottomBarAuthSync
-} from './js/auth.js';
-import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
+} from '/js/auth.js';
+import { toggleTheme, applySavedTheme } from '/js/theme-toggle.js';
 window.toggleTheme = toggleTheme;
-import { setupUsernameModal } from './js/username-modal.js';
-import { setupGating, setupGatingModalClose } from './js/gating.js';
-import './js/util.js';     
-import { setupQuizTimers, updateSubunitCheckmarks } from './js/questions.js';
-import { injectAccountModal, setupAccountModalEvents } from './js/account-modal.js';
+import { setupUsernameModal } from '/js/username-modal.js';
+import { setupGating, setupGatingModalClose } from '/js/gating.js';
+import '/js/util.js';     
+import { setupQuizTimers, updateSubunitCheckmarks } from '/js/questions.js';
+import { injectAccountModal, setupAccountModalEvents } from '/js/account-modal.js';
 
 // Modal loader functions (as in index page)
 async function loadGatingModal() {
-  const resp = await fetch('gating-modal.html');
+  const resp = await fetch('/gating-modal.html');
   const html = await resp.text();
   document.body.insertAdjacentHTML('beforeend', html);
 }
 async function loadAuthModal() {
-  const resp = await fetch('auth-modal.html');
+  const resp = await fetch('/auth-modal.html');
   const html = await resp.text();
   document.body.insertAdjacentHTML('beforeend', html);
 }
 async function loadUsernameModal() {
-  const resp = await fetch('username-modal.html');
+  const resp = await fetch('/username-modal.html');
   const html = await resp.text();
   document.body.insertAdjacentHTML('beforeend', html);
 }
