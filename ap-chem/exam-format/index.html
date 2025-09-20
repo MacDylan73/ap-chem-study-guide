@@ -24,11 +24,11 @@
   <meta name="twitter:description" content="Learn the AP Chemistry exam format, scoring, and section breakdown. Get ready for test day!">
   <meta name="twitter:image" content="https://apprephub.com/images/logo.png">
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="css/variables.css" />
-  <link rel="stylesheet" href="css/topbar.css" />
-  <link rel="stylesheet" href="css/sidebar.css" />
-  <link rel="stylesheet" href="css/bottombar.css" /> 
+  <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/css/variables.css" />
+  <link rel="stylesheet" href="/css/topbar.css" />
+  <link rel="stylesheet" href="/css/sidebar.css" />
+  <link rel="stylesheet" href="/css/bottombar.css" /> 
 </head>
 <body>
   <!-- Top Navigation Bar will be rendered here -->
@@ -112,7 +112,7 @@
       <h2>Frequently Asked Questions</h2>
       <hr>
       <ul>
-        <p><strong>How is the exam scored?</strong> Both sections are weighted equally (50% each); raw scores are converted to AP scores (1-5).  View more info on exam scoring on <a href="ap-chem-score-calculator.html">our score calculator page</a></p>
+        <p><strong>How is the exam scored?</strong> Both sections are weighted equally (50% each); raw scores are converted to AP scores (1-5).  View more info on exam scoring on <a href="../score-calculator/">our score calculator page</a></p>
         <p><strong>Is there a break between the multiple choice and free response sections?</strong> Yes. You will receive a roughly 10 minute break between sections</p>
         <p><strong>Will I be able to pause my test if I need to use the restroom during testing?</strong> No. While you are allowed to use the restroom at any point during testing, know that you cannot pause the test and will lose exam time</p>
         <p><strong>What topics should I focus on?</strong> Each unit has roughly equal weighting on the AP exam with slight focuses on units 3 and 8.  See the full breakdown on College Board's website <a href="https://apcentral.collegeboard.org/courses/ap-chemistry">here</a></p>
@@ -131,7 +131,7 @@
   <div id="indexBottomBar" class="bottom-bar">
     <div class="bottom-bar-left" id="bottomBarLeft"></div>
     <div class="bottom-bar-center">
-      <button id="returnHomeBtn" onclick="window.location.href='ap-chem-course-guide.html'">Return to Home</button>
+      <button id="returnHomeBtn" onclick="window.location.href='../course-guide/'">Return to Home</button>
     </div>
     <div class="bottom-bar-right">
       <button id="futureFeatureBtn" onclick="window.open('https://forms.gle/CTyDuLatR2WVnKLs9', '_blank')">Future Feature (Premium Content Waitlist)</button>
@@ -139,7 +139,7 @@
   </div>
   <!-- Footer text, FULL WIDTH, BELOW the button bar -->
 <div class="footer-info">
-  <a href="about.html">Contact/About</a>
+  <a href="/about/">Contact/About</a>
   <span class="footer-dot">&middot;</span>
   <span>AP Prep Hub <sup class="tm-symbol">&#8482;</sup></span>
   <span class="footer-copyright">&copy; 2024 AP Prep Hub</span>
@@ -149,8 +149,8 @@
   <div id="confettiOverlay" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none; z-index:2000;"></div>
   <!-- JavaScript -->
   <!-- Utility scripts -->
-  <script src="js/util.js" defer></script>
-  <script src="js/score-calculator.js"></script>
+  <script src="/js/util.js" defer></script>
+  <script src="/js/score-calculator.js"></script>
   <script>
     window.addEventListener('DOMContentLoaded', function() {
       renderCountdown("countdownText", "May 5, 2026");
@@ -158,8 +158,8 @@
   </script>
   <!-- Modular JS imports for all UI and authentication logic -->
   <script type="module">
-    import { loadTopbar } from './js/topbar.js';
-    import { loadSidebar } from './js/sidebar.js';
+    import { loadTopbar } from '/js/topbar.js';
+    import { loadSidebar } from '/js/sidebar.js';
     import {
       onAuthChange,
       signInHandler,
@@ -167,21 +167,21 @@
       setupAuthModalEvents,
       ensureUsernameOnLogin,
       updateIndexBarAuthButtons
-    } from './js/auth.js';
-    import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
+    } from '/js/auth.js';
+    import { toggleTheme, applySavedTheme } from '/js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
-    import { setupUsernameModal } from './js/username-modal.js';
-    import './js/qotd.js';
-    import './js/progress.js';
-    import { injectAccountModal, setupAccountModalEvents } from './js/account-modal.js';
+    import { setupUsernameModal } from '/js/username-modal.js';
+    import '/js/qotd.js';
+    import '/js/progress.js';
+    import { injectAccountModal, setupAccountModalEvents } from '/js/account-modal.js';
 
     async function loadAuthModal() {
-      const resp = await fetch('auth-modal.html');
+      const resp = await fetch('/auth-modal.html');
       const html = await resp.text();
       document.body.insertAdjacentHTML('beforeend', html);
     }
     async function loadUsernameModal() {
-      const resp = await fetch('username-modal.html');
+      const resp = await fetch('/username-modal.html');
       const html = await resp.text();
       document.body.insertAdjacentHTML('beforeend', html);
     }
