@@ -108,19 +108,25 @@ export async function updateUnitButtonProgress() {
 
     // Enable navigation on button click
     btn.onclick = () => {
-      let pageMap = {
-        'unit-1': '/ap-chem/unit-1-atomic-structure/',
-        'unit-2': '/ap-chem/unit-2-compound-structure-and-properties/',
-        'unit-3': '/ap-chem/unit-3-properties-of-substances-and-mixtures/',
-        'unit-4': '/ap-chem/unit-4-chemical-reactions/',
-        'unit-5': '/ap-chem/unit-5-kinetics/',
-        'unit-6': '/ap-chem/unit-6-thermochemistry/',
-        'unit-7': '/ap-chem/unit-7-equilibrium/',
-        'unit-8': '/ap-chem/unit-8-acids-and-bases/',
-        'unit-9': '/ap-chem/unit-9-thermodynamics-and-electrochemistry/'
+      const BASE = '/ap-chem/';
+      const unitPaths = {
+        'unit-1': 'unit-1-atomic-structure/',
+        'unit-2': 'unit-2-compound-structure-and-properties/',
+        'unit-3': 'unit-3-properties-of-substances-and-mixtures/',
+        'unit-4': 'unit-4-chemical-reactions/',
+        'unit-5': 'unit-5-kinetics/',
+        'unit-6': 'unit-6-thermochemistry/',
+        'unit-7': 'unit-7-equilibrium/',
+        'unit-8': 'unit-8-acids-and-bases/',
+        'unit-9': 'unit-9-thermodynamics-and-electrochemistry/'
       };
-      const url = pageMap[unitId] || `${unitId}.html`;
-      window.location.href = url;
+      if (unitPaths[unitId]) {
+        window.location.href = BASE + unitPaths[unitId];
+      } else {
+        // Optionally, show an error or do nothing for unknown unitId
+        // window.location.href = `${BASE}${unitId}/`;
+        alert('Unknown unit. Navigation cancelled.');
+      }
     };
   });
 }
