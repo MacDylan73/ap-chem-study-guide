@@ -24,12 +24,12 @@
   <meta name="twitter:description" content="Daily AP Chemistry practice questions. Track your streak and master exam content.">
   <meta name="twitter:image" content="https://apprephub.com/images/logo.png">
   <!-- Stylesheets -->
-  <link rel="stylesheet" href="style.css">
-  <link rel="stylesheet" href="css/variables.css">
-  <link rel="stylesheet" href="css/topbar.css">
-  <link rel="stylesheet" href="css/sidebar.css">
-  <link rel="stylesheet" href="css/bottombar.css">
-  <link rel="stylesheet" href="css/qotd.css">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/css/variables.css">
+  <link rel="stylesheet" href="/css/topbar.css">
+  <link rel="stylesheet" href="/css/sidebar.css">
+  <link rel="stylesheet" href="/css/bottombar.css">
+  <link rel="stylesheet" href="/css/qotd.css">
 </head>
 <body>
   <div id="topbar-container"></div>
@@ -94,7 +94,7 @@
   <div id="indexBottomBar" class="bottom-bar">
   <div class="bottom-bar-left" id="bottomBarLeft"></div>
   <div class="bottom-bar-center">
-    <button id="returnHomeBtn" onclick="window.location.href='ap-chem-course-guide.html'">Return to Home</button>
+    <button id="returnHomeBtn" onclick="window.location.href='../course-guide/'">Return to Home</button>
   </div>
   <div class="bottom-bar-right">
     <button id="futureFeatureBtn" onclick="window.open('https://forms.gle/CTyDuLatR2WVnKLs9', '_blank')">Future Feature (Premium Content Waitlist)</button>
@@ -102,7 +102,7 @@
 </div>
 <!-- Footer text, FULL WIDTH, BELOW the button bar -->
 <div class="footer-info">
-  <a href="about.html">Contact/About</a>
+  <a href="/about/">Contact/About</a>
   <span class="footer-dot">&middot;</span>
   <span>AP Prep Hub <sup class="tm-symbol">&#8482;</sup></span>
   <span class="footer-copyright">&copy; 2024 AP Prep Hub</span>
@@ -114,30 +114,30 @@
 
   <script type="module">
     // ---------- Shared imports ----------
-    import { loadTopbar } from './js/topbar.js';
-    import { loadSidebar } from './js/sidebar.js';
+    import { loadTopbar } from '/js/topbar.js';
+    import { loadSidebar } from '/js/sidebar.js';
     import {
       onAuthChange,
       setupAuthModalEvents,
       ensureUsernameOnLogin,
       updateUnitBottomBarAuthButtons,
       db // <-- Make sure db is imported here!
-    } from './js/auth.js';
-    import { toggleTheme, applySavedTheme } from './js/theme-toggle.js';
+    } from '/js/auth.js';
+    import { toggleTheme, applySavedTheme } from '/js/theme-toggle.js';
     window.toggleTheme = toggleTheme;
-    import { setupUsernameModal } from './js/username-modal.js';
-    import { loadQOTD, renderUserStreakAlways, updateStatsBox } from './js/qotd.js';
-    import { setupLeaderboardTabs, loadLeaderboard } from './js/leaderboard.js';
-    import { injectAccountModal, setupAccountModalEvents } from './js/account-modal.js';
+    import { setupUsernameModal } from '/js/username-modal.js';
+    import { loadQOTD, renderUserStreakAlways, updateStatsBox } from '/js/qotd.js';
+    import { setupLeaderboardTabs, loadLeaderboard } from '/js/leaderboard.js';
+    import { injectAccountModal, setupAccountModalEvents } from '/js/account-modal.js';
 
     // ---------- Modal loader functions ----------
     async function loadAuthModal() {
-      const resp = await fetch('auth-modal.html');
+      const resp = await fetch('/auth-modal.html');
       const html = await resp.text();
       document.body.insertAdjacentHTML('beforeend', html);
     }
     async function loadUsernameModal() {
-      const resp = await fetch('username-modal.html');
+      const resp = await fetch('/username-modal.html');
       const html = await resp.text();
       document.body.insertAdjacentHTML('beforeend', html);
     }
@@ -152,7 +152,7 @@
 
   await injectAccountModal();      // 5. Inject HTML for Account modal
   setupAccountModalEvents();       // 6. Setup events for Account modal
-      loadTopbar("Question of the Day");
+      loadTopbar("AP Chem Question of the Day");
       loadSidebar();
       applySavedTheme();
 
