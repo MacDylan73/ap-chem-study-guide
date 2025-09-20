@@ -109,15 +109,15 @@ export async function updateUnitButtonProgress() {
     // Enable navigation on button click
     btn.onclick = () => {
       let pageMap = {
-        'unit-1': 'ap-chem-unit-1-atomic-structure.html',
-        'unit-2': 'ap-chem-unit-2-compound-structure-and-properties.html',
-        'unit-3': 'ap-chem-unit-3-properties-of-substances-and-mixtures.html',
-        'unit-4': 'ap-chem-unit-4-chemical-reactions.html',
-        'unit-5': 'ap-chem-unit-5-kinetics.html',
-        'unit-6': 'ap-chem-unit-6-thermochemistry.html',
-        'unit-7': 'ap-chem-unit-7-equilibrium.html',
-        'unit-8': 'ap-chem-unit-8-acids-and-bases.html',
-        'unit-9': 'ap-chem-unit-9-thermodynamics-and-electrochemistry.html'
+        'unit-1': '/ap-chem/unit-1-atomic-structure/',
+        'unit-2': '/ap-chem/unit-2-compound-structure-and-properties/',
+        'unit-3': '/ap-chem/unit-3-properties-of-substances-and-mixtures/',
+        'unit-4': '/ap-chem/unit-4-chemical-reactions/',
+        'unit-5': '/ap-chem/unit-5-kinetics/',
+        'unit-6': '/ap-chem/unit-6-thermochemistry/',
+        'unit-7': '/ap-chem/unit-7-equilibrium/',
+        'unit-8': '/ap-chem/unit-8-acids-and-bases/',
+        'unit-9': '/ap-chem/unit-9-thermodynamics-and-electrochemistry/'
       };
       const url = pageMap[unitId] || `${unitId}.html`;
       window.location.href = url;
