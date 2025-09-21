@@ -19,14 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
         // You can check via pathname, or look for a unique element/class on the index page
         // Example: Only add if on index.html
         if (
-          window.location.pathname.endsWith("ap-chem-course-guide.html") ||
+          window.location.pathname.endsWith("/ap-chem/course-guide/") ||
           window.location.pathname === "/" // also home
         ) {
           const scoreResult = container.querySelector(".calc-score-result");
           if (scoreResult) {
             const linkDiv = document.createElement("div");
             linkDiv.className = "calc-full-link";
-            linkDiv.innerHTML = '<a href="ap-chem-score-calculator.html">Go to full score calculator page →</a>';
+            linkDiv.innerHTML = '<a href="/ap-chem/score-calculator/">Go to full score calculator page →</a>';
             scoreResult.appendChild(linkDiv);
           }
         }

@@ -9,23 +9,27 @@ window.toggleSidebar = toggleSidebar;
 
 // Highlight the active sidebar link for the current page
 function highlightActiveSidebarLink() {
-  // Get current page filename (without any query/hash)
-  const currentPage = window.location.pathname.split('/').pop().split('?')[0].split('#')[0];
+  // Get current path
+  const currentPath = window.location.pathname.replace(/\\+/g, '/');
   document.querySelectorAll('.sidebar a').forEach(link => {
-    // Get link's filename (ignore any hash/query)
     let linkHref = link.getAttribute('href');
     if (!linkHref) return;
-    // If absolute URL, get pathname
-    if (linkHref.startsWith('http')) {
-      try {
-        linkHref = new URL(linkHref).pathname;
-      } catch (e) { /* ignore */ }
-    }
-    let linkPage = linkHref.split('/').pop().split('?')[0].split('#')[0];
-    if (linkPage === currentPage) {
-      link.classList.add('active');
+    // If absolute, compare full path
+    if (linkHref.startsWith('/')) {
+      if (currentPath === linkHref || currentPath.startsWith(linkHref + '/')) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
     } else {
-      link.classList.remove('active');
+      // Relative: compare filename
+      let linkPage = linkHref.split('/').pop().split('?')[0].split('#')[0];
+      let currentPage = currentPath.split('/').pop().split('?')[0].split('#')[0];
+      if (linkPage === currentPage) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
     }
   });
 }
@@ -65,27 +69,27 @@ document.addEventListener('keydown', function (event) {
 
 // Load Sidebar (dynamic for homepage)
 export async function loadSidebar() {
-  // Get current page ('' for '/', or e.g. 'index.html')
-  const currentPage = window.location.pathname.split('/').pop();
-  const rootPages = ['', 'index.html'];
+  // Get current path and page
+  const path = window.location.pathname;
+  const currentPage = path.split('/').pop();
   const sidebarContainer = document.getElementById('sidebar-container');
-  // If on root page, show course homepage links and the greyed-out message
-  if (rootPages.includes(currentPage)) {
+  // Root index page (Course Hub)
+  if (path === '/' || currentPage === 'index.html') {
     sidebarContainer.innerHTML = `
       <div id="sidebar" class="sidebar">
-        <div class="sidebar-header">Courses<hr></div>
+        <div class="sidebar-header">AP Prep Hub<hr></div>
         <nav class="sidebar-links">
-          <a href="ap-chem-course-guide.html">AP Chemistry</a>
+          <a href="/" class="active" style="display:block; margin-bottom:0.8em;">🏠 AP Prep Hub</a>
+          <a href="/ap-chem/course-guide/">AP Chemistry</a>
         </nav>
         <div class="sidebar-footer" style="margin-top:2.5em; font-size:0.93em; color:#8a8a8a; text-align:center;">
           Want more AP courses or have feedback? Please reach out to me on the page below! 
-          <a href="about.html" style="color:#6c7a89;text-decoration:underline;">Contact</a>
+          <a href="/about/index.html" style="color:#6c7a89;text-decoration:underline;">Contact</a>
         </div>
       </div>
       <div id="sidebar-overlay" class="sidebar-overlay"></div>
     `;
-    highlightActiveSidebarLink();
-    // Attach overlay click handler
+    // No need to call highlightActiveSidebarLink here since AP Prep Hub is always active on root
     const overlay = document.getElementById('sidebar-overlay');
     if (overlay) {
       overlay.addEventListener('click', function () {
@@ -93,9 +97,12 @@ export async function loadSidebar() {
         if (sidebar) sidebar.classList.remove('visible');
       });
     }
-  } else {
-    // Otherwise, load sidebar.html as before
-    const resp = await fetch('sidebar.html');
+    return;
+  }
+  // AP Chem pages (any page under /ap-chem/)
+  if (path.startsWith('/ap-chem/')) {
+    // Fetch sidebar.html using absolute path
+    const resp = await fetch('/sidebar.html');
     const html = await resp.text();
     sidebarContainer.innerHTML = html;
     const overlay = document.getElementById('sidebar-overlay');
@@ -106,5 +113,28 @@ export async function loadSidebar() {
       });
     }
     highlightActiveSidebarLink();
+    return;
+  }
+  // Fallback: show only link to home and contact
+  sidebarContainer.innerHTML = `
+    <div id="sidebar" class="sidebar">
+      <div class="sidebar-header">AP Prep Hub<hr></div>
+      <nav class="sidebar-links">
+        <a href="/">🏠 AP Prep Hub</a>
+      </nav>
+      <div class="sidebar-footer" style="margin-top:2.5em; font-size:0.93em; color:#8a8a8a; text-align:center;">
+        Want more AP courses or have feedback? Please reach out to me on the page below! 
+        <a href="/about/index.html" style="color:#6c7a89;text-decoration:underline;">Contact</a>
+      </div>
+    </div>
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+  `;
+  highlightActiveSidebarLink();
+  const overlay = document.getElementById('sidebar-overlay');
+  if (overlay) {
+    overlay.addEventListener('click', function () {
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar) sidebar.classList.remove('visible');
+    });
   }
 }
