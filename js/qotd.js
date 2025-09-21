@@ -107,7 +107,7 @@ function startEasternCountdown() {
 export async function loadQOTD() {
   let questions;
   try {
-    const res = await fetch('questions.json');
+    const res = await fetch('/questions.json');
     questions = await res.json();
   } catch (e) {
     console.error("[QOTD] Error loading questions.json:", e);
@@ -150,7 +150,7 @@ export async function loadQOTD() {
 
   // Normal case - show the question
   const q = questions[idx];
-  const isQotdPage = window.location.pathname.includes("ap-chem-question-of-the-day");
+  const isQotdPage = window.location.pathname.includes("/ap-chem/question-of-the-day");
 
   container.innerHTML = `
     <div class="question-box">
