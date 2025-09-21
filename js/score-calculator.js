@@ -6,7 +6,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const container = document.getElementById('score-calculator-container');
   if (container) {
-    fetch('score-calculator.html')
+    fetch('/score-calculator.html')
       .then(response => {
         if (!response.ok) throw new Error('Could not load score-calculator.html');
         return response.text();
