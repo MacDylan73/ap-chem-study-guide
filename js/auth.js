@@ -26,6 +26,7 @@ import {
   where,
   getDocs
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+import { initializeAppCheck, ReCaptchaV3Provider } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app-check.js";
 
 // ---- Firebase Config ----
 const firebaseConfig = {
@@ -38,6 +39,13 @@ const firebaseConfig = {
   measurementId: "G-X2H058B7KT"
 };
 const app = initializeApp(firebaseConfig);
+
+// 🔐 Initialize App Check with your site key
+const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider('6LdgBtMrAAAAANgaZVRWSxfey_dIUCkxIrVvHW7J'),
+  isTokenAutoRefreshEnabled: true
+});
+
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
