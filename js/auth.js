@@ -271,7 +271,13 @@ if (googleSignInBtn) {
           const cred = await createUserWithEmailAndPassword(auth, email, password);
           await updateProfile(cred.user, { displayName: username });
           await sendEmailVerification(cred.user);
-          await setDoc(doc(db, "users", cred.user.uid), { username }, { merge: true });
+          await setDoc(doc(db, "users", cred.user.uid), {
+            username,
+            email: cred.user.email,
+            emailVerified: cred.user.emailVerified,
+            sendgridOptIn: true,
+            createdAt: (await import('https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js')).serverTimestamp()
+          }, { merge: true });
           await signOut(auth); // Immediately sign out after sending verification
 
           // Switch to login tab and show verification message on login tab
