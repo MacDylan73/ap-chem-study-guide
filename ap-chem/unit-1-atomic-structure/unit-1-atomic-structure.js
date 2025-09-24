@@ -73,19 +73,26 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupQuizTimers();
   updateSubunitCheckmarks();
 
-  // Attach event listeners to quiz answer buttons (CSP compliance)
-  document.querySelectorAll('.answer-options button[data-correct]').forEach(btn => {
+  // Attach event listeners to subunit quiz answer buttons (CSP compliance)
+  document.querySelectorAll('.subunit .answer-options button[data-correct]').forEach(btn => {
     btn.addEventListener('click', function() {
       const isCorrect = btn.getAttribute('data-correct') === 'true';
       const explanation = btn.getAttribute('data-explanation') || '';
       const feedback = btn.closest('.question-box').querySelector('.feedback-text');
+      // Highlight all choices
+      btn.parentElement.querySelectorAll('button').forEach(b => {
+        b.classList.remove('selected', 'correct', 'incorrect');
+      });
+      btn.classList.add('selected');
+      btn.classList.add(isCorrect ? 'correct' : 'incorrect');
       if (feedback) {
         feedback.textContent = explanation;
         feedback.style.color = isCorrect ? 'green' : 'red';
       }
-      // Optionally, visually highlight selected button
-      btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('selected'));
-      btn.classList.add('selected');
+      // Mark question as answered for progress tracking
+      if (typeof window.checkAnswer === 'function') {
+        window.checkAnswer(btn, isCorrect, explanation);
+      }
     });
   });
 });
