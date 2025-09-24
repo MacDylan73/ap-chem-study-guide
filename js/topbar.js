@@ -1,3 +1,15 @@
+// Attach event listeners for topbar.html (CSP compliant)
+document.addEventListener('DOMContentLoaded', () => {
+  const menuIcon = document.getElementById('menuIcon');
+  if (menuIcon && typeof window.toggleSidebar === 'function') {
+    menuIcon.addEventListener('click', window.toggleSidebar);
+  }
+
+  const themeToggle = document.getElementById('themeToggle');
+  if (themeToggle && typeof window.toggleTheme === 'function') {
+    themeToggle.addEventListener('click', window.toggleTheme);
+  }
+});
 export async function loadTopbar(title = null) {
   const container = document.getElementById("topbar-container");
   if (!container) return;
