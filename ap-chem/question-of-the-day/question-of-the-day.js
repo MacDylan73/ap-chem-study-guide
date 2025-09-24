@@ -19,12 +19,12 @@ import { injectAccountModal, setupAccountModalEvents } from '/js/account-modal.j
 
 // ---------- Modal loader functions ----------
 async function loadAuthModal() {
-  const resp = await fetch('/auth-modal.html');
+  const resp = await fetch('/components/auth-modal.html');
   const html = await resp.text();
   document.body.insertAdjacentHTML('beforeend', html);
 }
 async function loadUsernameModal() {
-  const resp = await fetch('/username-modal.html');
+  const resp = await fetch('/components/username-modal.html');
   const html = await resp.text();
   document.body.insertAdjacentHTML('beforeend', html);
 }
@@ -54,6 +54,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Bottom bar auth logic
   updateUnitBottomBarAuthButtons();
+
+  // Attach event listeners for bottom bar buttons (CSP compliance)
+  const returnHomeBtn = document.getElementById('returnHomeBtn');
+  if (returnHomeBtn) {
+    returnHomeBtn.addEventListener('click', () => {
+      window.location.href = '../course-guide/';
+    });
+  }
+  const futureFeatureBtn = document.getElementById('futureFeatureBtn');
+  if (futureFeatureBtn) {
+    futureFeatureBtn.addEventListener('click', () => {
+      window.open('https://forms.gle/CTyDuLatR2WVnKLs9', '_blank');
+    });
+  }
 });
 
 // ---------- Auth Change Event for Stats & Streak ----------

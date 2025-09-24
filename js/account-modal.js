@@ -30,7 +30,7 @@ const totalSubunitsByUnit = {
 // --- Modal Injection ---
 export async function injectAccountModal() {
   if (document.getElementById('accountModal')) return;
-  const resp = await fetch('/account-modal.html');
+  const resp = await fetch('/components/account-modal.html');
   const html = await resp.text();
   document.body.insertAdjacentHTML('beforeend', html);
 }

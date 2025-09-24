@@ -24,12 +24,12 @@ import '/js/progress.js';
 import { injectAccountModal, setupAccountModalEvents } from '/js/account-modal.js';
 
 async function loadAuthModal() {
-  const resp = await fetch('/auth-modal.html');
+  const resp = await fetch('/components/auth-modal.html');
   const html = await resp.text();
   document.body.insertAdjacentHTML('beforeend', html);
 }
 async function loadUsernameModal() {
-  const resp = await fetch('/username-modal.html');
+  const resp = await fetch('/components/username-modal.html');
   const html = await resp.text();
   document.body.insertAdjacentHTML('beforeend', html);
 }

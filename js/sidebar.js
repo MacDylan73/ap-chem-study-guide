@@ -101,8 +101,8 @@ export async function loadSidebar() {
   }
   // AP Chem pages (any page under /ap-chem/)
   if (path.startsWith('/ap-chem/')) {
-    // Fetch sidebar.html using absolute path
-    const resp = await fetch('/sidebar.html');
+  // Fetch sidebar.html from components folder
+  const resp = await fetch('/components/sidebar.html');
     const html = await resp.text();
     sidebarContainer.innerHTML = html;
     const overlay = document.getElementById('sidebar-overlay');

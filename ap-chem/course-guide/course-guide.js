@@ -25,12 +25,12 @@ import '/js/progress.js';
 import { injectAccountModal, setupAccountModalEvents } from '/js/account-modal.js';
 
 async function loadAuthModal() {
-  const resp = await fetch('/auth-modal.html');
+  const resp = await fetch('/components/auth-modal.html');
   const html = await resp.text();
   document.body.insertAdjacentHTML('beforeend', html);
 }
 async function loadUsernameModal() {
-  const resp = await fetch('/username-modal.html');
+  const resp = await fetch('/components/username-modal.html');
   const html = await resp.text();
   document.body.insertAdjacentHTML('beforeend', html);
 }
@@ -51,6 +51,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   applySavedTheme();
   loadSidebar();
   updateIndexBarAuthButtons();
+
+  // Attach event listeners for CSP compliance
+  const returnToHubBtn = document.getElementById('returnToHub');
+  if (returnToHubBtn) {
+    returnToHubBtn.addEventListener('click', () => {
+      window.location.href = '/';
+    });
+  }
+  const futureFeatureBtn = document.getElementById('futureFeatureBtn');
+  if (futureFeatureBtn) {
+    futureFeatureBtn.addEventListener('click', () => {
+      window.open('https://forms.gle/CTyDuLatR2WVnKLs9', '_blank');
+    });
+  }
 });
 
 // Redirect QOTD Box 
