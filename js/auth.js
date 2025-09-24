@@ -60,12 +60,20 @@ export let currentUser = null;
 // ---- Auth State Listener ----
 export function onAuthChange(callback) {
   console.log("[AUTH] onAuthChange setup"); // Add this!
-  onAuthStateChanged(auth, user => {
+  onAuthStateChanged(auth, async user => {
     console.log("[AUTH] onAuthStateChanged", user); // Add this!
     isSignedIn = !!user;
     currentUser = user || null;
     window.isSignedIn = isSignedIn;
     window.currentUser = currentUser;
+    // Update Firestore user document with latest emailVerified status
+    if (user) {
+      const { doc, setDoc } = await import("https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js");
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email,
+        emailVerified: user.emailVerified
+      }, { merge: true });
+    }
     if (callback) callback(user);
     document.dispatchEvent(new CustomEvent("authstatechanged", { detail: { user } }));
   });
