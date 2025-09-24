@@ -100,10 +100,10 @@
             <div class="question-box">
               <p class="question-text">How many moles are in 45.68 g of Sodium (Na)?</p>
               <div class="answer-options">
-                <button onclick="checkAnswer(this, false, 'Incorrect, this answer multiplies the weight of the sodium by its molar mass')">1050.18 mol</button>
-                <button onclick="checkAnswer(this, true, 'Correct! This answer correctly divides the weight of Na by its molar mass')">1.99 mol</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, this answer divides the molar mass of Na by the weight of Na')">0.50 mol</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect. To obtain the number of moles we need to divide the weight of Na by its molar mass')">1.48 mol</button>
+                <button data-correct="false" data-explanation="Incorrect, this answer multiplies the weight of the sodium by its molar mass">1050.18 mol</button>
+                <button data-correct="true" data-explanation="Correct! This answer correctly divides the weight of Na by its molar mass">1.99 mol</button>
+                <button data-correct="false" data-explanation="Incorrect, this answer divides the molar mass of Na by the weight of Na">0.50 mol</button>
+                <button data-correct="false" data-explanation="Incorrect. To obtain the number of moles we need to divide the weight of Na by its molar mass">1.48 mol</button>
               </div>
               <div class="feedback-text"></div>
             </div>
@@ -114,10 +114,10 @@
             <div class="question-box">
               <p class="question-text">What is the molar mass of Calcium Carbonate (CaCO₃)?</p>
               <div class="answer-options">
-                <button onclick="checkAnswer(this, false, 'Incorrect, this adds three Carbons instead of one. The subscript 3 only applies to the element preceding it, in this case Oxygen')">124.08 g/mol</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, this correctly adds Ca and C, but only adds one O.  Three Oxygens should be added because of the subscript 3')">68.078 g/mol</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, we need to add Ca, C, and three Oxygens together for the molar mass of the compound')">83.11 g/mol</button>
-                <button onclick="checkAnswer(this, true, 'Correct! This adds Ca, C, and three O atoms properly')">100.06 g/mol</button>
+                <button data-correct="false" data-explanation="Incorrect, this adds three Carbons instead of one. The subscript 3 only applies to the element preceding it, in this case Oxygen">124.08 g/mol</button>
+                <button data-correct="false" data-explanation="Incorrect, this correctly adds Ca and C, but only adds one O.  Three Oxygens should be added because of the subscript 3">68.078 g/mol</button>
+                <button data-correct="false" data-explanation="Incorrect, we need to add Ca, C, and three Oxygens together for the molar mass of the compound">83.11 g/mol</button>
+                <button data-correct="true" data-explanation="Correct! This adds Ca, C, and three O atoms properly">100.06 g/mol</button>
               </div>
               <div class="feedback-text"></div>
             </div>
@@ -154,10 +154,10 @@
           <div class="question-box">
             <p class="question-text">An unknown element occurs naturally in three weights: 20, 21, and 22 amu, in the relative abundances of 90.48%, 0.27%, and 9.25%, respectively.  Identify the element</p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, true, 'Correct! Ne-20.18 amu matches the weighted average.')">Ne</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Na is too heavy')">Na</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, F is too light')">F</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Mg is too heavy')">Mg</button>
+              <button data-correct="true" data-explanation="Correct! Ne-20.18 amu matches the weighted average.">Ne</button>
+              <button data-correct="false" data-explanation="Incorrect, Na is too heavy">Na</button>
+              <button data-correct="false" data-explanation="Incorrect, F is too light">F</button>
+              <button data-correct="false" data-explanation="Incorrect, Mg is too heavy">Mg</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -205,10 +205,10 @@
           <div class="question-box">
             <p class="question-text">A scientist has a pure sample of Calcium Oxide (CaO).  What is the percent composition of Oxygen in Calcium Oxide?</p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, false, 'Incorrect, this is the result of dividing the atomic mass of O by the atmoic mass of Ca, but to find the percent composition of O we need to divide its atomic mass by the atomic mass of the compound CaO')">39.90%</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, this choice might be obtained by dividing the atomic mass of the compound CaO by the atomic mass of O.  To find the percent composition of O we need to flip the division')">3.51%</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, this is the percent composition of Ca in CaO.  To find the percent composition for O, divide the atomic mass of O by the atomic mass of the compound')">71.48%</button>
-              <button onclick="checkAnswer(this, true, 'Correct! Oxygen makes up about 28.52% of the total mass of a molecule of CaO')">28.52%</button>
+              <button data-correct="false" data-explanation="Incorrect, this is the result of dividing the atomic mass of O by the atmoic mass of Ca, but to find the percent composition of O we need to divide its atomic mass by the atomic mass of the compound CaO">39.90%</button>
+              <button data-correct="false" data-explanation="Incorrect, this choice might be obtained by dividing the atomic mass of the compound CaO by the atomic mass of O.  To find the percent composition of O we need to flip the division">3.51%</button>
+              <button data-correct="false" data-explanation="Incorrect, this is the percent composition of Ca in CaO.  To find the percent composition for O, divide the atomic mass of O by the atomic mass of the compound">71.48%</button>
+              <button data-correct="true" data-explanation="Correct! Oxygen makes up about 28.52% of the total mass of a molecule of CaO">28.52%</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -219,10 +219,10 @@
           <div class="question-box">
             <p class="question-text">C₆H₁₂O₆ is the chemical formula for glucose.  What is the emperical formula of glucose?</p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, false, 'Incorrect, this is a more complex chemical (or molecular) formula.  An emperical formula is the most simplified version of the formula')">C₁₂H₂₄O₁₂</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, this is the chemical (or molecular) formula for glucose. An emperical formula is the most simplified version of the formula')">C₆H₁₂O₆</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, although this is a more simplified formula, it can still be further simplified.  An emperical formula is the most simplified version of the formula')">C₃H₆O₃</button>
-              <button onclick="checkAnswer(this, true, 'Correct! This simplifies the subscripts down to the lowest values possible while maintaining the same ratio of elements')">CH₂O</button>
+              <button data-correct="false" data-explanation="Incorrect, this is a more complex chemical (or molecular) formula.  An emperical formula is the most simplified version of the formula">C₁₂H₂₄O₁₂</button>
+              <button data-correct="false" data-explanation="Incorrect, this is the chemical (or molecular) formula for glucose. An emperical formula is the most simplified version of the formula">C₆H₁₂O₆</button>
+              <button data-correct="false" data-explanation="Incorrect, although this is a more simplified formula, it can still be further simplified.  An emperical formula is the most simplified version of the formula">C₃H₆O₃</button>
+              <button data-correct="true" data-explanation="Correct! This simplifies the subscripts down to the lowest values possible while maintaining the same ratio of elements">CH₂O</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -233,10 +233,10 @@
           <div class="question-box">
             <p class="question-text">A compound is measured to consist of 25.0% Hydrogen and 75.0% Carbon.  What is the emperical formula of the measured compound?</p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, false, 'Incorrect, this could be a more complex chemical formula, but not the emperical formula of the given compound')">C₂H₈</button>
-              <button onclick="checkAnswer(this, true, 'Correct!  Since the problem gives us percent we can just us the same numbers but in grams. From there we divide each weight by their respective atomic mass - 25.0g/1.01g and 75.02g/12.01g.  This gives us roughly 24.8 H and 6.2 C atoms in the molecule, which we can simplify to 4 H and 1 C by dividing both values by the value of the element with the lowest value, in this case C.  So, CH₄ will be the molecular and emperical formula for this compound')">CH₄</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, this choice may result from inverting the H and C masses')">H₄C</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, this choice likely resulted from an error in determining the number of H atoms in the compound')">CH₂</button>
+              <button data-correct="false" data-explanation="Incorrect, this could be a more complex chemical formula, but not the emperical formula of the given compound">C₂H₈</button>
+              <button data-correct="true" data-explanation="Correct!  Since the problem gives us percent we can just us the same numbers but in grams. From there we divide each weight by their respective atomic mass - 25.0g/1.01g and 75.02g/12.01g.  This gives us roughly 24.8 H and 6.2 C atoms in the molecule, which we can simplify to 4 H and 1 C by dividing both values by the value of the element with the lowest value, in this case C.  So, CH₄ will be the molecular and emperical formula for this compound">CH₄</button>
+              <button data-correct="false" data-explanation="Incorrect, this choice may result from inverting the H and C masses">H₄C</button>
+              <button data-correct="false" data-explanation="Incorrect, this choice likely resulted from an error in determining the number of H atoms in the compound">CH₂</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -247,10 +247,10 @@
           <div class="question-box">
             <p class="question-text">A compound was analyzed and found to be composed of 48.0% Carbon, 4.0% Hydrogen, 22.4% Nitrogen, 12.8% Sulfur, and 12.8% Oxygen. The compound also was found to have a molecular mass of 500 amu.  Determine the molecular formula for the compound </p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, false, 'Incorrect, this choice does not contain the correct ratio of elements')">C₂₀H₁₅N₈S₄O₄</button>
-              <button onclick="checkAnswer(this, true, 'Correct! We can get this answer by first replacing the percent signs with grams. Now we divide each element by their atomic masses - 48g/12.01g, 4g/1.01g, 22.4g/14.01g, 12.8g/32.07g, 12.8g/15.99g. Sulfur will result in the lowest number of molecules (0.3991) so we divide all elements by this number to obtain whole numbers.  While this gives us whole numbers of elements to create a formula with the correct ratio, it is important to note that the molecule would only have a molecular mass of 250 amu, so all element subscripts must be doubled to reach 500 amu ')">C₂₀H₂₀N₈SO₄</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, this choice does not contain the correct ratio of elements')">C₁₅H₁₅N₆S₂O₂</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, this choice determines the correct ratio of elements (and emperical formula), but this molecule only has a molecular mass of 250 amu when all elements are added up')">C₁₀H₁₀N₄SO₂</button>
+              <button data-correct="false" data-explanation="Incorrect, this choice does not contain the correct ratio of elements">C₂₀H₁₅N₈S₄O₄</button>
+              <button data-correct="true" data-explanation="Correct! We can get this answer by first replacing the percent signs with grams. Now we divide each element by their atomic masses - 48g/12.01g, 4g/1.01g, 22.4g/14.01g, 12.8g/32.07g, 12.8g/15.99g. Sulfur will result in the lowest number of molecules (0.3991) so we divide all elements by this number to obtain whole numbers.  While this gives us whole numbers of elements to create a formula with the correct ratio, it is important to note that the molecule would only have a molecular mass of 250 amu, so all element subscripts must be doubled to reach 500 amu ">C₂₀H₂₀N₈SO₄</button>
+              <button data-correct="false" data-explanation="Incorrect, this choice does not contain the correct ratio of elements">C₁₅H₁₅N₆S₂O₂</button>
+              <button data-correct="false" data-explanation="Incorrect, this choice determines the correct ratio of elements (and emperical formula), but this molecule only has a molecular mass of 250 amu when all elements are added up">C₁₀H₁₀N₄SO₂</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -287,10 +287,10 @@
             <div class="question-box">
               <p class="question-text">A 21.8g sample of ZnO and MgO contains 1.32g of Zn.  What percent of the sample is MgO?</p>
               <div class="answer-options">
-                <button onclick="checkAnswer(this, false, 'Incorrect, this is the percent of ZnO in the sample, not MgO')">7.5%</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, this choice might be the result of skipping the conversion to mols before finding grams of ZnO')">95.1%</button>
-                <button onclick="checkAnswer(this, true, 'Correct!  This correctly converts 1.32g of Zn to 0.0202 mol of Zn. 0.0202 mol of Zn will also make 0.0202 mol of ZnO, so there is 1.64g of ZnO in the sample.  Then do 1.64/21.8 to conclude that 7.5% of the sample is ZnO, so the other 92.5% is MgO ')">92.5%</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect. We need to convert from grams of Zn to mol, then to mol of ZnO, then to grams of Zn0.  From there we can determine what percent of the sample is ZnO and MgO')">4.9%</button>
+                <button data-correct="false" data-explanation="Incorrect, this is the percent of ZnO in the sample, not MgO">7.5%</button>
+                <button data-correct="false" data-explanation="Incorrect, this choice might be the result of skipping the conversion to mols before finding grams of ZnO">95.1%</button>
+                <button data-correct="true" data-explanation="Correct!  This correctly converts 1.32g of Zn to 0.0202 mol of Zn. 0.0202 mol of Zn will also make 0.0202 mol of ZnO, so there is 1.64g of ZnO in the sample.  Then do 1.64/21.8 to conclude that 7.5% of the sample is ZnO, so the other 92.5% is MgO ">92.5%</button>
+                <button data-correct="false" data-explanation="Incorrect. We need to convert from grams of Zn to mol, then to mol of ZnO, then to grams of Zn0.  From there we can determine what percent of the sample is ZnO and MgO">4.9%</button>
               </div>
               <div class="feedback-text"></div>
             </div>
@@ -331,10 +331,10 @@
           <div class="question-box">
             <p class="question-text">Which of the following elements will form a bond with the strongest Coulombic attractions when bonded with Cl?</p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, true, 'Correct! Mg has the smallest atomic radius and the highest magnitude of charge of the elements listed')">Mg</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Ca has a high magnitude of charge but a larger radius than Mg, meaning it will have a weaker attraction to Cl')">Ca</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Na has a fairly small radius but has a weaker magnitude of charge compared to some of the other elements listed')">Na</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, according to Coulombs Law, the element with the highest magnitude of change and lowest atomic radius will produce the strongest Coulombic attractions ')">K</button>
+              <button data-correct="true" data-explanation="Correct! Mg has the smallest atomic radius and the highest magnitude of charge of the elements listed">Mg</button>
+              <button data-correct="false" data-explanation="Incorrect, Ca has a high magnitude of charge but a larger radius than Mg, meaning it will have a weaker attraction to Cl">Ca</button>
+              <button data-correct="false" data-explanation="Incorrect, Na has a fairly small radius but has a weaker magnitude of charge compared to some of the other elements listed">Na</button>
+              <button data-correct="false" data-explanation="Incorrect, according to Coulombs Law, the element with the highest magnitude of change and lowest atomic radius will produce the strongest Coulombic attractions ">K</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -345,10 +345,10 @@
           <div class="question-box">
             <p class="question-text">According to Coulomb's Law, what explains why Sodium (Na) has a stronger attraction to Chlorine (Cl) than Potassium (K)? </p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, false, 'Incorrect, K and Na have equal charges of +1')">Na has a greater magnitude of charge than K</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Na has a smaller atomic radius, and having a larger atomic radius would result in lower Coulombic forces between atoms')">Na has a greater atomic radius than K</button>
-              <button onclick="checkAnswer(this, true, 'Correct! Na has a smaller atomic radius than K because K has more filled electron valence shells, so it can bond more closely with Cl, forming stronger Coulombic attractions between atoms')">Na has a smaller atomic radius than K</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Na does have a smaller radius, but has the same +1 magnitude of charge than K has')">Na has a smaller atomic radius and a greater magnitude of charge than K</button>
+              <button data-correct="false" data-explanation="Incorrect, K and Na have equal charges of +1">Na has a greater magnitude of charge than K</button>
+              <button data-correct="false" data-explanation="Incorrect, Na has a smaller atomic radius, and having a larger atomic radius would result in lower Coulombic forces between atoms">Na has a greater atomic radius than K</button>
+              <button data-correct="true" data-explanation="Correct! Na has a smaller atomic radius than K because K has more filled electron valence shells, so it can bond more closely with Cl, forming stronger Coulombic attractions between atoms">Na has a smaller atomic radius than K</button>
+              <button data-correct="false" data-explanation="Incorrect, Na does have a smaller radius, but has the same +1 magnitude of charge than K has">Na has a smaller atomic radius and a greater magnitude of charge than K</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -393,10 +393,10 @@
             <div class="question-box">
               <p class="question-text">What is the correct electron configuration of Nitrogen (N)?</p>
               <div class="answer-options">
-                <button onclick="checkAnswer(this, false, 'Incorrect, this configuration has swapped the p and s labels on the subshells! The AP Chem exam will not give trick choices like this but you should know the relative order of initial subshells and their capacities - s² p⁶ d¹⁰ f¹⁴')">1p²2p²2s³</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, this does have the correct number of electrons, but the 2s subshell should be filled before the 2p subshell begins to recieve electrons')">1s²2s¹2p⁴</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, this is the electron configuration for O')">1s²2s²2p⁴</button>
-                <button onclick="checkAnswer(this, true, 'Correct!  This configuration fills each shell up in order and contains the correct total number of electrons')">1s²2s²2p³</button>
+                <button data-correct="false" data-explanation="Incorrect, this configuration has swapped the p and s labels on the subshells! The AP Chem exam will not give trick choices like this but you should know the relative order of initial subshells and their capacities - s² p⁶ d¹⁰ f¹⁴">1p²2p²2s³</button>
+                <button data-correct="false" data-explanation="Incorrect, this does have the correct number of electrons, but the 2s subshell should be filled before the 2p subshell begins to recieve electrons">1s²2s¹2p⁴</button>
+                <button data-correct="false" data-explanation="Incorrect, this is the electron configuration for O">1s²2s²2p⁴</button>
+                <button data-correct="true" data-explanation="Correct!  This configuration fills each shell up in order and contains the correct total number of electrons">1s²2s²2p³</button>
               </div>
               <div class="feedback-text"></div>
             </div>
@@ -407,10 +407,10 @@
               <p class="question-text">Identify the element shown and the number of electrons on the rightmost peak</p>
                <img src="/images/PES.jpg" alt="PES of B" class="spectrum-img">
               <div class="answer-options">
-                <button onclick="checkAnswer(this, false, 'Incorrect, the rightmost peak does only have 1 electron, but the peaks represent subshells not electrons, so the element cannot be Li')">Li, 1 electron</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, remember that each peak represents a subshell, so in this case, 1s, 2s, and 2p are shown')">Li, 2 electrons</button>
-                <button onclick="checkAnswer(this, true, 'Correct! This element has three subshells shown, so we know they are 1s, 2s, 2p.  We know the s subshell will never carry more than 2 electrons, and since the 2p subshell is present we know both 1s and 2s are filled with 2 electrons in this case.  This means that the peak on the right, 2p, has half the number of electrons, so it has 1 electron')">B, 1 electron</button>
-                <button onclick="checkAnswer(this, false, 'Incorrect, the element is correctly identified here but the right most subshell should only have half the electrons that the first two shells have')">B, 2 electrons</button>
+                <button data-correct="false" data-explanation="Incorrect, the rightmost peak does only have 1 electron, but the peaks represent subshells not electrons, so the element cannot be Li">Li, 1 electron</button>
+                <button data-correct="false" data-explanation="Incorrect, remember that each peak represents a subshell, so in this case, 1s, 2s, and 2p are shown">Li, 2 electrons</button>
+                <button data-correct="true" data-explanation="Correct! This element has three subshells shown, so we know they are 1s, 2s, 2p.  We know the s subshell will never carry more than 2 electrons, and since the 2p subshell is present we know both 1s and 2s are filled with 2 electrons in this case.  This means that the peak on the right, 2p, has half the number of electrons, so it has 1 electron">B, 1 electron</button>
+                <button data-correct="false" data-explanation="Incorrect, the element is correctly identified here but the right most subshell should only have half the electrons that the first two shells have">B, 2 electrons</button>
               </div>
               <div class="feedback-text"></div>
             </div>
@@ -474,10 +474,10 @@
           <div class="question-box">
             <p class="question-text">Which of the following elements has the smallest atomic radius?</p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, true, 'Correct! Since all elements are in the third row, the element with the greatest magnitude of charge in the nucleus will attract their valence electrons closest to the nucleus and thus have a smaller radius.  In this case, Cl has the has the most positive nucleus (more protons than the other elements) so it has the smallest atomic radius')">Cl</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, recall atomic radius gets smaller as positive charge in the nucleus increases and shell levels of electrons decrease')">P</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, although this is the highest magnitude of positive charge and the last elcetron in the 3s subshell, all level 3 subshells are roughly the same distance from the nucleus, so adding electrons to 3p will not increase radius, but decrease by increasing the positive magnitude of the nucleus')">Mg</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Na has the largest atomic radius of the elements listed.  This is because all elements are in the third energy shell (third row) and Na has the lowest magnitude of positive charge in its nucleus.  This results in weaker attraction to valence electrons')">Na</button>
+              <button data-correct="true" data-explanation="Correct! Since all elements are in the third row, the element with the greatest magnitude of charge in the nucleus will attract their valence electrons closest to the nucleus and thus have a smaller radius.  In this case, Cl has the has the most positive nucleus (more protons than the other elements) so it has the smallest atomic radius">Cl</button>
+              <button data-correct="false" data-explanation="Incorrect, recall atomic radius gets smaller as positive charge in the nucleus increases and shell levels of electrons decrease">P</button>
+              <button data-correct="false" data-explanation="Incorrect, although this is the highest magnitude of positive charge and the last elcetron in the 3s subshell, all level 3 subshells are roughly the same distance from the nucleus, so adding electrons to 3p will not increase radius, but decrease by increasing the positive magnitude of the nucleus">Mg</button>
+              <button data-correct="false" data-explanation="Incorrect, Na has the largest atomic radius of the elements listed.  This is because all elements are in the third energy shell (third row) and Na has the lowest magnitude of positive charge in its nucleus.  This results in weaker attraction to valence electrons">Na</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -488,10 +488,10 @@
           <div class="question-box">
             <p class="question-text">Identify the element with the highest first ionization energy</p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, false, 'Incorrect, Li will tend to easily donate an electron because 2 electrons forms a stable and complete 1st shell, but gaining an electron still leaves the 2nd shell unfilled (only 2s is filled, not 2p). Li also has a relatively large atomic radius compared to other elements listed')">Li</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Be has stronger attraction to its electrons than Na and Li due to its lower enregy level and higher magnitude of charge, but F still hsa a smaller atomic radius and thus stronger attraction to its electrons')">Be</button>
-              <button onclick="checkAnswer(this, true, 'Correct! To become stable F needs to gain 1 electron to complete the second energy shell.  It also has the smallest atomic radius, so it will have the most attraction to its electrons and require the most energy to remove an electron')">F</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Na will tend to easily donate an electron to result in completed 1st and 2nd energy levels.  Na also has a relatively large atomic radius compared to other elements listed')">Na</button>
+              <button data-correct="false" data-explanation="Incorrect, Li will tend to easily donate an electron because 2 electrons forms a stable and complete 1st shell, but gaining an electron still leaves the 2nd shell unfilled (only 2s is filled, not 2p). Li also has a relatively large atomic radius compared to other elements listed">Li</button>
+              <button data-correct="false" data-explanation="Incorrect, Be has stronger attraction to its electrons than Na and Li due to its lower enregy level and higher magnitude of charge, but F still hsa a smaller atomic radius and thus stronger attraction to its electrons">Be</button>
+              <button data-correct="true" data-explanation="Correct! To become stable F needs to gain 1 electron to complete the second energy shell.  It also has the smallest atomic radius, so it will have the most attraction to its electrons and require the most energy to remove an electron">F</button>
+              <button data-correct="false" data-explanation="Incorrect, Na will tend to easily donate an electron to result in completed 1st and 2nd energy levels.  Na also has a relatively large atomic radius compared to other elements listed">Na</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -502,10 +502,10 @@
           <div class="question-box">
             <p class="question-text">Which of the following molecules contains the most polar bond?  (Hint from unit 2: A bond is more polar - or shares electrons more unequally - when there is a high difference in electronegativity between the atoms bonding)</p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, true, 'Correct! Recall F is the most electronegative element.  Thus since all molecules contain H and another element, HF will have the greatest electronegativity difference and in turn the most polar bond, or uneven sharing of electrons')">HF</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, there is no difference in electronegativity between two H atoms')">H₂</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, the electronegativity difference between C and H is relatively small compared to another element listed')">CH₄</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, the electronegativity difference between N and H is relatively small compared to another element listed')">NH₃</button>
+              <button data-correct="true" data-explanation="Correct! Recall F is the most electronegative element.  Thus since all molecules contain H and another element, HF will have the greatest electronegativity difference and in turn the most polar bond, or uneven sharing of electrons">HF</button>
+              <button data-correct="false" data-explanation="Incorrect, there is no difference in electronegativity between two H atoms">H₂</button>
+              <button data-correct="false" data-explanation="Incorrect, the electronegativity difference between C and H is relatively small compared to another element listed">CH₄</button>
+              <button data-correct="false" data-explanation="Incorrect, the electronegativity difference between N and H is relatively small compared to another element listed">NH₃</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -516,10 +516,10 @@
           <div class="question-box">
             <p class="question-text">What element has the lowest electron affinity (most negative)?</p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, false, 'Incorrect, recall metals will generally have a positive electron affinity because they do not tend to gain electrons and instead favor donating electrons to form a bond')">Na</button>
-              <button onclick="checkAnswer(this, true, 'Correct! Cl is a non-metal in group 17 and only needs to gain 1 electron to become stable and complete group 2.  Because of this it is highly reactive and will have an extremely negative electron affinity')">Cl</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, this O has a highly negative electron affinity, but because it needs to gain 2 electrons to become stable while Cl only needs to gain 1, Cl will have a slightly more negative electron affinity')">O</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, recall metals will generally have a positive electron affinity because they do not tend to gain electrons and instead favor donating electrons to form a bond')">Al</button>
+              <button data-correct="false" data-explanation="Incorrect, recall metals will generally have a positive electron affinity because they do not tend to gain electrons and instead favor donating electrons to form a bond">Na</button>
+              <button data-correct="true" data-explanation="Correct! Cl is a non-metal in group 17 and only needs to gain 1 electron to become stable and complete group 2.  Because of this it is highly reactive and will have an extremely negative electron affinity">Cl</button>
+              <button data-correct="false" data-explanation="Incorrect, this O has a highly negative electron affinity, but because it needs to gain 2 electrons to become stable while Cl only needs to gain 1, Cl will have a slightly more negative electron affinity">O</button>
+              <button data-correct="false" data-explanation="Incorrect, recall metals will generally have a positive electron affinity because they do not tend to gain electrons and instead favor donating electrons to form a bond">Al</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -561,10 +561,10 @@
           <div class="question-box">
             <p class="question-text">A student reacts a pure element, X, with Oxygen. Which of the following choices represents the possible molecule formed from this reaction</p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, false, 'Incorrect, K only has a +1 charge, thus it would require a subscript of 2 in this case to balance the charges')">KO</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Mg has a +2 charge and does not need the subscript 2 to balance the charges')">Mg₂O</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Al has a +3 charge, so in this case the molecule formed has an unbalanced +4 charge')">Al₂O</button>
-              <button onclick="checkAnswer(this, true, 'Correct! Al has a charge of +3, while O has a charge of -2. By writing the subscripts for each element as the charge of the other, the total charge is canceled out by a +6 and -6 charge')">Al₂O₃</button>
+              <button data-correct="false" data-explanation="Incorrect, K only has a +1 charge, thus it would require a subscript of 2 in this case to balance the charges">KO</button>
+              <button data-correct="false" data-explanation="Incorrect, Mg has a +2 charge and does not need the subscript 2 to balance the charges">Mg₂O</button>
+              <button data-correct="false" data-explanation="Incorrect, Al has a +3 charge, so in this case the molecule formed has an unbalanced +4 charge">Al₂O</button>
+              <button data-correct="true" data-explanation="Correct! Al has a charge of +3, while O has a charge of -2. By writing the subscripts for each element as the charge of the other, the total charge is canceled out by a +6 and -6 charge">Al₂O₃</button>
             </div>
             <div class="feedback-text"></div>
           </div>
@@ -575,10 +575,10 @@
           <div class="question-box">
             <p class="question-text">An ionic compound formed partly of Potassium (K) has the formula K₂X, where X is an unknown element. Which choice could be the element represented by X?</p>
             <div class="answer-options">
-              <button onclick="checkAnswer(this, false, 'Incorrect, Ne is a noble gas and part of group 18. Elements in this group do not contain charges because they are already at a complete energy shell level, and as a result, they are not very reactive.  An ionic compound will not form with a group 18 element')">Ne</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, Br only has a single -1 charge while there are two +1 charges from K')">Br</button>
-              <button onclick="checkAnswer(this, true, 'Correct! Sulfur (S) has a -2 charge which cancels out the 2 charges of +1 from K, so K₂S would be a possible ionic compound')">S</button>
-              <button onclick="checkAnswer(this, false, 'Incorrect, although Ca has a charge magnitude of 2, it is a positive charge. For an ionic compound to form and the charges to be balanced X must have a negative charge')">Ca</button>
+              <button data-correct="false" data-explanation="Incorrect, Ne is a noble gas and part of group 18. Elements in this group do not contain charges because they are already at a complete energy shell level, and as a result, they are not very reactive.  An ionic compound will not form with a group 18 element">Ne</button>
+              <button data-correct="false" data-explanation="Incorrect, Br only has a single -1 charge while there are two +1 charges from K">Br</button>
+              <button data-correct="true" data-explanation="Correct! Sulfur (S) has a -2 charge which cancels out the 2 charges of +1 from K, so K₂S would be a possible ionic compound">S</button>
+              <button data-correct="false" data-explanation="Incorrect, although Ca has a charge magnitude of 2, it is a positive charge. For an ionic compound to form and the charges to be balanced X must have a negative charge">Ca</button>
             </div>
             <div class="feedback-text"></div>
           </div>
