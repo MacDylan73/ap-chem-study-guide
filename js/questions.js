@@ -15,54 +15,52 @@ function checkAnswer(button, isCorrect, explanation) {
   feedback.textContent = explanation;
 
   // Progress tracking addition
-  if (isCorrect) {
-    // Find the subunit element this question belongs to
-    let subunitDiv = button.closest('.subunit');
-    if (!subunitDiv) return;
-    // Get subunit title for key (header text)
-    let subunitHeader = subunitDiv.querySelector('.subunit-header');
-    if (!subunitHeader) return;
-    let subunitKey = subunitHeader.textContent.trim();
+  // Find the subunit element this question belongs to
+  let subunitDiv = button.closest('.subunit');
+  if (!subunitDiv) return;
+  // Get subunit title for key (header text)
+  let subunitHeader = subunitDiv.querySelector('.subunit-header');
+  if (!subunitHeader) return;
+  let subunitKey = subunitHeader.textContent.trim();
 
-    // Find all question-boxes in subunit
-    let questionBoxes = subunitDiv.querySelectorAll('.question-box');
-    let questionIds = [];
-    questionBoxes.forEach((qbox, idx) => {
-      // Each question gets an id: subunitKey + '-' + idx
-      qbox.dataset.qid = `${subunitKey}-${idx}`;
-      questionIds.push(qbox.dataset.qid);
-    });
+  // Find all question-boxes in subunit
+  let questionBoxes = subunitDiv.querySelectorAll('.question-box');
+  let questionIds = [];
+  questionBoxes.forEach((qbox, idx) => {
+    // Each question gets an id: subunitKey + '-' + idx
+    qbox.dataset.qid = `${subunitKey}-${idx}`;
+    questionIds.push(qbox.dataset.qid);
+  });
 
-    // Mark this question as answered correctly
-    let thisQid = button.closest('.question-box').dataset.qid;
-    // Track progress in memory only (for unsigned users)
-    if (!window.isSignedIn || !window.currentUser) {
-      // Use in-memory object attached to subunitDiv
-      subunitDiv._tempProgress = subunitDiv._tempProgress || {};
-      subunitDiv._tempProgress[thisQid] = true;
-    }
-
-    // If all questions in subunit answered correctly, mark subunit complete
-    let allCorrect = questionIds.every(qid => {
-      if (window.isSignedIn && window.currentUser) {
-        // For signed-in users, completion handled by Firestore
-        return true; // always true, checkmark logic handled elsewhere
-      } else {
-        // For unsigned users, check in-memory progress
-        return subunitDiv._tempProgress && subunitDiv._tempProgress[qid];
-      }
-    });
-
-    if (allCorrect) {
-      if (window.isSignedIn && window.currentUser) {
-        const unitId = getCurrentUnitId();
-        setSubunitComplete(unitId, subunitKey);
-      }
-      // For unsigned users, checkmark will show until reload (see below)
-    }
-    // Update checkmarks (if function exists)
-    if (window.updateSubunitCheckmarks) window.updateSubunitCheckmarks();
+  // Mark this question as answered correctly
+  let thisQid = button.closest('.question-box').dataset.qid;
+  // Track progress in memory only (for unsigned users)
+  if (!window.isSignedIn || !window.currentUser) {
+    // Use in-memory object attached to subunitDiv
+    subunitDiv._tempProgress = subunitDiv._tempProgress || {};
+    if (isCorrect) subunitDiv._tempProgress[thisQid] = true;
   }
+
+  // Count correct answers
+  let correctCount = 0;
+  questionBoxes.forEach(qbox => {
+    const btns = qbox.querySelectorAll('button[data-correct]');
+    btns.forEach(btn => {
+      if (btn.classList.contains('correct')) correctCount++;
+    });
+  });
+  let percentCorrect = Math.round((correctCount / questionBoxes.length) * 100);
+
+  // If at least 80% of questions in subunit answered correctly, mark subunit complete
+  if (percentCorrect >= 80) {
+    if (window.isSignedIn && window.currentUser) {
+      const unitId = getCurrentUnitId();
+      setSubunitComplete(unitId, subunitKey);
+    }
+    // For unsigned users, checkmark will show until reload (see below)
+  }
+  // Update checkmarks (if function exists)
+  if (window.updateSubunitCheckmarks) window.updateSubunitCheckmarks();
 }
 
 // Quiz checkmarks logic (now in questions.js)
