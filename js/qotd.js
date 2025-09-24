@@ -740,7 +740,7 @@ async function loadLeaderboardModal() {
 async function importQOTDModals() {
   let res, text, parser, doc;
   try {
-    res = await fetch('qotd-stats.html');
+    res = await fetch('/components/qotd-stats.html');
     text = await res.text();
     parser = new DOMParser();
     doc = parser.parseFromString(text, 'text/html');
