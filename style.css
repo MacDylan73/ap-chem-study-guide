@@ -1,4 +1,26 @@
 /* ===========================
+   Image Caption Style
+   =========================== */
+.image-caption {
+  text-align: center;
+  font-size: 0.97em;
+  color: #555;
+  margin-top: 0.5em;
+}
+/* Spectrum image style for notes sections */
+/* ===========================
+   Spectrum Image Style
+   =========================== */
+.spectrum-img {
+  max-width: 350px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+}
+/* ===========================
    ROOT VARIABLES
    =========================== */
 :root {
@@ -1299,8 +1321,6 @@ body.dark-mode .tabRegister:hover:not(.active) {
   pointer-events: none;
 }
 
-Copilot said: ```css /* --- QOTD Box and Layout ---
-CSS
 /* --- QOTD Box and Layout --- */
 .box {
   border-radius: 16px;

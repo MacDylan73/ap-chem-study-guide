@@ -35,29 +35,6 @@ async function loadUsernameModal() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Auto-expand Unit 1.7 notes box if navigated with #unit1-7
-  if (window.location.hash === '#unit1-7') {
-    const subunit = document.getElementById('unit1-7');
-    if (subunit) {
-      // Find the closest .subunit-content and its previous .subunit-header
-      const subunitContent = subunit.closest('.subunit-content');
-      const subunitHeader = subunitContent?.previousElementSibling;
-      if (subunitContent && subunitHeader && subunitHeader.classList.contains('subunit-header')) {
-        // Expand the subunit if it's collapsed
-        subunitContent.style.display = '';
-        subunitHeader.classList.add('active');
-        // Scroll to anchor with offset (e.g. for fixed header)
-        setTimeout(() => {
-          const rect = subunitHeader.getBoundingClientRect();
-          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          window.scrollTo({
-            top: rect.top + scrollTop - 60,
-            behavior: 'smooth'
-          });
-        }, 200);
-      }
-    }
-  }
   await loadAuthModal();
   setupAuthModalEvents();
 
@@ -69,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await loadGatingModal();
 
-  await loadTopbar("Unit 1: Atomic Structure");
+  await loadTopbar("Unit 2: Compound Structure & Properties");
   applySavedTheme();
   loadSidebar();
 
@@ -81,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const nextUnitBtn = document.getElementById('nextUnitBtn');
   if (nextUnitBtn) {
     nextUnitBtn.addEventListener('click', () => {
-      window.location.href = '/ap-chem/unit-2-compound-structure-and-properties/';
+      window.location.href = '/ap-chem/unit-3-properties-of-substances-and-mixtures/';
     });
   }
   const futureFeatureBtn = document.getElementById('futureFeatureBtn');

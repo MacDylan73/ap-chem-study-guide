@@ -1,3 +1,40 @@
+// ---- Utility: Ensure User Document Format ----
+import { serverTimestamp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+/**
+ * Ensures the Firestore user document for the given user has all required fields and format.
+ * @param {object} user - Firebase Auth user object
+ * @param {object} extraFields - Optional extra fields to merge
+ */
+export async function ensureUserDocument(user, extraFields = {}) {
+  if (!user || !user.uid) return;
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+  const requiredFields = {
+    email: user.email || "",
+    emailVerified: user.emailVerified || false,
+    sendgridOptIn: extraFields.sendgridOptIn ?? true,
+    createdAt: userSnap.exists() ? userSnap.data().createdAt || serverTimestamp() : serverTimestamp()
+  };
+  // Merge with any extra fields
+  const updateFields = { ...requiredFields, ...extraFields };
+  // If doc doesn't exist, create it with all fields
+  if (!userSnap.exists()) {
+    await setDoc(userRef, updateFields);
+  } else {
+    // If doc exists, update any missing fields
+    let needsUpdate = false;
+    for (const key in requiredFields) {
+      if (!(key in userSnap.data())) {
+        needsUpdate = true;
+        break;
+      }
+    }
+    if (needsUpdate) {
+      await setDoc(userRef, updateFields, { merge: true });
+    }
+  }
+}
 // auth.js -- Centralized Firebase Authentication & Username Logic for AP Chem Study Guide
 // ------------------------------------------------------------------------
 // This file should be loaded as a module (type="module") on every page.
@@ -59,20 +96,16 @@ export let currentUser = null;
 
 // ---- Auth State Listener ----
 export function onAuthChange(callback) {
-  console.log("[AUTH] onAuthChange setup"); // Add this!
+  console.log("[AUTH] onAuthChange setup");
   onAuthStateChanged(auth, async user => {
-    console.log("[AUTH] onAuthStateChanged", user); // Add this!
+    console.log("[AUTH] onAuthStateChanged", user);
     isSignedIn = !!user;
     currentUser = user || null;
     window.isSignedIn = isSignedIn;
     window.currentUser = currentUser;
-    // Update Firestore user document with latest emailVerified status
+    // Ensure Firestore user document has all required fields and format
     if (user) {
-      const { doc, setDoc } = await import("https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js");
-      await setDoc(doc(db, "users", user.uid), {
-        email: user.email,
-        emailVerified: user.emailVerified
-      }, { merge: true });
+      await ensureUserDocument(user);
     }
     if (callback) callback(user);
     document.dispatchEvent(new CustomEvent("authstatechanged", { detail: { user } }));
