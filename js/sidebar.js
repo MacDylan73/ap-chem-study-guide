@@ -101,18 +101,23 @@ export async function loadSidebar() {
   }
   // AP Chem pages (any page under /ap-chem/)
   if (path.startsWith('/ap-chem/')) {
-  // Fetch sidebar.html from components folder
-  const resp = await fetch('/components/sidebar.html');
-    const html = await resp.text();
-    sidebarContainer.innerHTML = html;
-    const overlay = document.getElementById('sidebar-overlay');
-    if (overlay) {
-      overlay.addEventListener('click', function () {
-        const sidebar = document.getElementById('sidebar');
-        if (sidebar) sidebar.classList.remove('visible');
-      });
+    // Fetch sidebar.html from components folder with error handling
+    try {
+      const resp = await fetch('/components/sidebar.html');
+      if (!resp.ok) throw new Error('Sidebar HTML not found');
+      const html = await resp.text();
+      sidebarContainer.innerHTML = html;
+      const overlay = document.getElementById('sidebar-overlay');
+      if (overlay) {
+        overlay.addEventListener('click', function () {
+          const sidebar = document.getElementById('sidebar');
+          if (sidebar) sidebar.classList.remove('visible');
+        });
+      }
+      highlightActiveSidebarLink();
+    } catch (err) {
+      sidebarContainer.innerHTML = `<div id="sidebar" class="sidebar"><div class="sidebar-header">AP Prep Hub<hr></div><nav class="sidebar-links"><a href="/">🏠 AP Prep Hub</a></nav><div class="sidebar-footer" style="margin-top:2.5em; font-size:0.93em; color:#8a8a8a; text-align:center;">Sidebar failed to load. <br> <span style='color:#d12e2e;'>${err.message}</span></div></div><div id="sidebar-overlay" class="sidebar-overlay"></div>`;
     }
-    highlightActiveSidebarLink();
     return;
   }
   // Fallback: show only link to home and contact

@@ -126,18 +126,15 @@ function setupUsernameEditLogic() {
 // --- Progress Bars & Final Quiz ---
 async function loadProgressBars() {
   const container = document.getElementById('unitProgressList');
-  const bestScoreElem = document.getElementById('finalQuizBestScore');
-  if (!container || !bestScoreElem) return;
+  if (!container) return;
   container.innerHTML = '';
 
   const progressData = await getProgress();
   if (!progressData || !progressData.units) {
     container.innerHTML = '<div style="color:#666;">No progress data. Start learning!</div>';
-    bestScoreElem.textContent = "N/A";
     return;
   }
 
-  let bestQuizScore = null;
   Object.keys(unitNames).forEach(unitId => {
     const unit = progressData.units[unitId] || {};
     const subunits = unit.subunits || {};
@@ -147,25 +144,22 @@ async function loadProgressBars() {
     const percentRaw = ((subunitsComplete + finalQuizComplete) / (totalSubunits + 1)) * 100;
     const percent = Math.round(percentRaw);
 
-    // Final quiz score
-    if (typeof unit.finalQuizHighestScore === "number") {
-      if (bestQuizScore === null || unit.finalQuizHighestScore > bestQuizScore) {
-        bestQuizScore = unit.finalQuizHighestScore;
-      }
-    }
+    // Final quiz score display
+    let finalQuizScore = typeof unit.finalQuizHighestScore === "number" ? unit.finalQuizHighestScore : null;
+    let scoreColor = finalQuizScore === null ? '#888' : (finalQuizScore >= 80 ? '#43a047' : '#d12e2e');
+    let scoreText = finalQuizScore !== null ? `${finalQuizScore}%` : 'N/A';
 
     container.innerHTML += `
-      <div style="margin-bottom:10px;">
+      <div style="margin-bottom:10px; display:flex; align-items:center;">
         <span style="display:inline-block;width:110px;">${unitNames[unitId]}:</span>
-        <div style="display:inline-block;vertical-align:middle;width:150px;height:12px;background:#eee;border-radius:6px;overflow:hidden;">
+        <div style="display:inline-block;vertical-align:middle;width:150px;height:12px;background:#eee;border-radius:6px;overflow:hidden; margin-right:8px;">
           <div style="height:12px;background:#3949ab;width:${percent}%;"></div>
         </div>
         <span style="margin-left:8px;">${percent}%</span>
+        <span style="margin-left:16px; font-weight:600; color:${scoreColor};">Final Quiz: ${scoreText}</span>
       </div>
     `;
   });
-
-  bestScoreElem.textContent = bestQuizScore !== null ? bestQuizScore : "N/A";
 }
 
 // --- QOTD Stats (modular, not using old modal logic) ---
