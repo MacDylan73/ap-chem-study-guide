@@ -236,6 +236,34 @@ ul.custom-block-list li::before {
 }
 
 /* ===========================
+   DASH LIST STYLE
+   =========================== */
+ul.dash-list {
+  list-style: none;
+  padding-left: 0;
+}
+ul.dash-list li {
+  position: relative;
+  padding-left: 1.5em;
+  color: var(--text-color);
+}
+ul.dash-list li::before {
+  content: "\2014"; /* em dash */
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--bar-text);
+  font-size: 1.1em;
+  font-weight: bold;
+}
+body.dark-mode ul.dash-list li {
+  color: var(--text-color);
+}
+body.dark-mode ul.dash-list li::before {
+  color: var(--bar-text);
+}
+
+/* ===========================
    COUNTDOWN TIMER
    =========================== */
 .countdown {
