@@ -14,7 +14,7 @@ import { toggleTheme, applySavedTheme } from '/js/theme-toggle.js';
 window.toggleTheme = toggleTheme;
 import { setupUsernameModal } from '/js/username-modal.js';
 import { setupGating, setupGatingModalClose } from '/js/gating.js';
-import '/js/util.js';     
+import '/js/util.js';
 import { setupQuizTimers, updateSubunitCheckmarks } from '/js/questions.js';
 import { injectAccountModal, setupAccountModalEvents } from '/js/account-modal.js';
 
@@ -35,42 +35,6 @@ async function loadUsernameModal() {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Auto-expand Unit 1.1 or 1.7 notes box if navigated with #unit1-1 or #unit1-7
-  ['unit1-1', 'unit1-7'].forEach(hashId => {
-    if (window.location.hash === `#${hashId}`) {
-      let subunit;
-      if (hashId === 'unit1-7') {
-        // For 1.7, the id is on the notes-box, so find the closest parent .subunit
-        const notesBox = document.getElementById(hashId);
-        subunit = notesBox ? notesBox.closest('.subunit') : null;
-      } else {
-        // For 1.1, the id is on the .subunit itself
-        subunit = document.getElementById(hashId);
-      }
-      if (subunit) {
-        // Find the .subunit-content inside this subunit
-        const subunitContent = subunit.querySelector('.subunit-content');
-        const subunitHeader = subunit.querySelector('.subunit-header');
-        if (subunitContent && subunitHeader) {
-          // Only expand if not already open
-          const isOpen = subunitHeader.classList.contains('active') && subunitContent.style.display === 'block';
-          if (!isOpen) {
-            // Simulate a click to toggle open (preserves toggle/collapse functionality)
-            subunitHeader.click();
-          }
-          // Scroll to anchor with offset (e.g. for fixed header)
-          setTimeout(() => {
-            const rect = subunitHeader.getBoundingClientRect();
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-            window.scrollTo({
-              top: rect.top + scrollTop - 60,
-              behavior: 'smooth'
-            });
-          }, 200);
-        }
-      }
-    }
-  });
   await loadAuthModal();
   setupAuthModalEvents();
 
@@ -82,7 +46,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await loadGatingModal();
 
-  await loadTopbar("Unit 1: Atomic Structure");
+  await loadTopbar("Unit 4: Chemical Reactions");
   applySavedTheme();
   loadSidebar();
 
@@ -94,7 +58,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const nextUnitBtn = document.getElementById('nextUnitBtn');
   if (nextUnitBtn) {
     nextUnitBtn.addEventListener('click', () => {
-      window.location.href = '/ap-chem/unit-2-compound-structure-and-properties/';
+      window.location.href = '/ap-chem/unit-5-kinetics/';
     });
   }
   const futureFeatureBtn = document.getElementById('futureFeatureBtn');
@@ -134,7 +98,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 onAuthChange(async user => {
-  if (user && user.providerData.some(p => p.providerId === "google.com")) {   
+  if (user && user.providerData.some(p => p.providerId === "google.com")) {
     await ensureUsernameOnLogin();
   }
   updateUnitBottomBarAuthButtons();
