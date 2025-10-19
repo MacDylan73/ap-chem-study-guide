@@ -179,7 +179,11 @@ export function setupQuizTimers() {
 }
 
 // Call setupQuizTimers() after DOM is loaded
-document.addEventListener("DOMContentLoaded", setupQuizTimers);
+import { setupSubunitDropdowns } from './util.js';
+document.addEventListener("DOMContentLoaded", () => {
+  setupQuizTimers();
+  setupSubunitDropdowns();
+});
 
 // Final Quiz Choices+Feedback
 // Deferred feedback logic for final quiz boxes only
@@ -324,3 +328,5 @@ function getCurrentUnitId() {
 }
 
 document.addEventListener('DOMContentLoaded', setupFinalQuizLogic);
+// Also re-attach dropdowns after any dynamic content (if needed)
+window.setupSubunitDropdowns = setupSubunitDropdowns;

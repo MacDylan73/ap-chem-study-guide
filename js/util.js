@@ -1,13 +1,19 @@
 //Dropdowns ------------------------------
 // Toggle for subunit dropdowns
-document.querySelectorAll('.subunit-header').forEach(button => {
-    button.addEventListener('click', () => {
+
+export function setupSubunitDropdowns() {
+  document.querySelectorAll('.subunit-header').forEach(button => {
+    // Remove previous listeners to avoid duplicates
+    button.removeEventListener('click', button._dropdownHandler);
+    button._dropdownHandler = () => {
       button.classList.toggle('active');
-    });
-});
+    };
+    button.addEventListener('click', button._dropdownHandler);
+  });
+}
 
 //COUNTDOWN TIMER --------------------------
-function renderCountdown(elementId, examDateStr) {
+export function renderCountdown(elementId, examDateStr) {
   const examDate = new Date(examDateStr);
   const today = new Date();
   const diffTime = examDate - today;
@@ -36,3 +42,4 @@ if (!window.GA_INITIALIZED) {
     gtag('config', 'G-X2H058B7KT');
   };
 }
+

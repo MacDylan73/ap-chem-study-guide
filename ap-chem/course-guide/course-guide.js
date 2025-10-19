@@ -1,4 +1,5 @@
-// Inline JS from /ap-chem/course-guide/index.html
+
+import { renderCountdown } from '/js/util.js';
 
 // Countdown logic
 window.addEventListener('DOMContentLoaded', function() {
@@ -25,14 +26,24 @@ import '/js/progress.js';
 import { injectAccountModal, setupAccountModalEvents } from '/js/account-modal.js';
 
 async function loadAuthModal() {
-  const resp = await fetch('/components/auth-modal.html');
-  const html = await resp.text();
-  document.body.insertAdjacentHTML('beforeend', html);
+  try {
+    const resp = await fetch('/components/auth-modal.html');
+    if (!resp.ok) throw new Error('Failed to load auth modal');
+    const html = await resp.text();
+    document.body.insertAdjacentHTML('beforeend', html);
+  } catch (err) {
+    console.error('Error loading auth modal:', err);
+  }
 }
 async function loadUsernameModal() {
-  const resp = await fetch('/components/username-modal.html');
-  const html = await resp.text();
-  document.body.insertAdjacentHTML('beforeend', html);
+  try {
+    const resp = await fetch('/components/username-modal.html');
+    if (!resp.ok) throw new Error('Failed to load username modal');
+    const html = await resp.text();
+    document.body.insertAdjacentHTML('beforeend', html);
+  } catch (err) {
+    console.error('Error loading username modal:', err);
+  }
 }
 
 // Render all elements
@@ -44,8 +55,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadUsernameModal();       // 3. Inject HTML for Username modal
   setupUsernameModal();            // 4. Setup events for Username modal
 
-  await injectAccountModal();      // 5. Inject HTML for Account modal
-  setupAccountModalEvents();       // 6. Setup events for Account modal
+  try {
+    await injectAccountModal();      // 5. Inject HTML for Account modal
+    setupAccountModalEvents();       // 6. Setup events for Account modal
+  } catch (err) {
+    console.error('Error loading account modal:', err);
+  }
 
   await loadTopbar("AP Chemistry Course Guide and Practice Tests");
   applySavedTheme();

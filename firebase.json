@@ -1,0 +1,129 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "headers": [
+  {
+    "source": "**",
+    "headers": [
+      {
+        "key": "Permissions-Policy",
+        "value": "geolocation=(), camera=(), microphone=(), fullscreen=*, payment=()"
+      },
+      {
+        "key": "Referrer-Policy",
+        "value": "strict-origin-when-cross-origin"
+      },
+      {
+        "key": "X-Content-Type-Options",
+        "value": "nosniff"
+      },
+      {
+        "key": "X-Frame-Options",
+        "value": "DENY"
+      },
+      {
+        "key": "Strict-Transport-Security",
+        "value": "max-age=31536000; includeSubDomains; preload"
+      },
+      {
+  "key": "Content-Security-Policy",
+  "value": "default-src 'self'; script-src 'self' https://js.stripe.com https://www.gstatic.com https://www.googleapis.com https://www.google.com https://www.recaptcha.net https://apis.google.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://www.gstatic.com https://www.google.com https://www.recaptcha.net; frame-src https://js.stripe.com https://www.youtube.com https://www.youtube-nocookie.com https://www.google.com https://www.recaptcha.net https://ap-chem-course-guide.firebaseapp.com; connect-src 'self' https://firestore.googleapis.com https://www.googleapis.com https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://cloudfunctions.net https://api.sendgrid.com https://www.gstatic.com https://www.google.com https://www.recaptcha.net https://content-firebaseappcheck.googleapis.com https://www.google-analytics.com; object-src 'none'; base-uri 'self';"
+}
+    ]
+  }
+],
+    "redirects": [
+      {
+        "source": "/ap-chem-question-of-the-day.html",
+        "destination": "/ap-chem/question-of-the-day",
+        "type": 301
+      },
+      {
+        "source": "/ap-chem-exam-format.html",
+        "destination": "/ap-chem/exam-format",
+        "type": 301
+      },
+      {
+        "source": "/ap-chem-score-calculator.html",
+        "destination": "/ap-chem/score-calculator",
+        "type": 301
+      },
+      {
+        "source": "http://apprephub.com/(.*)",
+        "destination": "https://apprephub.com/$1",
+        "type": 301
+      }
+    ],
+    "rewrites": [
+  {
+    "source": "/",
+    "destination": "/index.html"
+  },
+  {
+    "source": "/about",
+    "destination": "/about/index.html"
+  },
+  {
+    "source": "/ap-chem/course-guide",
+    "destination": "/ap-chem/course-guide/index.html"
+  },
+  {
+    "source": "/ap-chem/exam-format",
+    "destination": "/ap-chem/exam-format/index.html"
+  },
+  {
+    "source": "/ap-chem/question-of-the-day",
+    "destination": "/ap-chem/question-of-the-day/index.html"
+  },
+  {
+    "source": "/ap-chem/score-calculator",
+    "destination": "/ap-chem/score-calculator/index.html"
+  },
+  {
+    "source": "/ap-chem/unit-1-atomic-structure",
+    "destination": "/ap-chem/unit-1-atomic-structure/index.html"
+  },
+  {
+    "source": "/ap-chem/unit-2-compound-structure-and-properties",
+    "destination": "/ap-chem/unit-2-compound-structure-and-properties/index.html"
+  },
+  {
+    "source": "/ap-chem/unit-3-properties-of-substances-and-mixtures",
+    "destination": "/ap-chem/unit-3-properties-of-substances-and-mixtures/index.html"
+  },
+  {
+    "source": "/ap-chem/unit-4-chemical-reactions",
+    "destination": "/ap-chem/unit-4-chemical-reactions/index.html"
+  },
+  {
+    "source": "/ap-chem/unit-5-kinetics",
+    "destination": "/ap-chem/unit-5-kinetics/index.html"
+  },
+  {
+    "source": "/ap-chem/unit-6-thermochemistry",
+    "destination": "/ap-chem/unit-6-thermochemistry/index.html"
+  },
+  {
+    "source": "/ap-chem/unit-7-equilibrium",
+    "destination": "/ap-chem/unit-7-equilibrium/index.html"
+  },
+  {
+    "source": "/ap-chem/unit-8-acids-and-bases",
+    "destination": "/ap-chem/unit-8-acids-and-bases/index.html"
+  },
+  {
+    "source": "/ap-chem/unit-9-thermodynamics-and-electrochemistry",
+    "destination": "/ap-chem/unit-9-thermodynamics-and-electrochemistry/index.html"
+  },
+  {
+    "source": "/terms-and-privacy",
+    "destination": "/terms-and-privacy/index.html"
+  }
+]
+  }
+}
