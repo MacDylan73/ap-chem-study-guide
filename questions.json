@@ -88,59 +88,59 @@
     "explanation": "(1.3) This question may seem tricky at first because of the complex compound used, but remember you may encounter a similar situation on the AP Exam and it is important to maintain focus on what the question is asking. In this case, all we need to do to find the percent of mass made up by oxygen is fist determine how many mols of oxygen are in each molecule and then convert this to grams. There are 9 mol of oxygen (4 from Copper Sulfate, 5 from water), so we multiply this oxygens molar mass of 16 to find a total of 144g of O in this compound. We were given the molar mass of the entire compound, so 144g / 249.7g = 57.7%"
   },
   {
-    "question": "",
+    "question": "Will Ca²⁺ have a stronger bond with S²⁻ or O²⁻ and why?",
     "answers": [
-      "",
-      "",
-      "",
-      ""
+      "S²⁻, because S²⁻ has a larger atomiuc radius",
+      "S²⁻, because S²⁻ has a smaller atomic radius",
+      "O²⁻, because O²⁻ has a larger atomic radius",
+      "O²⁻, because O²⁻ has a smaller atomic radius"
     ],
-    "correct": 0,
-    "explanation": ""
+    "correct": 3,
+    "explanation": "(1.5) Based on Coulomb's Law, the strength of bond is based on the bond length and charges. The charges of S²⁻ and O²⁻ are the same, so the correct answer is O²⁻ because it has a smaller atomic radius and can bond more closely with the Ca²⁺ ion."
   },
   {
-    "question": "",
+    "question": "What is the correct electron configuration of silicon (Si)?",
     "answers": [
-      "",
-      "",
-      "",
-      ""
+      "1s² 2s² 2p⁶ 3s² 3p⁶",
+      "1s² 2s² 2p⁶ 3s² 3p²",
+      "[Ne] 3s² 3p⁶",
+      "[Ar] 4s²"
     ],
-    "correct": 0,
-    "explanation": ""
+    "correct": 1,
+    "explanation": "(1.6) Silicon's atomic number is 14, so we can expect it to have 14 electrons. Only the second choice has 14 electrons. You will need to remember the order of each electron subshell for the AP exam."
   },
   {
-    "question": "",
+    "question": "(1.1) About how many grams of carbon (C) are in 3.01 x 10²³ atoms of carbon?",
     "answers": [
-      "",
-      "",
-      "",
-      ""
+      "3.0 g",
+      "6.0 g",
+      "12.0 g",
+      "24.0 g"
     ],
-    "correct": 0,
-    "explanation": ""
+    "correct": 1,
+    "explanation": "First use Avagadro's Number (6.22 x 10²³) to convert from atoms to moles of carbon: (3.01 x 10²³) / (6.22 x 10²³) = .49 mol C. Then convert from moles of carbon to grams: .49 mol x 12.01 g/mol = 5.9 g"
   },
   {
-    "question": "",
+    "question": "What is the electron configuration of the P³⁻ ion?",
     "answers": [
-      "",
-      "",
-      "",
-      ""
+      "[Ne] 3s² 3p³",
+      "[Ar] 4s² 3d³",
+      "[Ne] 3s² 3p⁶",
+      "[Ne] 3s² 3p⁴"
     ],
-    "correct": 0,
-    "explanation": ""
+    "correct": 2,
+    "explanation": "(1.6) The electron configuration is always based on the number of electrons an element has. Therefore, when doing the electron configuration of an ion, you must take into account the lost or gained electrons. In this case, P gained 3 electrons so now instead of 15 electrons it should have 18."
   },
   {
-    "question": "",
+    "question": "Which of the following elements has the largest atomic radius?",
     "answers": [
-      "",
-      "",
-      "",
-      ""
+      "F",
+      "Na",
+      "Cs",
+      "Kr"
     ],
-    "correct": 0,
-    "explanation": ""
+    "correct": 2,
+    "explanation": "(1.7) Atomic radius gets larger as you move down and left on the periodic table."
   },
   {
     "question": "",
